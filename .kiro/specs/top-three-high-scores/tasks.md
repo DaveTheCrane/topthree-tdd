@@ -1,0 +1,281 @@
+# Implementation Plan: Top Three High Scores
+
+## Overview
+
+Build a four-component Java pipeline (CsvParser → ScoreAggregator → LeaderboardRanker → Pipeline) following strict TDD Red-Green-Refactor cycles and hexagonal architecture. Components are built in edge-case-density order. Each component's test suite must be green before committing to git.
+
+## Tasks
+
+- [ ] 1. Project setup
+  - Initialise a Maven or Gradle project with JUnit 5 and jqwik dependencies
+  - Create the standard `src/main/java` and `src/test/java` directory structure
+  - Run an empty test to confirm the build toolchain works end-to-end
+  - Initialise a local git repository and make an initial commit
+  - _Requirements: all_
+
+- [ ] 2. Define data models (no logic)
+  - [ ] 2.1 Create core records and sealed Result type
+    - Implement `Player`, `GameEntry`, `ScoreRecord`, `PlayerAggregate`, `RankedResult` as Java records
+    - Implement the `sealed interface Result<V, E>` with `Ok` and `Err` permit classes
+    - Implement `ParseError`, `AggregationError`, and `PipelineError` records
+    - No logic or validation — pure data containers only
+    - _Requirements: 1.1, 2.1, 3.1, 4.1_
+  - [ ] 2.2 Define component interfaces
+    - Declare `CsvParser`, `PrettyPrinter`, `ScoreAggregator`, `LeaderboardRanker`, and `TopThreePipeline` interfaces exactly as specified in the design
+    - No implementations yet
+    - _Requirements: 1.1, 2.1, 3.1, 4.1_
+  - [ ] 2.3 Commit: "feat: data models and interfaces"
+    - Ensure project compiles cleanly, then commit
+
+- [ ] 3. CsvParser — TDD cycle
+  - [ ] 3.1 Red: valid six-field line parses to correct ScoreRecord
+    - Write a failing unit test: a well-formed CSV line produces a `ScoreRecord` with the expected field values
+    - _Requirements: 1.1_
+  - [ ] 3.2 Green: minimal CsvParser implementation for the happy path
+    - Implement just enough `CsvParser` logic to pass the single valid-line test (split on comma, construct records)
+    - _Requirements: 1.1_
+  - [ ] 3.3 Red: fewer than six fields returns ParseError
+    - Write a failing unit test for a line with five fields
+    - _Requirements: 1.5_
+  - [ ] 3.4 Green: field-count validation
+    - Add field-count guard to make the test pass
+    - _Requirements: 1.5_
+  - [ ] 3.5 Red: more than six fields returns ParseError
+    - Write a failing unit test for a line with seven fields
+    - _Requirements: 1.6_
+  - [ ] 3.6 Green: extend field-count guard to cover both under and over
+    - _Requirements: 1.6_
+  - [ ] 3.7 Red: non-integer hours-played returns ParseError
+    - Write a failing unit test with `"abc"` in the hours-played field
+    - _Requirements: 1.3_
+  - [ ] 3.8 Green: integer-parse guard for hours-played
+    - _Requirements: 1.3_
+  - [ ] 3.9 Red: non-integer normalised-score returns ParseError
+    - Write a failing unit test with `"1.5"` in the normalised-score field
+    - _Requirements: 1.4_
+  - [ ] 3.10 Green: integer-parse guard for normalised-score
+    - _Requirements: 1.4_
+  - [ ] 3.11 Red: normalised score of 0 returns ParseError
+    - Write a failing unit test for score = 0
+    - _Requirements: 1.2_
+  - [ ] 3.12 Green: range guard [1, 100] for normalised-score
+    - _Requirements: 1.2_
+  - [ ] 3.13 Red: normalised score of 101 returns ParseError
+    - Write a failing unit test for score = 101 (confirms upper bound)
+    - _Requirements: 1.2_
+  - [ ] 3.14 Green: confirm range guard already covers upper bound (no new code expected)
+    - _Requirements: 1.2_
+  - [ ] 3.15 Red: empty player id returns ParseError
+    - Write a failing unit test for a line where player id is blank after trim
+    - _Requirements: 1.7_
+  - [ ] 3.16 Green: empty-id guard for player id
+    - _Requirements: 1.7_
+  - [ ] 3.17 Red: empty game id returns ParseError
+    - Write a failing unit test for a line where game id is blank after trim
+    - _Requirements: 1.8_
+  - [ ] 3.18 Green: empty-id guard for game id
+    - _Requirements: 1.8_
+  - [ ] 3.19 Red: fields with leading/trailing whitespace parse to trimmed values
+    - Write a failing unit test with padded fields (e.g. `" p1 , Alice , g1 , Chess , 2 , 50 "`)
+    - _Requirements: 1.10_
+  - [ ] 3.20 Green: trim each field before validation and construction
+    - _Requirements: 1.10_
+  - [ ] 3.21 Red: parseLines returns all ScoreRecords in order for a valid list
+    - Write a failing unit test with two valid lines; assert order is preserved
+    - _Requirements: 1.9_
+  - [ ] 3.22 Green: implement parseLines delegating to parseLine
+    - _Requirements: 1.9_
+  - [ ] 3.23 Red: parseLines returns first ParseError on a mixed valid/invalid list
+    - Write a failing unit test where the second line is invalid
+    - _Requirements: 1.9_
+  - [ ] 3.24 Green: short-circuit parseLines on first error
+    - _Requirements: 1.9_
+  - [ ] 3.25 Red: PrettyPrinter formats a ScoreRecord as six-field CSV
+    - Write a failing unit test: `print(record)` returns the expected comma-separated string
+    - _Requirements: 1.11_
+  - [ ] 3.26 Green: implement PrettyPrinter.print
+    - _Requirements: 1.11_
+  - [ ] 3.27 Refactor CsvParser if duplication warrants it
+    - Review for repeated patterns (e.g. field-guard logic); refactor only if duplication exists; all tests must stay green
+  - [ ]* 3.28 Write property test — Property 1: valid CSV line parses to correct fields
+    - `// Feature: top-three-high-scores, Property 1: Valid CSV line parses to correct fields`
+    - Generate arbitrary valid six-field CSV strings; assert parsed fields match input values
+    - **Property 1: Valid CSV line parses to correct fields**
+    - **Validates: Requirements 1.1**
+  - [ ]* 3.29 Write property test — Property 2: out-of-range normalised score returns error
+    - `// Feature: top-three-high-scores, Property 2: Out-of-range normalised score returns an error`
+    - Generate otherwise-valid lines with score outside [1, 100]; assert ParseError returned
+    - **Property 2: Out-of-range normalised score returns an error**
+    - **Validates: Requirements 1.2**
+  - [ ]* 3.30 Write property test — Property 3: non-integer hours-played returns error
+    - `// Feature: top-three-high-scores, Property 3: Non-integer hours-played returns an error`
+    - Generate lines with non-integer hours-played strings; assert ParseError returned
+    - **Property 3: Non-integer hours-played returns an error**
+    - **Validates: Requirements 1.3**
+  - [ ]* 3.31 Write property test — Property 4: non-integer normalised-score field returns error
+    - `// Feature: top-three-high-scores, Property 4: Non-integer normalised-score field returns an error`
+    - Generate lines with non-integer normalised-score strings; assert ParseError returned
+    - **Property 4: Non-integer normalised-score field returns an error**
+    - **Validates: Requirements 1.4**
+  - [ ]* 3.32 Write property test — Property 5: wrong field count returns error
+    - `// Feature: top-three-high-scores, Property 5: Wrong field count returns an error`
+    - Generate lines with field counts other than six; assert ParseError returned
+    - **Property 5: Wrong field count returns an error**
+    - **Validates: Requirements 1.5, 1.6**
+  - [ ]* 3.33 Write property test — Property 6: whitespace trimming preserves field values
+    - `// Feature: top-three-high-scores, Property 6: Whitespace trimming preserves field values`
+    - Generate valid lines; add arbitrary whitespace around fields; assert same ScoreRecord as unpadded version
+    - **Property 6: Whitespace trimming preserves field values**
+    - **Validates: Requirements 1.10**
+  - [ ]* 3.34 Write property test — Property 7: parse → print → parse round trip
+    - `// Feature: top-three-high-scores, Property 7: Parse → print → parse round trip`
+    - Generate arbitrary valid ScoreRecords; print then parse; assert result equals original
+    - **Property 7: Parse → print → parse round trip**
+    - **Validates: Requirements 1.11, 1.12**
+  - [ ] 3.35 Commit: "feat: CsvParser and PrettyPrinter — all tests green"
+
+- [ ] 4. ScoreAggregator — TDD cycle
+  - [ ] 4.1 Red: empty input returns empty list
+    - Write a failing unit test: `aggregate([])` returns `Ok([])`
+    - _Requirements: 2.7_
+  - [ ] 4.2 Green: handle empty input
+    - _Requirements: 2.7_
+  - [ ] 4.3 Red: single ScoreRecord produces one PlayerAggregate with correct totalScore
+    - Write a failing unit test: one record with hours=2, score=50 → totalScore=100
+    - _Requirements: 2.1, 2.2, 2.3, 2.4_
+  - [ ] 4.4 Green: compute weighted score and wrap in PlayerAggregate
+    - _Requirements: 2.1, 2.2, 2.3, 2.4_
+  - [ ] 4.5 Red: two records for the same player sum their weighted scores
+    - Write a failing unit test: two records for player "p1" → totalScore = sum of both weighted scores
+    - _Requirements: 2.5_
+  - [ ] 4.6 Green: accumulate weighted scores per player id
+    - _Requirements: 2.5_
+  - [ ] 4.7 Red: two records for different players produce two PlayerAggregates
+    - Write a failing unit test: records for "p1" and "p2" → two aggregates
+    - _Requirements: 2.1_
+  - [ ] 4.8 Green: group by player id (no new logic expected beyond accumulation)
+    - _Requirements: 2.1_
+  - [ ] 4.9 Red: same player id with different display names returns AggregationError
+    - Write a failing unit test: two records for "p1" with names "Alice" and "Alicia"
+    - _Requirements: 2.6_
+  - [ ] 4.10 Green: name-consistency check per player id
+    - _Requirements: 2.6_
+  - [ ] 4.11 Red: player display name is preserved in PlayerAggregate
+    - Write a failing unit test asserting `aggregate.player().playerName()` equals the input name
+    - _Requirements: 2.8_
+  - [ ] 4.12 Green: carry player name through to PlayerAggregate (likely already passing; confirm)
+    - _Requirements: 2.8_
+  - [ ] 4.13 Refactor ScoreAggregator if duplication warrants it
+    - All tests must stay green
+  - [ ]* 4.14 Write property test — Property 8: aggregation correctness
+    - `// Feature: top-three-high-scores, Property 8: Aggregation correctness — count, total score, and name preservation`
+    - Generate arbitrary non-empty lists of ScoreRecords with consistent names; assert one aggregate per player id, correct totalScore, name preserved
+    - **Property 8: Aggregation correctness — count, total score, and name preservation**
+    - **Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.8**
+  - [ ]* 4.15 Write property test — Property 9: inconsistent player name returns error
+    - `// Feature: top-three-high-scores, Property 9: Inconsistent player name returns an error`
+    - Generate lists containing at least two records with the same player id but different names; assert AggregationError returned
+    - **Property 9: Inconsistent player name returns an error**
+    - **Validates: Requirements 2.6**
+  - [ ] 4.16 Commit: "feat: ScoreAggregator — all tests green"
+
+- [ ] 5. LeaderboardRanker — TDD cycle
+  - [ ] 5.1 Red: empty input returns empty RankedResult
+    - Write a failing unit test: `rank([])` returns `RankedResult([], [])`
+    - _Requirements: 3.5_
+  - [ ] 5.2 Green: handle empty input
+    - _Requirements: 3.5_
+  - [ ] 5.3 Red: single player goes into definiteWinners, tiedCandidates empty
+    - Write a failing unit test with one PlayerAggregate
+    - _Requirements: 3.4_
+  - [ ] 5.4 Green: place single player in definiteWinners
+    - _Requirements: 3.4_
+  - [ ] 5.5 Red: three players with distinct scores — all in definiteWinners, descending order
+    - Write a failing unit test with three players at scores 300, 200, 100
+    - _Requirements: 3.2_
+  - [ ] 5.6 Green: sort descending and take up to three into definiteWinners
+    - _Requirements: 3.2_
+  - [ ] 5.7 Red: four players, no tie — top three in definiteWinners, fourth excluded
+    - Write a failing unit test with scores 400, 300, 200, 100
+    - _Requirements: 3.2_
+  - [ ] 5.8 Green: confirm existing logic handles N > 3 without tie (likely already passing)
+    - _Requirements: 3.2_
+  - [ ] 5.9 Red: tie at position 3 — players above boundary in definiteWinners, tied players in tiedCandidates
+    - Write a failing unit test: scores 400, 300, 200, 200 → definiteWinners=[400,300], tiedCandidates=[200,200]
+    - _Requirements: 3.3_
+  - [ ] 5.10 Green: boundary-tie detection and partition logic
+    - _Requirements: 3.3_
+  - [ ] 5.11 Red: all players share the same score — definiteWinners empty, all in tiedCandidates
+    - Write a failing unit test: three players all at score 100
+    - _Requirements: 3.6_
+  - [ ] 5.12 Green: degenerate all-tied case (definiteWinners empty)
+    - _Requirements: 3.6_
+  - [ ] 5.13 Red: two players with distinct scores — both in definiteWinners
+    - Write a failing unit test with two players at scores 200, 100
+    - _Requirements: 3.4_
+  - [ ] 5.14 Green: confirm fewer-than-three no-tie case (likely already passing)
+    - _Requirements: 3.4_
+  - [ ] 5.15 Refactor LeaderboardRanker if duplication warrants it
+    - All tests must stay green
+  - [ ]* 5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners
+    - `// Feature: top-three-high-scores, Property 10: No-tie ranking places top players in definite_winners`
+    - Generate lists of PlayerAggregates with all-distinct totalScores; assert definiteWinners = top min(3,N) in descending order, tiedCandidates empty
+    - **Property 10: No-tie ranking places top players in definite_winners**
+    - **Validates: Requirements 3.2, 3.4**
+  - [ ]* 5.17 Write property test — Property 11: tie-at-boundary produces correct partition
+    - `// Feature: top-three-high-scores, Property 11: Tie-at-boundary produces correct partition`
+    - Generate lists where two or more players share the boundary score; assert correct definiteWinners/tiedCandidates partition
+    - **Property 11: Tie-at-boundary produces correct partition**
+    - **Validates: Requirements 3.3, 3.6**
+  - [ ] 5.18 Commit: "feat: LeaderboardRanker — all tests green"
+
+- [ ] 6. Pipeline — TDD cycle
+  - [ ] 6.1 Red: empty input returns empty RankedResult
+    - Write a failing unit test: `run([])` returns `Ok(RankedResult([], []))`
+    - _Requirements: 4.4_
+  - [ ] 6.2 Green: wire CsvParser → ScoreAggregator → LeaderboardRanker; handle empty list
+    - _Requirements: 4.4_
+  - [ ] 6.3 Red: valid CSV list produces correct RankedResult end-to-end
+    - Write a failing unit test with two or three valid CSV lines; assert expected winners
+    - _Requirements: 4.1_
+  - [ ] 6.4 Green: full pipeline wiring for the happy path
+    - _Requirements: 4.1_
+  - [ ] 6.5 Red: invalid CSV line in input returns PipelineError
+    - Write a failing unit test with one malformed line in the list
+    - _Requirements: 4.2_
+  - [ ] 6.6 Green: propagate ParseError as PipelineError
+    - _Requirements: 4.2_
+  - [ ] 6.7 Red: duplicate (playerId, gameId) pair returns PipelineError
+    - Write a failing unit test with two lines sharing the same player id and game id
+    - _Requirements: 4.3_
+  - [ ] 6.8 Green: duplicate-pair detection before aggregation
+    - _Requirements: 4.3_
+  - [ ] 6.9 Refactor Pipeline if duplication warrants it
+    - All tests must stay green
+  - [ ]* 6.10 Write property test — Property 12: pipeline composition correctness
+    - `// Feature: top-three-high-scores, Property 12: Pipeline composition correctness`
+    - Generate arbitrary valid CSV string lists; assert pipeline result equals manual chaining of the three components
+    - **Property 12: Pipeline composition correctness**
+    - **Validates: Requirements 4.1**
+  - [ ]* 6.11 Write property test — Property 13: pipeline propagates CSV parse errors
+    - `// Feature: top-three-high-scores, Property 13: Pipeline propagates CSV parse errors`
+    - Generate lists containing at least one invalid CSV line; assert PipelineError returned
+    - **Property 13: Pipeline propagates CSV parse errors**
+    - **Validates: Requirements 4.2**
+  - [ ]* 6.12 Write property test — Property 14: pipeline rejects duplicate player-id/game-id pairs
+    - `// Feature: top-three-high-scores, Property 14: Pipeline rejects duplicate player-id/game-id pairs`
+    - Generate valid CSV lists then inject a duplicate (playerId, gameId) line; assert PipelineError returned
+    - **Property 14: Pipeline rejects duplicate player-id/game-id pairs**
+    - **Validates: Requirements 4.3**
+  - [ ] 6.13 Checkpoint — ensure all tests pass
+    - Run the full test suite; all unit tests and any completed property tests must be green. Ask the user if any questions arise.
+  - [ ] 6.14 Commit: "feat: Pipeline — all tests green"
+
+## Notes
+
+- Tasks marked with `*` are optional and can be skipped for a faster MVP
+- Each Red sub-task must produce a genuinely failing test before the paired Green sub-task is started
+- Green sub-tasks implement only the minimum code to pass the immediately preceding failing test
+- Refactor sub-tasks are only needed when duplication exists — skip them if the code is already clean
+- Property tests use jqwik with a minimum of 100 tries (default 1000); each must carry the comment tag `// Feature: top-three-high-scores, Property N: <text>`
+- Commit tasks mark safe checkpoints; commit only when the full test suite is green
