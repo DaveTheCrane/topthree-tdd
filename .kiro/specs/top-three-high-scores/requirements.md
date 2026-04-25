@@ -19,9 +19,11 @@ The solution must follow hexagonal architecture so that each processing step is 
 - **Total_Score**: The sum of all Weighted_Score values for a Player across all their Game_Entry rows in the week.
 - **Leaderboard**: The ordered list of Player_Aggregate records, highest Total_Score first.
 - **Top_Three**: The first three entries of the Leaderboard (fewer if fewer than three players exist).
+- **Ranked_Result**: The output of the Leaderboard_Ranker, containing two fields: `definite_winners` (a list of Player_Aggregate objects unambiguously in the Top_Three) and `tied_candidates` (a list of Player_Aggregate objects sharing the boundary score that creates tie ambiguity). When no tie exists at a boundary position, `tied_candidates` is empty.
+- **Boundary_Position**: The rank position (1st, 2nd, or 3rd) at which a tie causes ambiguity about which players belong in the Top_Three.
 - **CSV_Parser**: The component that converts a list of raw CSV strings into a list of Score_Record objects.
 - **Score_Aggregator**: The component that converts a list of Score_Record objects into a list of Player_Aggregate objects.
-- **Leaderboard_Ranker**: The component that sorts Player_Aggregate objects and returns the Top_Three.
+- **Leaderboard_Ranker**: The component that sorts Player_Aggregate objects and returns a Ranked_Result surfacing any tie ambiguity at a boundary position.
 - **Pretty_Printer**: The component that formats a list of Player_Aggregate objects back into a canonical CSV string.
 
 ---
@@ -68,15 +70,16 @@ The solution must follow hexagonal architecture so that each processing step is 
 
 ### Requirement 3: Rank Players and Return Top Three
 
-**User Story:** As a rewards coordinator, I want to retrieve the top three players by Total_Score, so that I can award weekly prizes to the correct winners.
+**User Story:** As a rewards coordinator, I want to retrieve the top three players by Total_Score with any tie ambiguity clearly surfaced, so that I can decide how to award weekly prizes without the ranker imposing an arbitrary tiebreaker.
 
 #### Acceptance Criteria
 
-1. WHEN a list of Player_Aggregate objects is provided, THE Leaderboard_Ranker SHALL return the Top_Three players ordered by Total_Score descending.
-2. WHEN two players have the same Total_Score, THE Leaderboard_Ranker SHALL order those players by player id ascending (lexicographic) as a stable tiebreaker.
-3. WHEN fewer than three Player_Aggregate objects are provided, THE Leaderboard_Ranker SHALL return all of them in descending Total_Score order.
-4. WHEN the input list is empty, THE Leaderboard_Ranker SHALL return an empty list.
-5. WHEN more than three Player_Aggregate objects are provided, THE Leaderboard_Ranker SHALL return exactly three Player_Aggregate objects.
+1. WHEN a list of Player_Aggregate objects is provided, THE Leaderboard_Ranker SHALL return a Ranked_Result containing a `definite_winners` list and a `tied_candidates` list.
+2. WHEN no tie exists at any Boundary_Position, THE Leaderboard_Ranker SHALL place exactly the top three players (by Total_Score descending) in `definite_winners` and SHALL leave `tied_candidates` empty.
+3. WHEN two or more players share the same Total_Score at a Boundary_Position, THE Leaderboard_Ranker SHALL place all players with a Total_Score strictly above the boundary score in `definite_winners` and SHALL place all players sharing the boundary score in `tied_candidates`.
+4. WHEN fewer than three Player_Aggregate objects are provided and no tie exists, THE Leaderboard_Ranker SHALL place all of them in `definite_winners` in descending Total_Score order and SHALL leave `tied_candidates` empty.
+5. WHEN the input list is empty, THE Leaderboard_Ranker SHALL return a Ranked_Result with both `definite_winners` and `tied_candidates` empty.
+6. WHEN all players in the input share the same Total_Score, THE Leaderboard_Ranker SHALL leave `definite_winners` empty and SHALL place all players in `tied_candidates`.
 
 ---
 
