@@ -155,10 +155,10 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - _Requirements: 2.1_
   - [ ] 4.8 Green: group by player id (no new logic expected beyond accumulation)
     - _Requirements: 2.1_
-  - [ ] 4.9 Red: same player id with different display names returns AggregationError
-    - Write a failing unit test: two records for "p1" with names "Alice" and "Alicia"
+  - [ ] 4.9 Red: same player id with different display names — last-seen name wins
+    - Write a failing unit test: two records for "p1" with names "Alice" then "Alicia"; assert the resulting PlayerAggregate has playerName = "Alicia"
     - _Requirements: 2.6_
-  - [ ] 4.10 Green: name-consistency check per player id
+  - [ ] 4.10 Green: overwrite player name on each encounter, keeping the last-seen value
     - _Requirements: 2.6_
   - [ ] 4.11 Red: player display name is preserved in PlayerAggregate
     - Write a failing unit test asserting `aggregate.player().playerName()` equals the input name
@@ -172,11 +172,11 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Generate arbitrary non-empty lists of ScoreRecords with consistent names; assert one aggregate per player id, correct totalScore, name preserved
     - **Property 8: Aggregation correctness — count, total score, and name preservation**
     - **Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.8**
-  - [ ]* 4.15 Write property test — Property 9: inconsistent player name returns error
-    - `// Feature: top-three-high-scores, Property 9: Inconsistent player name returns an error`
-    - Generate lists containing at least two records with the same player id but different names; assert AggregationError returned
-    - **Property 9: Inconsistent player name returns an error**
-    - **Validates: Requirements 2.6**
+  - [ ]* 4.15 Write property test — Property 9: last-seen display name wins on name conflict
+    - `// Feature: top-three-high-scores, Property 9: Last-seen display name wins on name conflict`
+    - Generate lists containing at least two records with the same player id but different names; assert the resulting PlayerAggregate carries the name from the last such record
+    - **Property 9: Last-seen display name wins on name conflict**
+    - **Validates: Requirements 2.6, 2.8**
   - [ ] 4.16 Commit: "feat: ScoreAggregator — all tests green"
 
 - [ ] 5. LeaderboardRanker — TDD cycle

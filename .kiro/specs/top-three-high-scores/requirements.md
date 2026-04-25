@@ -62,9 +62,9 @@ The solution must follow hexagonal architecture so that each processing step is 
 3. THE Score_Aggregator SHALL compute the Total_Score for each Player_Aggregate as the sum of all Weighted_Score values for that player.
 4. WHEN a player appears in only one Score_Record, THE Score_Aggregator SHALL produce a Player_Aggregate whose Total_Score equals the Weighted_Score of that single Game_Entry.
 5. WHEN a player appears in multiple Score_Record objects, THE Score_Aggregator SHALL sum all their Weighted_Score values into one Total_Score.
-6. WHEN two Score_Record objects share the same player id but carry different player display names, THEN THE Score_Aggregator SHALL return a descriptive error indicating inconsistent player data.
+6. WHEN two Score_Record objects share the same player id but carry different player display names, THEN THE Score_Aggregator SHALL use the display name from the last such record in the input order (i.e. the most recent occurrence wins).
 7. WHEN the input list is empty, THE Score_Aggregator SHALL return an empty list of Player_Aggregate objects.
-8. WHILE processing a list of Score_Record objects, THE Score_Aggregator SHALL preserve the player display name in the resulting Player_Aggregate.
+8. WHILE processing a list of Score_Record objects, THE Score_Aggregator SHALL preserve the player display name in the resulting Player_Aggregate, using the last-seen name for that player id.
 
 ---
 

@@ -110,7 +110,8 @@ Converts a list of `Score_Record` objects into one `Player_Aggregate` per distin
 public interface ScoreAggregator {
     /**
      * Aggregates score records by player id.
-     * Returns AggregationError if the same player id appears with different display names.
+     * If the same player id appears with different display names, the last-seen name wins.
+     * Never returns an error for name conflicts.
      */
     Result<List<PlayerAggregate>, AggregationError> aggregate(List<ScoreRecord> records);
 }
@@ -301,11 +302,11 @@ if all players share the same score:
 
 ---
 
-### Property 9: Inconsistent player name returns an error
+### Property 9: Last-seen display name wins on name conflict
 
-*For any* list of `ScoreRecord` objects that contains two or more records sharing the same player id but carrying different player display names, the aggregator shall return an `AggregationError` and shall not produce any `PlayerAggregate` list.
+*For any* list of `ScoreRecord` objects that contains two or more records sharing the same player id but carrying different player display names, the aggregator shall produce a `PlayerAggregate` for that player whose `playerName` equals the display name from the last such record in the input list.
 
-**Validates: Requirements 2.6**
+**Validates: Requirements 2.6, 2.8**
 
 ---
 
@@ -356,7 +357,7 @@ Each component uses a `Result<V, E>` sealed type (no exceptions crossing compone
 | Component | Error type | Key error conditions |
 |-----------|-----------|----------------------|
 | `CsvParser` | `ParseError(message, offendingLine)` | wrong field count, non-integer fields, score out of range, empty id fields |
-| `ScoreAggregator` | `AggregationError(message, playerId)` | same player id with different display names |
+| `ScoreAggregator` | `AggregationError(message, playerId)` | (reserved for future error conditions; name conflicts are resolved by last-write-wins) |
 | `Pipeline` | `PipelineError(message, context)` | any `ParseError`, any `AggregationError`, duplicate `(playerId, gameId)` |
 
 Error messages must be descriptive enough for a consumer to identify the offending data without inspecting raw input themselves. The `offendingLine` / `playerId` / `context` fields carry the relevant identifier.
