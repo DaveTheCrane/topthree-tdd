@@ -16,8 +16,14 @@ public class DefaultCsvParser implements CsvParser {
         } catch (NumberFormatException e) {
             return new Result.Err<>(new ParseError("Invalid hours-played value: " + fields[4], csvLine));
         }
+        int normalisedScore;
+        try {
+            normalisedScore = Integer.parseInt(fields[5]);
+        } catch (NumberFormatException e) {
+            return new Result.Err<>(new ParseError("Invalid normalised-score value: " + fields[5], csvLine));
+        }
         Player player = new Player(fields[0], fields[1]);
-        GameEntry gameEntry = new GameEntry(fields[2], fields[3], hoursPlayed, Integer.parseInt(fields[5]));
+        GameEntry gameEntry = new GameEntry(fields[2], fields[3], hoursPlayed, normalisedScore);
         return new Result.Ok<>(new ScoreRecord(player, gameEntry));
     }
 
