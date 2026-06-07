@@ -22,6 +22,9 @@ public class DefaultCsvParser implements CsvParser {
         } catch (NumberFormatException e) {
             return new Result.Err<>(new ParseError("Invalid normalised-score value: " + fields[5], csvLine));
         }
+        if (normalisedScore < 1 || normalisedScore > 100) {
+            return new Result.Err<>(new ParseError("Normalised score out of range [1,100]: " + normalisedScore, csvLine));
+        }
         Player player = new Player(fields[0], fields[1]);
         GameEntry gameEntry = new GameEntry(fields[2], fields[3], hoursPlayed, normalisedScore);
         return new Result.Ok<>(new ScoreRecord(player, gameEntry));
