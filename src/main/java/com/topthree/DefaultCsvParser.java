@@ -28,6 +28,9 @@ public class DefaultCsvParser implements CsvParser {
         if (fields[0].trim().isEmpty()) {
             return new Result.Err<>(new ParseError("Player id is empty", csvLine));
         }
+        if (fields[2].trim().isEmpty()) {
+            return new Result.Err<>(new ParseError("Game id is empty", csvLine));
+        }
         Player player = new Player(fields[0], fields[1]);
         GameEntry gameEntry = new GameEntry(fields[2], fields[3], hoursPlayed, normalisedScore);
         return new Result.Ok<>(new ScoreRecord(player, gameEntry));
