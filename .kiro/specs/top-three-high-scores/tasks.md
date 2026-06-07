@@ -40,15 +40,15 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test for a line with five fields
     - Commit: `"test(red): fewer than six fields returns ParseError"`
     - _Requirements: 1.5_
-  - [-] 3.4 Green: field-count validation
+  - [x] 3.4 Green: field-count validation
     - Add field-count guard to make the test pass
     - Commit: `"feat(green): field-count validation"`
     - _Requirements: 1.5_
-  - [~] 3.5 Red: more than six fields returns ParseError
+  - [x] 3.5 Red: more than six fields returns ParseError
     - Write a failing unit test for a line with seven fields
     - Commit: `"test(red): more than six fields returns ParseError"`
     - _Requirements: 1.6_
-  - [~] 3.6 Green: extend field-count guard to cover both under and over
+  - [-] 3.6 Green: extend field-count guard to cover both under and over
     - Commit: `"feat(green): field-count guard covers under and over"`
     - _Requirements: 1.6_
   - [~] 3.7 Red: non-integer hours-played returns ParseError
