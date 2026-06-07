@@ -1,7 +1,9 @@
 package com.topthree;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DefaultScoreAggregator implements ScoreAggregator {
 
@@ -10,10 +12,17 @@ public class DefaultScoreAggregator implements ScoreAggregator {
         if (records.isEmpty()) {
             return new Result.Ok<>(List.of());
         }
-        List<PlayerAggregate> result = new ArrayList<>();
+        Map<String, Integer> scoreMap = new LinkedHashMap<>();
+        Map<String, Player> playerMap = new LinkedHashMap<>();
         for (ScoreRecord record : records) {
+            String pid = record.player().playerId();
             int weightedScore = record.gameEntry().hoursPlayed() * record.gameEntry().normalisedScore();
-            result.add(new PlayerAggregate(record.player(), weightedScore));
+            scoreMap.merge(pid, weightedScore, Integer::sum);
+            playerMap.put(pid, record.player());
+        }
+        List<PlayerAggregate> result = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : scoreMap.entrySet()) {
+            result.add(new PlayerAggregate(playerMap.get(entry.getKey()), entry.getValue()));
         }
         return new Result.Ok<>(result);
     }
