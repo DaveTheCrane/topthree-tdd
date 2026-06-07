@@ -69,6 +69,16 @@ class CsvParserTest {
     }
 
     @Test
+    void emptyPlayerIdReturnsParseError() {
+        Result<ScoreRecord, ParseError> result = parser.parseLine(",Alice,g1,Chess,2,50");
+
+        assertInstanceOf(Result.Err.class, result);
+
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertNotNull(error);
+    }
+
+    @Test
     void validSixFieldLineProducesCorrectScoreRecord() {
         Result<ScoreRecord, ParseError> result = parser.parseLine("p1,Alice,g1,Chess,2,50");
 
