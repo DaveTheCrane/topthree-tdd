@@ -2,6 +2,8 @@ package com.topthree;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CsvParserTest {
@@ -110,5 +112,21 @@ class CsvParserTest {
 
         assertEquals(new Player("p1", "Alice"), record.player());
         assertEquals(new GameEntry("g1", "Chess", 2, 50), record.gameEntry());
+    }
+
+    @Test
+    void parseLinesReturnsAllScoreRecordsInOrderForValidList() {
+        Result<List<ScoreRecord>, ParseError> result = parser.parseLines(
+                List.of("p1,Alice,g1,Chess,2,50", "p2,Bob,g2,Poker,3,70"));
+
+        assertInstanceOf(Result.Ok.class, result);
+
+        List<ScoreRecord> records = ((Result.Ok<List<ScoreRecord>, ParseError>) result).value();
+
+        assertEquals(2, records.size());
+        assertEquals(new ScoreRecord(new Player("p1", "Alice"), new GameEntry("g1", "Chess", 2, 50)),
+                records.get(0));
+        assertEquals(new ScoreRecord(new Player("p2", "Bob"), new GameEntry("g2", "Poker", 3, 70)),
+                records.get(1));
     }
 }
