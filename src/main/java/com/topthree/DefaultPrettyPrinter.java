@@ -3,6 +3,11 @@ package com.topthree;
 public class DefaultPrettyPrinter implements PrettyPrinter {
     @Override
     public String print(ScoreRecord record) {
-        return "";
+        return record.player().playerId() + "," +
+               record.player().playerName() + "," +
+               record.gameEntry().gameId() + "," +
+               record.gameEntry().gameName() + "," +
+               record.gameEntry().hoursPlayed() + "," +
+               record.gameEntry().normalisedScore();
     }
 }
