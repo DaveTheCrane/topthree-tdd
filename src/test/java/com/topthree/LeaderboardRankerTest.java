@@ -25,4 +25,15 @@ class LeaderboardRankerTest {
 
         assertEquals(new RankedResult(List.of(alice), List.of()), result);
     }
+
+    @Test
+    void threeDistinctScorePlayersAllInDefiniteWinnersDescending() {
+        PlayerAggregate alice = new PlayerAggregate(new Player("p1", "Alice"), 300);
+        PlayerAggregate bob = new PlayerAggregate(new Player("p2", "Bob"), 200);
+        PlayerAggregate carol = new PlayerAggregate(new Player("p3", "Carol"), 100);
+
+        RankedResult result = ranker.rank(List.of(bob, carol, alice));
+
+        assertEquals(new RankedResult(List.of(alice, bob, carol), List.of()), result);
+    }
 }
