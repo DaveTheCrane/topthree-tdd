@@ -63,4 +63,107 @@ class LeaderboardRankerPropertyTest {
                         })
         );
     }
+
+    // Feature: top-three-high-scores, Property 11: Tie-at-boundary produces correct partition
+    // **Validates: Requirements 3.3, 3.6**
+    @Property(tries = 1000)
+    void tieAtBoundaryProducesCorrectPartition(
+            @ForAll("aggregatesWithTieAtBoundary") List<PlayerAggregate> aggregates
+    ) {
+        RankedResult result = ranker.rank(aggregates);
+
+        // Sort input descending to determine the boundary score
+        List<PlayerAggregate> sorted = new ArrayList<>(aggregates);
+        sorted.sort(Comparator.comparingInt(PlayerAggregate::totalScore).reversed());
+
+        int boundaryScore = sorted.get(Math.min(2, sorted.size() - 1)).totalScore();
+
+        // definiteWinners should contain only players with score > boundaryScore
+        for (PlayerAggregate w : result.definiteWinners()) {
+            assertTrue(w.totalScore() > boundaryScore,
+                    "All definiteWinners must have score strictly above boundary score " + boundaryScore);
+        }
+
+        // tiedCandidates should contain all players with score == boundaryScore
+        List<PlayerAggregate> expectedTied = sorted.stream()
+                .filter(p -> p.totalScore() == boundaryScore)
+                .toList();
+        assertEquals(expectedTied.size(), result.tiedCandidates().size(),
+                "tiedCandidates should contain all players at boundary score " + boundaryScore);
+        assertTrue(result.tiedCandidates().containsAll(expectedTied),
+                "tiedCandidates must contain all players sharing the boundary score");
+
+        // If boundary score equals the highest score, definiteWinners should be empty
+        if (boundaryScore == sorted.get(0).totalScore()) {
+            assertTrue(result.definiteWinners().isEmpty(),
+                    "definiteWinners must be empty when boundary score equals the highest score");
+        }
+
+        // definiteWinners should be in descending order
+        List<PlayerAggregate> winners = result.definiteWinners();
+        for (int i = 0; i < winners.size() - 1; i++) {
+            assertTrue(winners.get(i).totalScore() > winners.get(i + 1).totalScore(),
+                    "definiteWinners must be in strict descending order");
+        }
+    }
+
+    @Provide
+    Arbitrary<List<PlayerAggregate>> aggregatesWithTieAtBoundary() {
+        // Generate lists where at least 2 players share the boundary score
+        return Arbitraries.integers().between(2, 6).flatMap(count ->
+                Arbitraries.integers().between(1, 10000).flatMap(boundaryScore ->
+                        Arbitraries.integers().between(2, Math.min(count, 4)).flatMap(tiedCount -> {
+                            // Generate some players above the boundary
+                            int aboveCount = Math.min(count - tiedCount, 2);
+                            List<Arbitrary<PlayerAggregate>> playerArbs = new ArrayList<>();
+
+                            // Players above the boundary with distinct scores
+                            for (int i = 0; i < aboveCount; i++) {
+                                int finalI = i;
+                                playerArbs.add(Arbitraries.just(
+                                        new PlayerAggregate(
+                                                new Player("above" + i, "Above" + i),
+                                                boundaryScore + 1 + finalI * 100
+                                        )
+                                ));
+                            }
+
+                            // Tied players at the boundary score
+                            for (int i = 0; i < tiedCount; i++) {
+                                playerArbs.add(Arbitraries.just(
+                                        new PlayerAggregate(
+                                                new Player("tied" + i, "Tied" + i),
+                                                boundaryScore
+                                        )
+                                ));
+                            }
+
+                            // Combine all players into a list
+                            if (playerArbs.isEmpty()) {
+                                return Arbitraries.just(List.<PlayerAggregate>of());
+                            }
+                            return combinePlayerArbs(playerArbs);
+                        })
+                )
+        );
+    }
+
+    private Arbitrary<List<PlayerAggregate>> combinePlayerArbs(List<Arbitrary<PlayerAggregate>> arbs) {
+        if (arbs.size() == 1) {
+            return arbs.get(0).map(List::of);
+        }
+        Arbitrary<List<PlayerAggregate>> combined = arbs.get(0).map(p -> {
+            List<PlayerAggregate> list = new ArrayList<>();
+            list.add(p);
+            return list;
+        });
+        for (int i = 1; i < arbs.size(); i++) {
+            combined = Combinators.combine(combined, arbs.get(i)).as((list, p) -> {
+                List<PlayerAggregate> newList = new ArrayList<>(list);
+                newList.add(p);
+                return newList;
+            });
+        }
+        return combined;
+    }
 }
