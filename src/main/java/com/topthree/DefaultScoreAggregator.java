@@ -6,6 +6,6 @@ public class DefaultScoreAggregator implements ScoreAggregator {
 
     @Override
     public Result<List<PlayerAggregate>, AggregationError> aggregate(List<ScoreRecord> records) {
-        return null;
+        return new Result.Ok<>(List.of());
     }
 }
