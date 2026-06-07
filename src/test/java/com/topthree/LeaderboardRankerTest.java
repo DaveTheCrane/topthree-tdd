@@ -36,4 +36,16 @@ class LeaderboardRankerTest {
 
         assertEquals(new RankedResult(List.of(alice, bob, carol), List.of()), result);
     }
+
+    @Test
+    void fourPlayersNoTieFourthExcluded() {
+        PlayerAggregate a = new PlayerAggregate(new Player("p1", "A"), 400);
+        PlayerAggregate b = new PlayerAggregate(new Player("p2", "B"), 300);
+        PlayerAggregate c = new PlayerAggregate(new Player("p3", "C"), 200);
+        PlayerAggregate d = new PlayerAggregate(new Player("p4", "D"), 100);
+
+        RankedResult result = ranker.rank(List.of(d, b, a, c));
+
+        assertEquals(new RankedResult(List.of(a, b, c), List.of()), result);
+    }
 }
