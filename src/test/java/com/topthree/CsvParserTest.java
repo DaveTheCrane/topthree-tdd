@@ -9,6 +9,16 @@ class CsvParserTest {
     private final CsvParser parser = new DefaultCsvParser();
 
     @Test
+    void fewerThanSixFieldsReturnsParseError() {
+        Result<ScoreRecord, ParseError> result = parser.parseLine("p1,Alice,g1,Chess,2");
+
+        assertInstanceOf(Result.Err.class, result);
+
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertNotNull(error);
+    }
+
+    @Test
     void validSixFieldLineProducesCorrectScoreRecord() {
         Result<ScoreRecord, ParseError> result = parser.parseLine("p1,Alice,g1,Chess,2,50");
 
