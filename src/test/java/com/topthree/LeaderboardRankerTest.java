@@ -63,4 +63,19 @@ class LeaderboardRankerTest {
         assertTrue(result.tiedCandidates().contains(c));
         assertTrue(result.tiedCandidates().contains(d));
     }
+
+    @Test
+    void allTiedDefiniteWinnersEmptyAllInTiedCandidates() {
+        PlayerAggregate a = new PlayerAggregate(new Player("p1", "A"), 100);
+        PlayerAggregate b = new PlayerAggregate(new Player("p2", "B"), 100);
+        PlayerAggregate c = new PlayerAggregate(new Player("p3", "C"), 100);
+
+        RankedResult result = ranker.rank(List.of(a, b, c));
+
+        assertEquals(List.of(), result.definiteWinners());
+        assertEquals(3, result.tiedCandidates().size());
+        assertTrue(result.tiedCandidates().contains(a));
+        assertTrue(result.tiedCandidates().contains(b));
+        assertTrue(result.tiedCandidates().contains(c));
+    }
 }
