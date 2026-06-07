@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CsvParserTest {
 
     private final CsvParser parser = new DefaultCsvParser();
+    private final PrettyPrinter printer = new DefaultPrettyPrinter();
 
     @Test
     void fewerThanSixFieldsReturnsParseError() {
@@ -139,5 +140,14 @@ class CsvParserTest {
                 records.get(0));
         assertEquals(new ScoreRecord(new Player("p2", "Bob"), new GameEntry("g2", "Poker", 3, 70)),
                 records.get(1));
+    }
+
+    @Test
+    void prettyPrinterFormatsScoreRecordAsSixFieldCsv() {
+        ScoreRecord record = new ScoreRecord(new Player("p1", "Alice"), new GameEntry("g1", "Chess", 2, 50));
+
+        String result = printer.print(record);
+
+        assertEquals("p1,Alice,g1,Chess,2,50", result);
     }
 }
