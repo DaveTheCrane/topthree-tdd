@@ -14,6 +14,10 @@ public class DefaultLeaderboardRanker implements LeaderboardRanker {
         sorted.sort(Comparator.comparingInt(PlayerAggregate::totalScore).reversed());
 
         if (sorted.size() <= 3) {
+            // Check if all players share the same score (only meaningful with 2+ players)
+            if (sorted.size() > 1 && sorted.get(0).totalScore() == sorted.get(sorted.size() - 1).totalScore()) {
+                return new RankedResult(List.of(), List.copyOf(sorted));
+            }
             return new RankedResult(List.copyOf(sorted), List.of());
         }
 
