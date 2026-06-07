@@ -16,4 +16,13 @@ class LeaderboardRankerTest {
 
         assertEquals(new RankedResult(List.of(), List.of()), result);
     }
+
+    @Test
+    void singlePlayerGoesIntoDefiniteWinners() {
+        PlayerAggregate alice = new PlayerAggregate(new Player("p1", "Alice"), 100);
+
+        RankedResult result = ranker.rank(List.of(alice));
+
+        assertEquals(new RankedResult(List.of(alice), List.of()), result);
+    }
 }
