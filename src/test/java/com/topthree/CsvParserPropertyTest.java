@@ -131,4 +131,25 @@ class CsvParserPropertyTest {
     Arbitrary<String> nonIntegerNormalisedScores() {
         return Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5);
     }
+
+    // Feature: top-three-high-scores, Property 5: Wrong field count returns an error
+    // **Validates: Requirements 1.5, 1.6**
+    @Property(tries = 1000)
+    void wrongFieldCountReturnsError(
+            @ForAll("wrongFieldCountLines") String csvLine
+    ) {
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertInstanceOf(Result.Err.class, result);
+    }
+
+    @Provide
+    Arbitrary<String> wrongFieldCountLines() {
+        return Arbitraries.integers().between(1, 10).filter(n -> n != 6)
+                .flatMap(fieldCount ->
+                        Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5)
+                                .list().ofSize(fieldCount)
+                                .map(fields -> String.join(",", fields))
+                );
+    }
 }
