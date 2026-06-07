@@ -200,4 +200,34 @@ class CsvParserPropertyTest {
         return Arbitraries.integers().between(0, 5)
                 .map(n -> " ".repeat(n));
     }
+
+    // Feature: top-three-high-scores, Property 7: Parse → print → parse round trip
+    // **Validates: Requirements 1.11, 1.12**
+    @Property(tries = 1000)
+    void parsePrintParseRoundTrip(
+            @ForAll("validScoreRecords") ScoreRecord record
+    ) {
+        PrettyPrinter printer = new DefaultPrettyPrinter();
+
+        String csv = printer.print(record);
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csv);
+
+        assertInstanceOf(Result.Ok.class, result);
+        ScoreRecord parsed = ((Result.Ok<ScoreRecord, ParseError>) result).value();
+        assertEquals(record, parsed);
+    }
+
+    @Provide
+    Arbitrary<ScoreRecord> validScoreRecords() {
+        Arbitrary<String> playerId = Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(10);
+        Arbitrary<String> playerName = Arbitraries.strings().alpha().ofMinLength(0).ofMaxLength(10);
+        Arbitrary<String> gameId = Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(10);
+        Arbitrary<String> gameName = Arbitraries.strings().alpha().ofMinLength(0).ofMaxLength(10);
+        Arbitrary<Integer> hours = Arbitraries.integers();
+        Arbitrary<Integer> score = Arbitraries.integers().between(1, 100);
+
+        return Combinators.combine(playerId, playerName, gameId, gameName, hours, score)
+                .as((pid, pname, gid, gname, h, s) ->
+                        new ScoreRecord(new Player(pid, pname), new GameEntry(gid, gname, h, s)));
+    }
 }
