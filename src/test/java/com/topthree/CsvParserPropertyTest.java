@@ -108,4 +108,27 @@ class CsvParserPropertyTest {
     Arbitrary<String> nonIntegerHoursPlayed() {
         return Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5);
     }
+
+    // Feature: top-three-high-scores, Property 4: Non-integer normalised-score field returns an error
+    // **Validates: Requirements 1.4**
+    @Property(tries = 1000)
+    void nonIntegerNormalisedScoreReturnsError(
+            @ForAll("playerIds") String playerId,
+            @ForAll("names") String playerName,
+            @ForAll("gameIds") String gameId,
+            @ForAll("names") String gameName,
+            @ForAll("hoursPlayed") int hoursPlayed,
+            @ForAll("nonIntegerNormalisedScores") String nonIntegerScore
+    ) {
+        String csvLine = playerId + "," + playerName + "," + gameId + "," + gameName + "," + hoursPlayed + "," + nonIntegerScore;
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertInstanceOf(Result.Err.class, result);
+    }
+
+    @Provide
+    Arbitrary<String> nonIntegerNormalisedScores() {
+        return Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5);
+    }
 }
