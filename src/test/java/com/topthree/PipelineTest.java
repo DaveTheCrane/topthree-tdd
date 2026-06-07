@@ -62,4 +62,21 @@ class PipelineTest {
         assertNotNull(error.message());
         assertEquals("this is not valid csv", error.context());
     }
+
+    @Test
+    void duplicatePlayerIdGameIdReturnsPipelineError() {
+        List<String> csvLines = List.of(
+                "p1,Alice,g1,Chess,10,80",
+                "p1,Alice,g1,Chess,5,60"
+        );
+
+        Result<RankedResult, PipelineError> result = pipeline.run(csvLines);
+
+        assertInstanceOf(Result.Err.class, result);
+
+        PipelineError error = ((Result.Err<RankedResult, PipelineError>) result).error();
+        assertNotNull(error.message());
+        assertTrue(error.context().contains("p1"));
+        assertTrue(error.context().contains("g1"));
+    }
 }
