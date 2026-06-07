@@ -10,31 +10,33 @@ public class DefaultLeaderboardRanker implements LeaderboardRanker {
         if (aggregates.isEmpty()) {
             return new RankedResult(List.of(), List.of());
         }
+
         List<PlayerAggregate> sorted = new ArrayList<>(aggregates);
         sorted.sort(Comparator.comparingInt(PlayerAggregate::totalScore).reversed());
 
-        if (sorted.size() <= 3) {
-            // Check if all players share the same score (only meaningful with 2+ players)
-            if (sorted.size() > 1 && sorted.get(0).totalScore() == sorted.get(sorted.size() - 1).totalScore()) {
-                return new RankedResult(List.of(), List.copyOf(sorted));
-            }
+        int n = sorted.size();
+        if (n == 1) {
             return new RankedResult(List.copyOf(sorted), List.of());
         }
 
-        int boundaryScore = sorted.get(2).totalScore();
-        if (sorted.get(3).totalScore() == boundaryScore) {
-            List<PlayerAggregate> definiteWinners = new ArrayList<>();
-            List<PlayerAggregate> tiedCandidates = new ArrayList<>();
-            for (PlayerAggregate p : sorted) {
-                if (p.totalScore() > boundaryScore) {
-                    definiteWinners.add(p);
-                } else if (p.totalScore() == boundaryScore) {
-                    tiedCandidates.add(p);
-                }
-            }
-            return new RankedResult(List.copyOf(definiteWinners), List.copyOf(tiedCandidates));
-        } else {
-            return new RankedResult(List.copyOf(sorted.subList(0, 3)), List.of());
+        int boundaryScore = sorted.get(Math.min(2, n - 1)).totalScore();
+        boolean tieAtBoundary = sorted.stream()
+                .filter(p -> p.totalScore() == boundaryScore)
+                .count() > 1;
+
+        if (!tieAtBoundary) {
+            return new RankedResult(List.copyOf(sorted.subList(0, Math.min(3, n))), List.of());
         }
+
+        List<PlayerAggregate> definiteWinners = new ArrayList<>();
+        List<PlayerAggregate> tiedCandidates = new ArrayList<>();
+        for (PlayerAggregate p : sorted) {
+            if (p.totalScore() > boundaryScore) {
+                definiteWinners.add(p);
+            } else if (p.totalScore() == boundaryScore) {
+                tiedCandidates.add(p);
+            }
+        }
+        return new RankedResult(List.copyOf(definiteWinners), List.copyOf(tiedCandidates));
     }
 }
