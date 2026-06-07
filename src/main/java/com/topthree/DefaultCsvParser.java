@@ -1,5 +1,6 @@
 package com.topthree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultCsvParser implements CsvParser {
@@ -41,6 +42,13 @@ public class DefaultCsvParser implements CsvParser {
 
     @Override
     public Result<List<ScoreRecord>, ParseError> parseLines(List<String> csvLines) {
-        return null;
+        List<ScoreRecord> records = new ArrayList<>();
+        for (String line : csvLines) {
+            Result<ScoreRecord, ParseError> result = parseLine(line);
+            if (result instanceof Result.Ok<ScoreRecord, ParseError> ok) {
+                records.add(ok.value());
+            }
+        }
+        return new Result.Ok<>(records);
     }
 }
