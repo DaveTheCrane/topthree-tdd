@@ -62,6 +62,18 @@ class ScoreAggregatorTest {
     }
 
     @Test
+    void playerDisplayNameIsPreservedInPlayerAggregate() {
+        ScoreRecord record = new ScoreRecord(new Player("p1", "Alice"), new GameEntry("g1", "Chess", 2, 50));
+
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(List.of(record));
+
+        assertInstanceOf(Result.Ok.class, result);
+
+        List<PlayerAggregate> aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+        assertEquals("Alice", aggregates.get(0).player().playerName());
+    }
+
+    @Test
     void twoRecordsForSamePlayerSumTheirWeightedScores() {
         ScoreRecord record1 = new ScoreRecord(new Player("p1", "Alice"), new GameEntry("g1", "Chess", 2, 50));
         ScoreRecord record2 = new ScoreRecord(new Player("p1", "Alice"), new GameEntry("g2", "Poker", 3, 30));
