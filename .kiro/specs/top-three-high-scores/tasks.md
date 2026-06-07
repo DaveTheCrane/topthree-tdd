@@ -217,7 +217,7 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Commit: `"test(property-9): last-seen display name wins on name conflict"`
     - _Validates: Requirements 2.6, 2.8_
 
-- [ ] 5. LeaderboardRanker — TDD cycle
+- [x] 5. LeaderboardRanker — TDD cycle
   - [x] 5.1 Red: empty input returns empty RankedResult
     - Write a failing unit test: `rank([])` returns `RankedResult([], [])`
     - Commit: `"test(red): empty input returns empty RankedResult"`
@@ -225,64 +225,64 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
   - [x] 5.2 Green: handle empty input
     - Commit: `"feat(green): LeaderboardRanker handles empty input"`
     - _Requirements: 3.5_
-  - [-] 5.3 Red: single player goes into definiteWinners, tiedCandidates empty
+  - [x] 5.3 Red: single player goes into definiteWinners, tiedCandidates empty
     - Write a failing unit test with one PlayerAggregate
     - Commit: `"test(red): single player goes into definiteWinners"`
     - _Requirements: 3.4_
-  - [~] 5.4 Green: place single player in definiteWinners
+  - [x] 5.4 Green: place single player in definiteWinners
     - Commit: `"feat(green): single player placed in definiteWinners"`
     - _Requirements: 3.4_
-  - [~] 5.5 Red: three players with distinct scores — all in definiteWinners, descending order
+  - [x] 5.5 Red: three players with distinct scores — all in definiteWinners, descending order
     - Write a failing unit test with three players at scores 300, 200, 100
     - Commit: `"test(red): three distinct-score players all in definiteWinners"`
     - _Requirements: 3.2_
-  - [~] 5.6 Green: sort descending and take up to three into definiteWinners
+  - [x] 5.6 Green: sort descending and take up to three into definiteWinners
     - Commit: `"feat(green): sort descending, top three into definiteWinners"`
     - _Requirements: 3.2_
-  - [~] 5.7 Red: four players, no tie — top three in definiteWinners, fourth excluded
+  - [x] 5.7 Red: four players, no tie — top three in definiteWinners, fourth excluded
     - Write a failing unit test with scores 400, 300, 200, 100
     - Commit: `"test(red): four players no tie — fourth excluded"`
     - _Requirements: 3.2_
-  - [~] 5.8 Green: confirm existing logic handles N > 3 without tie (likely already passing)
+  - [x] 5.8 Green: confirm existing logic handles N > 3 without tie (likely already passing)
     - Commit: `"feat(green): N>3 no-tie case confirmed"`
     - _Requirements: 3.2_
-  - [~] 5.9 Red: tie at position 3 — players above boundary in definiteWinners, tied players in tiedCandidates
+  - [x] 5.9 Red: tie at position 3 — players above boundary in definiteWinners, tied players in tiedCandidates
     - Write a failing unit test: scores 400, 300, 200, 200 → definiteWinners=[400,300], tiedCandidates=[200,200]
     - Commit: `"test(red): tie at position 3 splits definiteWinners and tiedCandidates"`
     - _Requirements: 3.3_
-  - [~] 5.10 Green: boundary-tie detection and partition logic
+  - [x] 5.10 Green: boundary-tie detection and partition logic
     - Commit: `"feat(green): boundary-tie detection and partition"`
     - _Requirements: 3.3_
-  - [~] 5.11 Red: all players share the same score — definiteWinners empty, all in tiedCandidates
+  - [x] 5.11 Red: all players share the same score — definiteWinners empty, all in tiedCandidates
     - Write a failing unit test: three players all at score 100
     - Commit: `"test(red): all-tied — definiteWinners empty, all in tiedCandidates"`
     - _Requirements: 3.6_
-  - [~] 5.12 Green: degenerate all-tied case (definiteWinners empty)
+  - [x] 5.12 Green: degenerate all-tied case (definiteWinners empty)
     - Commit: `"feat(green): all-tied degenerate case"`
     - _Requirements: 3.6_
-  - [~] 5.13 Red: two players with distinct scores — both in definiteWinners
+  - [x] 5.13 Red: two players with distinct scores — both in definiteWinners
     - Write a failing unit test with two players at scores 200, 100
     - Commit: `"test(red): two distinct-score players both in definiteWinners"`
     - _Requirements: 3.4_
-  - [~] 5.14 Green: confirm fewer-than-three no-tie case (likely already passing)
+  - [x] 5.14 Green: confirm fewer-than-three no-tie case (likely already passing)
     - Commit: `"feat(green): fewer-than-three no-tie case confirmed"`
     - _Requirements: 3.4_
-  - [~] 5.15 Refactor LeaderboardRanker if duplication warrants it
+  - [x] 5.15 Refactor LeaderboardRanker if duplication warrants it
     - All tests must stay green
     - Commit (if changes made): `"refactor: LeaderboardRanker deduplication"`
-  - [~] 5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners
+  - [x] 5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners
     - `// Feature: top-three-high-scores, Property 10: No-tie ranking places top players in definite_winners`
     - Generate lists of PlayerAggregates with all-distinct totalScores; assert definiteWinners = top min(3,N) in descending order, tiedCandidates empty
     - Commit: `"test(property-10): no-tie ranking places top players in definiteWinners"`
     - _Validates: Requirements 3.2, 3.4_
-  - [~] 5.17 Write property test — Property 11: tie-at-boundary produces correct partition
+  - [x] 5.17 Write property test — Property 11: tie-at-boundary produces correct partition
     - `// Feature: top-three-high-scores, Property 11: Tie-at-boundary produces correct partition`
     - Generate lists where two or more players share the boundary score; assert correct definiteWinners/tiedCandidates partition
     - Commit: `"test(property-11): tie-at-boundary produces correct partition"`
     - _Validates: Requirements 3.3, 3.6_
 
 - [ ] 6. Pipeline — TDD cycle
-  - [~] 6.1 Red: empty input returns empty RankedResult
+  - [-] 6.1 Red: empty input returns empty RankedResult
     - Write a failing unit test: `run([])` returns `Ok(RankedResult([], []))`
     - Commit: `"test(red): empty pipeline input returns empty RankedResult"`
     - _Requirements: 4.4_
