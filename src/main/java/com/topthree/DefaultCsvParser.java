@@ -6,7 +6,10 @@ public class DefaultCsvParser implements CsvParser {
 
     @Override
     public Result<ScoreRecord, ParseError> parseLine(String csvLine) {
-        return null;
+        String[] fields = csvLine.split(",");
+        Player player = new Player(fields[0], fields[1]);
+        GameEntry gameEntry = new GameEntry(fields[2], fields[3], Integer.parseInt(fields[4]), Integer.parseInt(fields[5]));
+        return new Result.Ok<>(new ScoreRecord(player, gameEntry));
     }
 
     @Override
