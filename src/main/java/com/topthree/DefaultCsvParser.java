@@ -10,6 +10,9 @@ public class DefaultCsvParser implements CsvParser {
         if (fields.length != 6) {
             return new Result.Err<>(new ParseError("Expected 6 fields but got " + fields.length, csvLine));
         }
+        for (int i = 0; i < fields.length; i++) {
+            fields[i] = fields[i].trim();
+        }
         int hoursPlayed;
         try {
             hoursPlayed = Integer.parseInt(fields[4]);
@@ -25,10 +28,10 @@ public class DefaultCsvParser implements CsvParser {
         if (normalisedScore < 1 || normalisedScore > 100) {
             return new Result.Err<>(new ParseError("Normalised score out of range [1,100]: " + normalisedScore, csvLine));
         }
-        if (fields[0].trim().isEmpty()) {
+        if (fields[0].isEmpty()) {
             return new Result.Err<>(new ParseError("Player id is empty", csvLine));
         }
-        if (fields[2].trim().isEmpty()) {
+        if (fields[2].isEmpty()) {
             return new Result.Err<>(new ParseError("Game id is empty", csvLine));
         }
         Player player = new Player(fields[0], fields[1]);
