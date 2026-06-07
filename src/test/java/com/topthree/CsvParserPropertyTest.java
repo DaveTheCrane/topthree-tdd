@@ -152,4 +152,52 @@ class CsvParserPropertyTest {
                                 .map(fields -> String.join(",", fields))
                 );
     }
+
+    // Feature: top-three-high-scores, Property 6: Whitespace trimming preserves field values
+    // **Validates: Requirements 1.10**
+    @Property(tries = 1000)
+    void whitespaceTrimPreservesFieldValues(
+            @ForAll("playerIds") String playerId,
+            @ForAll("names") String playerName,
+            @ForAll("gameIds") String gameId,
+            @ForAll("names") String gameName,
+            @ForAll("hoursPlayed") int hoursPlayed,
+            @ForAll("normalisedScores") int normalisedScore,
+            @ForAll("whitespace") String ws1,
+            @ForAll("whitespace") String ws2,
+            @ForAll("whitespace") String ws3,
+            @ForAll("whitespace") String ws4,
+            @ForAll("whitespace") String ws5,
+            @ForAll("whitespace") String ws6
+    ) {
+        String cleanLine = playerId + "," + playerName + "," + gameId + "," + gameName + "," + hoursPlayed + "," + normalisedScore;
+        String paddedLine = ws1 + playerId + ws1 + ","
+                + ws2 + playerName + ws2 + ","
+                + ws3 + gameId + ws3 + ","
+                + ws4 + gameName + ws4 + ","
+                + ws5 + hoursPlayed + ws5 + ","
+                + ws6 + normalisedScore + ws6;
+
+        Result<ScoreRecord, ParseError> cleanResult = parser.parseLine(cleanLine);
+        Result<ScoreRecord, ParseError> paddedResult = parser.parseLine(paddedLine);
+
+        assertInstanceOf(Result.Ok.class, cleanResult);
+        assertInstanceOf(Result.Ok.class, paddedResult);
+
+        ScoreRecord cleanRecord = ((Result.Ok<ScoreRecord, ParseError>) cleanResult).value();
+        ScoreRecord paddedRecord = ((Result.Ok<ScoreRecord, ParseError>) paddedResult).value();
+
+        assertEquals(cleanRecord.player().playerId(), paddedRecord.player().playerId());
+        assertEquals(cleanRecord.player().playerName(), paddedRecord.player().playerName());
+        assertEquals(cleanRecord.gameEntry().gameId(), paddedRecord.gameEntry().gameId());
+        assertEquals(cleanRecord.gameEntry().gameName(), paddedRecord.gameEntry().gameName());
+        assertEquals(cleanRecord.gameEntry().hoursPlayed(), paddedRecord.gameEntry().hoursPlayed());
+        assertEquals(cleanRecord.gameEntry().normalisedScore(), paddedRecord.gameEntry().normalisedScore());
+    }
+
+    @Provide
+    Arbitrary<String> whitespace() {
+        return Arbitraries.integers().between(0, 5)
+                .map(n -> " ".repeat(n));
+    }
 }
