@@ -138,4 +138,37 @@ class PipelinePropertyTest {
                 )
         );
     }
+
+    // Feature: top-three-high-scores, Property 14: Pipeline rejects duplicate player-id/game-id pairs
+    // **Validates: Requirements 4.3**
+    @Property(tries = 1000)
+    void pipelineRejectsDuplicatePlayerIdGameIdPairs(
+            @ForAll("csvLineListsWithDuplicate") List<String> csvLines
+    ) {
+        Result<RankedResult, PipelineError> result = pipeline.run(csvLines);
+
+        assertInstanceOf(Result.Err.class, result);
+    }
+
+    @Provide
+    Arbitrary<List<String>> csvLineListsWithDuplicate() {
+        // Generate valid lines, then inject a duplicate (playerId, gameId) pair
+        return Combinators.combine(
+                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),  // shared playerId
+                Arbitraries.strings().alpha().ofMinLength(0).ofMaxLength(8),  // playerName
+                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),  // shared gameId
+                Arbitraries.strings().alpha().ofMinLength(0).ofMaxLength(8),  // gameName
+                Arbitraries.integers().between(1, 100),                        // hours1
+                Arbitraries.integers().between(1, 100),                        // score1
+                Arbitraries.integers().between(1, 100),                        // hours2
+                Arbitraries.integers().between(1, 100)                         // score2
+        ).as((pid, pname, gid, gname, h1, s1, h2, s2) -> {
+            String line1 = pid + "," + pname + "," + gid + "," + gname + "," + h1 + "," + s1;
+            String line2 = pid + "," + pname + "," + gid + "," + gname + "," + h2 + "," + s2;
+            List<String> lines = new ArrayList<>();
+            lines.add(line1);
+            lines.add(line2);
+            return lines;
+        });
+    }
 }
