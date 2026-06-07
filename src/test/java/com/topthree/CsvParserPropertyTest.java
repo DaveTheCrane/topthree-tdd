@@ -85,4 +85,27 @@ class CsvParserPropertyTest {
                 Arbitraries.integers().greaterOrEqual(101)
         );
     }
+
+    // Feature: top-three-high-scores, Property 3: Non-integer hours-played returns an error
+    // **Validates: Requirements 1.3**
+    @Property(tries = 1000)
+    void nonIntegerHoursPlayedReturnsError(
+            @ForAll("playerIds") String playerId,
+            @ForAll("names") String playerName,
+            @ForAll("gameIds") String gameId,
+            @ForAll("names") String gameName,
+            @ForAll("nonIntegerHoursPlayed") String nonIntegerHours,
+            @ForAll("normalisedScores") int normalisedScore
+    ) {
+        String csvLine = playerId + "," + playerName + "," + gameId + "," + gameName + "," + nonIntegerHours + "," + normalisedScore;
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertInstanceOf(Result.Err.class, result);
+    }
+
+    @Provide
+    Arbitrary<String> nonIntegerHoursPlayed() {
+        return Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5);
+    }
 }
