@@ -121,4 +121,61 @@ class ScoreAggregatorPropertyTest {
                 Arbitraries.integers().between(1, 100)
         ).as((gameId, gameName, hours, score) -> new GameEntry(gameId, gameName, hours, score));
     }
+
+    // Feature: top-three-high-scores, Property 9: Last-seen display name wins on name conflict
+    // **Validates: Requirements 2.6, 2.8**
+    @Property(tries = 1000)
+    void lastSeenDisplayNameWinsOnNameConflict(
+            @ForAll("scoreRecordsWithNameConflict") List<ScoreRecord> records
+    ) {
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(records);
+
+        assertInstanceOf(Result.Ok.class, result);
+
+        List<PlayerAggregate> aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+
+        // Find the last-seen name for each player id in the input
+        Map<String, String> lastSeenNames = new HashMap<>();
+        for (ScoreRecord record : records) {
+            lastSeenNames.put(record.player().playerId(), record.player().playerName());
+        }
+
+        // Assert each aggregate uses the last-seen name
+        for (PlayerAggregate agg : aggregates) {
+            String pid = agg.player().playerId();
+            assertEquals(lastSeenNames.get(pid), agg.player().playerName(),
+                    "PlayerAggregate should carry the last-seen display name for player id: " + pid);
+        }
+    }
+
+    @Provide
+    Arbitrary<List<ScoreRecord>> scoreRecordsWithNameConflict() {
+        // Generate a player id and two different names, then build records with the last record
+        // carrying a specific "final" name to ensure the conflict is meaningful
+        return Combinators.combine(
+                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),   // player id
+                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(10),  // first name
+                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(10),  // second name (will ensure different)
+                Arbitraries.integers().between(2, 5)                            // number of records
+        ).flatAs((playerId, name1, name2Raw, recordCount) -> {
+            // Ensure the two names are different
+            String name2 = name2Raw.equals(name1) ? name1 + "x" : name2Raw;
+
+            // Build a list of records interleaving names, with the last record using name2
+            return gameEntryArbitrary().list().ofSize(recordCount).map(entries -> {
+                List<ScoreRecord> records = new ArrayList<>();
+                for (int i = 0; i < entries.size(); i++) {
+                    // Alternate names, but ensure the last record uses name2
+                    String name;
+                    if (i == entries.size() - 1) {
+                        name = name2; // last record gets the "final" name
+                    } else {
+                        name = (i % 2 == 0) ? name1 : name2;
+                    }
+                    records.add(new ScoreRecord(new Player(playerId, name), entries.get(i)));
+                }
+                return records;
+            });
+        });
+    }
 }
