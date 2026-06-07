@@ -5,6 +5,6 @@ import java.util.List;
 public class DefaultLeaderboardRanker implements LeaderboardRanker {
     @Override
     public RankedResult rank(List<PlayerAggregate> aggregates) {
-        return null;
+        return new RankedResult(List.of(), List.of());
     }
 }
