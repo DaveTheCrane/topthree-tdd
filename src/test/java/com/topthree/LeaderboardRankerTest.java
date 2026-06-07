@@ -78,4 +78,14 @@ class LeaderboardRankerTest {
         assertTrue(result.tiedCandidates().contains(b));
         assertTrue(result.tiedCandidates().contains(c));
     }
+
+    @Test
+    void twoDistinctScorePlayersBothInDefiniteWinners() {
+        PlayerAggregate a = new PlayerAggregate(new Player("p1", "A"), 200);
+        PlayerAggregate b = new PlayerAggregate(new Player("p2", "B"), 100);
+
+        RankedResult result = ranker.rank(List.of(b, a));
+
+        assertEquals(new RankedResult(List.of(a, b), List.of()), result);
+    }
 }
