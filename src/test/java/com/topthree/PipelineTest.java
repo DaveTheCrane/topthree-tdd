@@ -35,6 +35,20 @@ class PipelineTest {
     }
 
     @Test
+    void duplicatePlayerIdGameIdPairReturnsPipelineError() {
+        List<String> lines = List.of(
+            "p1,Alice,g1,Chess,2,50",
+            "p1,Alice,g1,Chess,3,80"
+        );
+
+        Result<RankedResult, PipelineError> result = pipeline.run(lines);
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+        Result.Err<RankedResult, PipelineError> err = (Result.Err<RankedResult, PipelineError>) result;
+        assertThat(err.error()).isInstanceOf(PipelineError.class);
+    }
+
+    @Test
     void validCsvListProducesCorrectRankedResultEndToEnd() {
         List<String> lines = List.of(
             "p1,Alice,g1,Chess,10,80",   // weighted score = 800
