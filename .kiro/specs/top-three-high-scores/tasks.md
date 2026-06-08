@@ -222,14 +222,14 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test: `rank([])` returns `RankedResult([], [])`
     - Commit: `"test(red): empty input returns empty RankedResult"`
     - _Requirements: 3.5_
-  - [-] 5.2 Green: handle empty input
+  - [x] 5.2 Green: handle empty input
     - Commit: `"feat(green): LeaderboardRanker handles empty input"`
     - _Requirements: 3.5_
-  - [~] 5.3 Red: single player goes into definiteWinners, tiedCandidates empty
+  - [x] 5.3 Red: single player goes into definiteWinners, tiedCandidates empty
     - Write a failing unit test with one PlayerAggregate
     - Commit: `"test(red): single player goes into definiteWinners"`
     - _Requirements: 3.4_
-  - [~] 5.4 Green: place single player in definiteWinners
+  - [-] 5.4 Green: place single player in definiteWinners
     - Commit: `"feat(green): single player placed in definiteWinners"`
     - _Requirements: 3.4_
   - [~] 5.5 Red: three players with distinct scores — all in definiteWinners, descending order
