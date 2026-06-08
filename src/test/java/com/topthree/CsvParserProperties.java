@@ -62,6 +62,40 @@ class CsvParserProperties {
         );
     }
 
+    // Feature: top-three-high-scores, Property 3: Non-integer hours-played returns an error
+    // **Validates: Requirements 1.3**
+    @Property(tries = 1000)
+    void nonIntegerHoursPlayedReturnsError(
+            @ForAll("nonEmptyNoComma") String playerId,
+            @ForAll("noComma") String playerName,
+            @ForAll("nonEmptyNoComma") String gameId,
+            @ForAll("noComma") String gameName,
+            @ForAll("nonIntegerString") String hoursPlayed,
+            @ForAll @IntRange(min = 1, max = 100) int normalisedScore
+    ) {
+        String csvLine = String.join(",", playerId, playerName, gameId, gameName,
+                hoursPlayed, String.valueOf(normalisedScore));
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    @Provide
+    Arbitrary<String> nonIntegerString() {
+        return Arbitraries.strings()
+                .ofMinLength(1)
+                .filter(s -> !s.contains(","))
+                .filter(s -> {
+                    try {
+                        Integer.parseInt(s.trim());
+                        return false;
+                    } catch (NumberFormatException e) {
+                        return true;
+                    }
+                });
+    }
+
     @Provide
     Arbitrary<String> nonEmptyNoComma() {
         return Arbitraries.strings()
