@@ -115,6 +115,28 @@ class CsvParserProperties {
         assertThat(result).isInstanceOf(Result.Err.class);
     }
 
+    // Feature: top-three-high-scores, Property 5: Wrong field count returns an error
+    // **Validates: Requirements 1.5, 1.6**
+    @Property(tries = 1000)
+    void wrongFieldCountReturnsError(
+            @ForAll("wrongFieldCount") int fieldCount
+    ) {
+        java.util.List<String> fields = new java.util.ArrayList<>();
+        for (int i = 0; i < fieldCount; i++) {
+            fields.add("field" + i);
+        }
+        String csvLine = String.join(",", fields);
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    @Provide
+    Arbitrary<Integer> wrongFieldCount() {
+        return Arbitraries.integers().between(1, 10).filter(n -> n != 6);
+    }
+
     @Provide
     Arbitrary<String> nonEmptyNoComma() {
         return Arbitraries.strings()
