@@ -104,6 +104,68 @@ class PipelineProperties {
         });
     }
 
+    // Feature: top-three-high-scores, Property 14: Pipeline rejects duplicate player-id/game-id pairs
+    // **Validates: Requirements 4.3**
+    @Property(tries = 1000)
+    void pipelineRejectsDuplicatePlayerGamePairs(@ForAll("csvLinesWithDuplicatePlayerGamePair") List<String> csvLines) {
+        Result<RankedResult, PipelineError> result = pipeline.run(csvLines);
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+        PipelineError error = ((Result.Err<RankedResult, PipelineError>) result).error();
+        assertThat(error).isNotNull();
+    }
+
+    @Provide
+    Arbitrary<List<String>> csvLinesWithDuplicatePlayerGamePair() {
+        return Arbitraries.integers().between(1, 5).flatMap(lineCount -> {
+            Arbitrary<String> alphaArb = Arbitraries.strings().ofMinLength(1).ofMaxLength(8).alpha();
+            Arbitrary<Integer> hoursArb = Arbitraries.integers().between(1, 500);
+            Arbitrary<Integer> scoreArb = Arbitraries.integers().between(1, 100);
+
+            return Combinators.combine(
+                    alphaArb.list().ofSize(lineCount),  // playerIds
+                    alphaArb.list().ofSize(lineCount),  // playerNames
+                    alphaArb.list().ofSize(lineCount),  // gameIds
+                    alphaArb.list().ofSize(lineCount),  // gameNames
+                    hoursArb.list().ofSize(lineCount),  // hoursPlayed
+                    scoreArb.list().ofSize(lineCount)   // normalisedScores
+            ).as((playerIds, playerNames, gameIds, gameNames, hours, scores) -> {
+                // Build unique lines (same logic as validUniqueCsvLines)
+                List<String> lines = new ArrayList<>();
+                for (int i = 0; i < lineCount; i++) {
+                    String playerId = "p" + i + playerIds.get(i);
+                    String playerName = playerNames.get(i);
+                    String gameId = "g" + i + gameIds.get(i);
+                    String gameName = gameNames.get(i);
+                    String line = String.join(",", playerId, playerName, gameId, gameName,
+                            String.valueOf(hours.get(i)), String.valueOf(scores.get(i)));
+                    lines.add(line);
+                }
+                return lines;
+            }).flatMap(lines -> {
+                // Pick one existing line to duplicate its (playerId, gameId)
+                int size = lines.size();
+                return Combinators.combine(
+                        Arbitraries.integers().between(0, size - 1),
+                        alphaArb,
+                        hoursArb,
+                        scoreArb
+                ).as((dupIndex, dupName, dupHours, dupScore) -> {
+                    List<String> result = new ArrayList<>(lines);
+                    // Extract playerId and gameId from the chosen line
+                    String[] fields = lines.get(dupIndex).split(",");
+                    String dupPlayerId = fields[0];
+                    String dupGameId = fields[2];
+                    String dupGameName = fields[3];
+                    String duplicateLine = String.join(",", dupPlayerId, dupName, dupGameId, dupGameName,
+                            String.valueOf(dupHours), String.valueOf(dupScore));
+                    result.add(duplicateLine);
+                    return result;
+                });
+            });
+        });
+    }
+
     @Provide
     Arbitrary<List<String>> validUniqueCsvLines() {
         return Arbitraries.integers().between(1, 5).flatMap(lineCount -> {
