@@ -17,4 +17,14 @@ class LeaderboardRankerTest {
         assertThat(result.definiteWinners()).isEmpty();
         assertThat(result.tiedCandidates()).isEmpty();
     }
+
+    @Test
+    void singlePlayerGoesIntoDefiniteWinners() {
+        PlayerAggregate aggregate = new PlayerAggregate(new Player("p1", "Alice"), 100);
+
+        RankedResult result = ranker.rank(List.of(aggregate));
+
+        assertThat(result.definiteWinners()).containsExactly(aggregate);
+        assertThat(result.tiedCandidates()).isEmpty();
+    }
 }
