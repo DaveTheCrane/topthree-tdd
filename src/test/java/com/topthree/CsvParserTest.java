@@ -96,4 +96,15 @@ class CsvParserTest {
         ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
         assertThat(error.offendingLine()).isEqualTo(csvLine);
     }
+
+    @Test
+    void emptyGameIdReturnsParseError() {
+        String csvLine = "p1,Alice, ,Chess,2,50";
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertThat(error.offendingLine()).isEqualTo(csvLine);
+    }
 }
