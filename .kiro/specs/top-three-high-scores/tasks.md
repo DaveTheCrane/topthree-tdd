@@ -193,14 +193,14 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test: two records for "p1" with names "Alice" then "Alicia"; assert the resulting PlayerAggregate has playerName = "Alicia"
     - Commit: `"test(red): last-seen display name wins on name conflict"`
     - _Requirements: 2.6_
-  - [-] 4.10 Green: overwrite player name on each encounter, keeping the last-seen value
+  - [x] 4.10 Green: overwrite player name on each encounter, keeping the last-seen value
     - Commit: `"feat(green): last-seen player name wins"`
     - _Requirements: 2.6_
-  - [~] 4.11 Red: player display name is preserved in PlayerAggregate
+  - [x] 4.11 Red: player display name is preserved in PlayerAggregate
     - Write a failing unit test asserting `aggregate.player().playerName()` equals the input name
     - Commit: `"test(red): player display name preserved in PlayerAggregate"`
     - _Requirements: 2.8_
-  - [~] 4.12 Green: carry player name through to PlayerAggregate (likely already passing; confirm)
+  - [-] 4.12 Green: carry player name through to PlayerAggregate (likely already passing; confirm)
     - Commit: `"feat(green): player name carried through to PlayerAggregate"`
     - _Requirements: 2.8_
   - [~] 4.13 Refactor ScoreAggregator if duplication warrants it
