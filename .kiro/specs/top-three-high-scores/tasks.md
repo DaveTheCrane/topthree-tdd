@@ -281,55 +281,55 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Commit: `"test(property-11): tie-at-boundary produces correct partition"`
     - _Validates: Requirements 3.3, 3.6_
 
-- [ ] 6. Pipeline — TDD cycle
-  - [-] 6.1 Red: empty input returns empty RankedResult
+- [x] 6. Pipeline — TDD cycle
+  - [x] 6.1 Red: empty input returns empty RankedResult
     - Write a failing unit test: `run([])` returns `Ok(RankedResult([], []))`
     - Commit: `"test(red): empty pipeline input returns empty RankedResult"`
     - _Requirements: 4.4_
-  - [~] 6.2 Green: wire CsvParser → ScoreAggregator → LeaderboardRanker; handle empty list
+  - [x] 6.2 Green: wire CsvParser → ScoreAggregator → LeaderboardRanker; handle empty list
     - Commit: `"feat(green): pipeline wired, empty input handled"`
     - _Requirements: 4.4_
-  - [~] 6.3 Red: valid CSV list produces correct RankedResult end-to-end
+  - [x] 6.3 Red: valid CSV list produces correct RankedResult end-to-end
     - Write a failing unit test with two or three valid CSV lines; assert expected winners
     - Commit: `"test(red): valid CSV list produces correct RankedResult"`
     - _Requirements: 4.1_
-  - [~] 6.4 Green: full pipeline wiring for the happy path
+  - [x] 6.4 Green: full pipeline wiring for the happy path
     - Commit: `"feat(green): full pipeline happy path"`
     - _Requirements: 4.1_
-  - [~] 6.5 Red: invalid CSV line in input returns PipelineError
+  - [x] 6.5 Red: invalid CSV line in input returns PipelineError
     - Write a failing unit test with one malformed line in the list
     - Commit: `"test(red): invalid CSV line returns PipelineError"`
     - _Requirements: 4.2_
-  - [~] 6.6 Green: propagate ParseError as PipelineError
+  - [x] 6.6 Green: propagate ParseError as PipelineError
     - Commit: `"feat(green): ParseError propagated as PipelineError"`
     - _Requirements: 4.2_
-  - [~] 6.7 Red: duplicate (playerId, gameId) pair returns PipelineError
+  - [x] 6.7 Red: duplicate (playerId, gameId) pair returns PipelineError
     - Write a failing unit test with two lines sharing the same player id and game id
     - Commit: `"test(red): duplicate playerId/gameId returns PipelineError"`
     - _Requirements: 4.3_
-  - [~] 6.8 Green: duplicate-pair detection before aggregation
+  - [x] 6.8 Green: duplicate-pair detection before aggregation
     - Commit: `"feat(green): duplicate playerId/gameId detection"`
     - _Requirements: 4.3_
-  - [~] 6.9 Refactor Pipeline if duplication warrants it
+  - [x] 6.9 Refactor Pipeline if duplication warrants it
     - All tests must stay green
     - Commit (if changes made): `"refactor: Pipeline deduplication"`
-  - [~] 6.10 Write property test — Property 12: pipeline composition correctness
+  - [x] 6.10 Write property test — Property 12: pipeline composition correctness
     - `// Feature: top-three-high-scores, Property 12: Pipeline composition correctness`
     - Generate arbitrary valid CSV string lists; assert pipeline result equals manual chaining of the three components
     - Commit: `"test(property-12): pipeline composition correctness"`
     - _Validates: Requirements 4.1_
-  - [~] 6.11 Write property test — Property 13: pipeline propagates CSV parse errors
+  - [x] 6.11 Write property test — Property 13: pipeline propagates CSV parse errors
     - `// Feature: top-three-high-scores, Property 13: Pipeline propagates CSV parse errors`
     - Generate lists containing at least one invalid CSV line; assert PipelineError returned
     - Commit: `"test(property-13): pipeline propagates CSV parse errors"`
     - _Validates: Requirements 4.2_
-  - [~] 6.12 Write property test — Property 14: pipeline rejects duplicate player-id/game-id pairs
+  - [x] 6.12 Write property test — Property 14: pipeline rejects duplicate player-id/game-id pairs
     - `// Feature: top-three-high-scores, Property 14: Pipeline rejects duplicate player-id/game-id pairs`
     - Generate valid CSV lists then inject a duplicate (playerId, gameId) line; assert PipelineError returned
     - Commit: `"test(property-14): pipeline rejects duplicate playerId/gameId pairs"`
     - _Validates: Requirements 4.3_
-  - [~] 6.13 Checkpoint — run the full test suite; all unit tests and any completed property tests must be green
-  - [~] 6.14 Commit: `"feat: Pipeline — all tests green"`
+  - [x] 6.13 Checkpoint — run the full test suite; all unit tests and any completed property tests must be green
+  - [x] 6.14 Commit: `"feat: Pipeline — all tests green"`
 
 ## Notes
 
