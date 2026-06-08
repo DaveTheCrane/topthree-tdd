@@ -264,18 +264,18 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test with two players at scores 200, 100
     - Commit: `"test(red): two distinct-score players both in definiteWinners"`
     - _Requirements: 3.4_
-  - [-] 5.14 Green: confirm fewer-than-three no-tie case (likely already passing)
+  - [x] 5.14 Green: confirm fewer-than-three no-tie case (likely already passing)
     - Commit: `"feat(green): fewer-than-three no-tie case confirmed"`
     - _Requirements: 3.4_
-  - [~] 5.15 Refactor LeaderboardRanker if duplication warrants it
+  - [x] 5.15 Refactor LeaderboardRanker if duplication warrants it
     - All tests must stay green
     - Commit (if changes made): `"refactor: LeaderboardRanker deduplication"`
-  - [~] 5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners
+  - [x] 5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners
     - `// Feature: top-three-high-scores, Property 10: No-tie ranking places top players in definite_winners`
     - Generate lists of PlayerAggregates with all-distinct totalScores; assert definiteWinners = top min(3,N) in descending order, tiedCandidates empty
     - Commit: `"test(property-10): no-tie ranking places top players in definiteWinners"`
     - _Validates: Requirements 3.2, 3.4_
-  - [~] 5.17 Write property test — Property 11: tie-at-boundary produces correct partition
+  - [-] 5.17 Write property test — Property 11: tie-at-boundary produces correct partition
     - `// Feature: top-three-high-scores, Property 11: Tie-at-boundary produces correct partition`
     - Generate lists where two or more players share the boundary score; assert correct definiteWinners/tiedCandidates partition
     - Commit: `"test(property-11): tie-at-boundary produces correct partition"`
