@@ -14,7 +14,12 @@ public class DefaultCsvParser implements CsvParser {
         String playerName = fields[1];
         String gameId = fields[2];
         String gameName = fields[3];
-        int hoursPlayed = Integer.parseInt(fields[4]);
+        int hoursPlayed;
+        try {
+            hoursPlayed = Integer.parseInt(fields[4]);
+        } catch (NumberFormatException e) {
+            return new Result.Err<>(new ParseError("Invalid hours-played: not an integer", csvLine));
+        }
         int normalisedScore = Integer.parseInt(fields[5]);
 
         Player player = new Player(playerId, playerName);
