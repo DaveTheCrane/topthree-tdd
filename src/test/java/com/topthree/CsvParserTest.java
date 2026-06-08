@@ -19,4 +19,15 @@ class CsvParserTest {
         assertThat(record.player()).isEqualTo(new Player("p1", "Alice"));
         assertThat(record.gameEntry()).isEqualTo(new GameEntry("g1", "Chess", 2, 50));
     }
+
+    @Test
+    void fewerThanSixFieldsReturnsParseError() {
+        String csvLine = "p1,Alice,g1,Chess,2";
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertThat(error.offendingLine()).isEqualTo(csvLine);
+    }
 }
