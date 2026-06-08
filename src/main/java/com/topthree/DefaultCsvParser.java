@@ -1,5 +1,6 @@
 package com.topthree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultCsvParser implements CsvParser {
@@ -47,6 +48,14 @@ public class DefaultCsvParser implements CsvParser {
 
     @Override
     public Result<List<ScoreRecord>, ParseError> parseLines(List<String> csvLines) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        List<ScoreRecord> records = new ArrayList<>();
+        for (String line : csvLines) {
+            Result<ScoreRecord, ParseError> result = parseLine(line);
+            if (result instanceof Result.Err<ScoreRecord, ParseError> err) {
+                return new Result.Err<>(err.error());
+            }
+            records.add(((Result.Ok<ScoreRecord, ParseError>) result).value());
+        }
+        return new Result.Ok<>(records);
     }
 }

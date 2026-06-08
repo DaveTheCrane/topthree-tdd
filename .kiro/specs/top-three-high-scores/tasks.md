@@ -97,14 +97,14 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test with padded fields (e.g. `" p1 , Alice , g1 , Chess , 2 , 50 "`)
     - Commit: `"test(red): whitespace-padded fields parse to trimmed values"`
     - _Requirements: 1.10_
-  - [-] 3.20 Green: trim each field before validation and construction
+  - [x] 3.20 Green: trim each field before validation and construction
     - Commit: `"feat(green): trim fields before validation"`
     - _Requirements: 1.10_
-  - [~] 3.21 Red: parseLines returns all ScoreRecords in order for a valid list
+  - [x] 3.21 Red: parseLines returns all ScoreRecords in order for a valid list
     - Write a failing unit test with two valid lines; assert order is preserved
     - Commit: `"test(red): parseLines preserves order of valid records"`
     - _Requirements: 1.9_
-  - [~] 3.22 Green: implement parseLines delegating to parseLine
+  - [-] 3.22 Green: implement parseLines delegating to parseLine
     - Commit: `"feat(green): parseLines delegates to parseLine"`
     - _Requirements: 1.9_
   - [~] 3.23 Red: parseLines returns first ParseError on a mixed valid/invalid list
