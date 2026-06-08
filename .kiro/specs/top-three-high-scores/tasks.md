@@ -236,14 +236,14 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test with three players at scores 300, 200, 100
     - Commit: `"test(red): three distinct-score players all in definiteWinners"`
     - _Requirements: 3.2_
-  - [-] 5.6 Green: sort descending and take up to three into definiteWinners
+  - [x] 5.6 Green: sort descending and take up to three into definiteWinners
     - Commit: `"feat(green): sort descending, top three into definiteWinners"`
     - _Requirements: 3.2_
-  - [~] 5.7 Red: four players, no tie — top three in definiteWinners, fourth excluded
+  - [x] 5.7 Red: four players, no tie — top three in definiteWinners, fourth excluded
     - Write a failing unit test with scores 400, 300, 200, 100
     - Commit: `"test(red): four players no tie — fourth excluded"`
     - _Requirements: 3.2_
-  - [~] 5.8 Green: confirm existing logic handles N > 3 without tie (likely already passing)
+  - [-] 5.8 Green: confirm existing logic handles N > 3 without tie (likely already passing)
     - Commit: `"feat(green): N>3 no-tie case confirmed"`
     - _Requirements: 3.2_
   - [~] 5.9 Red: tie at position 3 — players above boundary in definiteWinners, tied players in tiedCandidates
