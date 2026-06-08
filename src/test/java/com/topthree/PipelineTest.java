@@ -21,6 +21,20 @@ class PipelineTest {
     }
 
     @Test
+    void invalidCsvLineReturnsPipelineError() {
+        List<String> lines = List.of(
+            "p1,Alice,g1,Chess,2,50",
+            "invalid"
+        );
+
+        Result<RankedResult, PipelineError> result = pipeline.run(lines);
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+        Result.Err<RankedResult, PipelineError> err = (Result.Err<RankedResult, PipelineError>) result;
+        assertThat(err.error()).isInstanceOf(PipelineError.class);
+    }
+
+    @Test
     void validCsvListProducesCorrectRankedResultEndToEnd() {
         List<String> lines = List.of(
             "p1,Alice,g1,Chess,10,80",   // weighted score = 800
