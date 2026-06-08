@@ -136,4 +136,17 @@ class CsvParserTest {
         assertThat(records.get(1).player()).isEqualTo(new Player("p2", "Bob"));
         assertThat(records.get(1).gameEntry()).isEqualTo(new GameEntry("g2", "Go", 3, 80));
     }
+
+    @Test
+    void parseLinesReturnsFirstParseErrorOnMixedValidInvalidList() {
+        String validLine = "p1,Alice,g1,Chess,2,50";
+        String invalidLine = "p2,Bob,g2";
+        List<String> lines = List.of(validLine, invalidLine);
+
+        Result<List<ScoreRecord>, ParseError> result = parser.parseLines(lines);
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+        ParseError error = ((Result.Err<List<ScoreRecord>, ParseError>) result).error();
+        assertThat(error.offendingLine()).isEqualTo(invalidLine);
+    }
 }
