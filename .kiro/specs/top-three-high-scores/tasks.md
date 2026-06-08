@@ -160,7 +160,7 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Commit: `"test(property-7): parse-print-parse round trip"`
     - _Validates: Requirements 1.11, 1.12_
 
-- [ ] 4. ScoreAggregator — TDD cycle
+- [x] 4. ScoreAggregator — TDD cycle
   - [x] 4.1 Red: empty input returns empty list
     - Write a failing unit test: `aggregate([])` returns `Ok([])`
     - Commit: `"test(red): empty input returns empty aggregate list"`
@@ -200,29 +200,29 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test asserting `aggregate.player().playerName()` equals the input name
     - Commit: `"test(red): player display name preserved in PlayerAggregate"`
     - _Requirements: 2.8_
-  - [-] 4.12 Green: carry player name through to PlayerAggregate (likely already passing; confirm)
+  - [x] 4.12 Green: carry player name through to PlayerAggregate (likely already passing; confirm)
     - Commit: `"feat(green): player name carried through to PlayerAggregate"`
     - _Requirements: 2.8_
-  - [~] 4.13 Refactor ScoreAggregator if duplication warrants it
+  - [x] 4.13 Refactor ScoreAggregator if duplication warrants it
     - All tests must stay green
     - Commit (if changes made): `"refactor: ScoreAggregator deduplication"`
-  - [~] 4.14 Write property test — Property 8: aggregation correctness
+  - [x] 4.14 Write property test — Property 8: aggregation correctness
     - `// Feature: top-three-high-scores, Property 8: Aggregation correctness — count, total score, and name preservation`
     - Generate arbitrary non-empty lists of ScoreRecords with consistent names; assert one aggregate per player id, correct totalScore, name preserved
     - Commit: `"test(property-8): aggregation correctness"`
     - _Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.8_
-  - [~] 4.15 Write property test — Property 9: last-seen display name wins on name conflict
+  - [x] 4.15 Write property test — Property 9: last-seen display name wins on name conflict
     - `// Feature: top-three-high-scores, Property 9: Last-seen display name wins on name conflict`
     - Generate lists containing at least two records with the same player id but different names; assert the resulting PlayerAggregate carries the name from the last such record
     - Commit: `"test(property-9): last-seen display name wins on name conflict"`
     - _Validates: Requirements 2.6, 2.8_
 
 - [ ] 5. LeaderboardRanker — TDD cycle
-  - [~] 5.1 Red: empty input returns empty RankedResult
+  - [x] 5.1 Red: empty input returns empty RankedResult
     - Write a failing unit test: `rank([])` returns `RankedResult([], [])`
     - Commit: `"test(red): empty input returns empty RankedResult"`
     - _Requirements: 3.5_
-  - [~] 5.2 Green: handle empty input
+  - [-] 5.2 Green: handle empty input
     - Commit: `"feat(green): LeaderboardRanker handles empty input"`
     - _Requirements: 3.5_
   - [~] 5.3 Red: single player goes into definiteWinners, tiedCandidates empty
