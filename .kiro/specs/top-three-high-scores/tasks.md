@@ -229,14 +229,14 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test with one PlayerAggregate
     - Commit: `"test(red): single player goes into definiteWinners"`
     - _Requirements: 3.4_
-  - [-] 5.4 Green: place single player in definiteWinners
+  - [x] 5.4 Green: place single player in definiteWinners
     - Commit: `"feat(green): single player placed in definiteWinners"`
     - _Requirements: 3.4_
-  - [~] 5.5 Red: three players with distinct scores — all in definiteWinners, descending order
+  - [x] 5.5 Red: three players with distinct scores — all in definiteWinners, descending order
     - Write a failing unit test with three players at scores 300, 200, 100
     - Commit: `"test(red): three distinct-score players all in definiteWinners"`
     - _Requirements: 3.2_
-  - [~] 5.6 Green: sort descending and take up to three into definiteWinners
+  - [-] 5.6 Green: sort descending and take up to three into definiteWinners
     - Commit: `"feat(green): sort descending, top three into definiteWinners"`
     - _Requirements: 3.2_
   - [~] 5.7 Red: four players, no tie — top three in definiteWinners, fourth excluded
