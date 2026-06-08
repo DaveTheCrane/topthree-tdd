@@ -20,7 +20,12 @@ public class DefaultCsvParser implements CsvParser {
         } catch (NumberFormatException e) {
             return new Result.Err<>(new ParseError("Invalid hours-played: not an integer", csvLine));
         }
-        int normalisedScore = Integer.parseInt(fields[5]);
+        int normalisedScore;
+        try {
+            normalisedScore = Integer.parseInt(fields[5]);
+        } catch (NumberFormatException e) {
+            return new Result.Err<>(new ParseError("Invalid normalised-score: not an integer", csvLine));
+        }
 
         Player player = new Player(playerId, playerName);
         GameEntry gameEntry = new GameEntry(gameId, gameName, hoursPlayed, normalisedScore);
