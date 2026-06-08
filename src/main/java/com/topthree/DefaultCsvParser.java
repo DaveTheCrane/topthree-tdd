@@ -6,7 +6,18 @@ public class DefaultCsvParser implements CsvParser {
 
     @Override
     public Result<ScoreRecord, ParseError> parseLine(String csvLine) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        String[] fields = csvLine.split(",");
+        String playerId = fields[0];
+        String playerName = fields[1];
+        String gameId = fields[2];
+        String gameName = fields[3];
+        int hoursPlayed = Integer.parseInt(fields[4]);
+        int normalisedScore = Integer.parseInt(fields[5]);
+
+        Player player = new Player(playerId, playerName);
+        GameEntry gameEntry = new GameEntry(gameId, gameName, hoursPlayed, normalisedScore);
+        ScoreRecord record = new ScoreRecord(player, gameEntry);
+        return new Result.Ok<>(record);
     }
 
     @Override
