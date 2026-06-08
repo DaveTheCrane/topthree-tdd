@@ -137,6 +137,54 @@ class CsvParserProperties {
         return Arbitraries.integers().between(1, 10).filter(n -> n != 6);
     }
 
+    // Feature: top-three-high-scores, Property 6: Whitespace trimming preserves field values
+    // **Validates: Requirements 1.10**
+    @Property(tries = 1000)
+    void whitespaceTrimming(
+            @ForAll("nonEmptyNoComma") String playerId,
+            @ForAll("noComma") String playerName,
+            @ForAll("nonEmptyNoComma") String gameId,
+            @ForAll("noComma") String gameName,
+            @ForAll int hoursPlayed,
+            @ForAll @IntRange(min = 1, max = 100) int normalisedScore,
+            @ForAll("whitespace") String ws1Pre,
+            @ForAll("whitespace") String ws1Suf,
+            @ForAll("whitespace") String ws2Pre,
+            @ForAll("whitespace") String ws2Suf,
+            @ForAll("whitespace") String ws3Pre,
+            @ForAll("whitespace") String ws3Suf,
+            @ForAll("whitespace") String ws4Pre,
+            @ForAll("whitespace") String ws4Suf,
+            @ForAll("whitespace") String ws5Pre,
+            @ForAll("whitespace") String ws5Suf,
+            @ForAll("whitespace") String ws6Pre,
+            @ForAll("whitespace") String ws6Suf
+    ) {
+        String hoursStr = String.valueOf(hoursPlayed);
+        String scoreStr = String.valueOf(normalisedScore);
+
+        String unpaddedLine = String.join(",", playerId, playerName, gameId, gameName, hoursStr, scoreStr);
+        String paddedLine = String.join(",",
+                ws1Pre + playerId + ws1Suf,
+                ws2Pre + playerName + ws2Suf,
+                ws3Pre + gameId + ws3Suf,
+                ws4Pre + gameName + ws4Suf,
+                ws5Pre + hoursStr + ws5Suf,
+                ws6Pre + scoreStr + ws6Suf
+        );
+
+        Result<ScoreRecord, ParseError> unpaddedResult = parser.parseLine(unpaddedLine);
+        Result<ScoreRecord, ParseError> paddedResult = parser.parseLine(paddedLine);
+
+        assertThat(unpaddedResult).isInstanceOf(Result.Ok.class);
+        assertThat(paddedResult).isEqualTo(unpaddedResult);
+    }
+
+    @Provide
+    Arbitrary<String> whitespace() {
+        return Arbitraries.strings().withChars(' ', '\t').ofMaxLength(3);
+    }
+
     @Provide
     Arbitrary<String> nonEmptyNoComma() {
         return Arbitraries.strings()
