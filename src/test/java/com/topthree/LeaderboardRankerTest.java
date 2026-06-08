@@ -66,4 +66,16 @@ class LeaderboardRankerTest {
         assertThat(result.definiteWinners()).containsExactly(first, second);
         assertThat(result.tiedCandidates()).containsExactlyInAnyOrder(tied1, tied2);
     }
+
+    @Test
+    void allTied_definiteWinnersEmpty_allInTiedCandidates() {
+        PlayerAggregate alice = new PlayerAggregate(new Player("p1", "Alice"), 100);
+        PlayerAggregate bob = new PlayerAggregate(new Player("p2", "Bob"), 100);
+        PlayerAggregate charlie = new PlayerAggregate(new Player("p3", "Charlie"), 100);
+
+        RankedResult result = ranker.rank(List.of(alice, bob, charlie));
+
+        assertThat(result.definiteWinners()).isEmpty();
+        assertThat(result.tiedCandidates()).containsExactlyInAnyOrder(alice, bob, charlie);
+    }
 }
