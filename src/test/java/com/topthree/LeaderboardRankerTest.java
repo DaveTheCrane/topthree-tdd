@@ -68,6 +68,17 @@ class LeaderboardRankerTest {
     }
 
     @Test
+    void twoDistinctScorePlayers_bothInDefiniteWinnersDescending() {
+        PlayerAggregate first = new PlayerAggregate(new Player("p1", "Alice"), 200);
+        PlayerAggregate second = new PlayerAggregate(new Player("p2", "Bob"), 100);
+
+        RankedResult result = ranker.rank(List.of(second, first));
+
+        assertThat(result.definiteWinners()).containsExactly(first, second);
+        assertThat(result.tiedCandidates()).isEmpty();
+    }
+
+    @Test
     void allTied_definiteWinnersEmpty_allInTiedCandidates() {
         PlayerAggregate alice = new PlayerAggregate(new Player("p1", "Alice"), 100);
         PlayerAggregate bob = new PlayerAggregate(new Player("p2", "Bob"), 100);
