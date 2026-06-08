@@ -27,7 +27,7 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Commit: `"feat: component interfaces"`
     - _Requirements: 1.1, 2.1, 3.1, 4.1_
 
-- [ ] 3. CsvParser — TDD cycle
+- [x] 3. CsvParser — TDD cycle
   - [x] 3.1 Red: valid six-field line parses to correct ScoreRecord
     - Write a failing unit test: a well-formed CSV line produces a `ScoreRecord` with the expected field values
     - Commit: `"test(red): valid CSV line parses to ScoreRecord"`
@@ -154,18 +154,18 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Generate valid lines; add arbitrary whitespace around fields; assert same ScoreRecord as unpadded version
     - Commit: `"test(property-6): whitespace trimming preserves field values"`
     - _Validates: Requirements 1.10_
-  - [-] 3.34 Write property test — Property 7: parse → print → parse round trip
+  - [x] 3.34 Write property test — Property 7: parse → print → parse round trip
     - `// Feature: top-three-high-scores, Property 7: Parse → print → parse round trip`
     - Generate arbitrary valid ScoreRecords; print then parse; assert result equals original
     - Commit: `"test(property-7): parse-print-parse round trip"`
     - _Validates: Requirements 1.11, 1.12_
 
 - [ ] 4. ScoreAggregator — TDD cycle
-  - [~] 4.1 Red: empty input returns empty list
+  - [x] 4.1 Red: empty input returns empty list
     - Write a failing unit test: `aggregate([])` returns `Ok([])`
     - Commit: `"test(red): empty input returns empty aggregate list"`
     - _Requirements: 2.7_
-  - [~] 4.2 Green: handle empty input
+  - [-] 4.2 Green: handle empty input
     - Commit: `"feat(green): ScoreAggregator handles empty input"`
     - _Requirements: 2.7_
   - [~] 4.3 Red: single ScoreRecord produces one PlayerAggregate with correct totalScore

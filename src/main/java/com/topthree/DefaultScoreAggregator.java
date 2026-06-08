@@ -6,6 +6,6 @@ public class DefaultScoreAggregator implements ScoreAggregator {
 
     @Override
     public Result<List<PlayerAggregate>, AggregationError> aggregate(List<ScoreRecord> records) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new Result.Ok<>(List.of());
     }
 }
