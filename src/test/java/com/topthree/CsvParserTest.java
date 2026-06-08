@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CsvParserTest {
 
     private final CsvParser parser = new DefaultCsvParser();
+    private final PrettyPrinter printer = new DefaultPrettyPrinter();
 
     @Test
     void validSixFieldLineProducesCorrectScoreRecord() {
@@ -148,5 +149,17 @@ class CsvParserTest {
         assertThat(result).isInstanceOf(Result.Err.class);
         ParseError error = ((Result.Err<List<ScoreRecord>, ParseError>) result).error();
         assertThat(error.offendingLine()).isEqualTo(invalidLine);
+    }
+
+    @Test
+    void prettyPrinterFormatsScoreRecordAsSixFieldCsv() {
+        ScoreRecord record = new ScoreRecord(
+                new Player("p1", "Alice"),
+                new GameEntry("g1", "Chess", 2, 50)
+        );
+
+        String csv = printer.print(record);
+
+        assertThat(csv).isEqualTo("p1,Alice,g1,Chess,2,50");
     }
 }
