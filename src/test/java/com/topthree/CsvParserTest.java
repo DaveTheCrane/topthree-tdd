@@ -52,4 +52,15 @@ class CsvParserTest {
         ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
         assertThat(error.offendingLine()).isEqualTo(csvLine);
     }
+
+    @Test
+    void nonIntegerNormalisedScoreReturnsParseError() {
+        String csvLine = "p1,Alice,g1,Chess,2,1.5";
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertThat(error.offendingLine()).isEqualTo(csvLine);
+    }
 }
