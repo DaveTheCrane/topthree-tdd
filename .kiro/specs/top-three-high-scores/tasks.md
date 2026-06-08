@@ -76,14 +76,14 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test for score = 101 (confirms upper bound)
     - Commit: `"test(red): normalised score 101 returns ParseError"`
     - _Requirements: 1.2_
-  - [-] 3.14 Green: confirm range guard already covers upper bound (no new code expected)
+  - [x] 3.14 Green: confirm range guard already covers upper bound (no new code expected)
     - Commit: `"feat(green): upper-bound confirmed by existing range guard"`
     - _Requirements: 1.2_
-  - [~] 3.15 Red: empty player id returns ParseError
+  - [x] 3.15 Red: empty player id returns ParseError
     - Write a failing unit test for a line where player id is blank after trim
     - Commit: `"test(red): empty player id returns ParseError"`
     - _Requirements: 1.7_
-  - [~] 3.16 Green: empty-id guard for player id
+  - [-] 3.16 Green: empty-id guard for player id
     - Commit: `"feat(green): empty-id guard for player id"`
     - _Requirements: 1.7_
   - [~] 3.17 Red: empty game id returns ParseError
