@@ -62,14 +62,14 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test with `"1.5"` in the normalised-score field
     - Commit: `"test(red): non-integer normalised-score returns ParseError"`
     - _Requirements: 1.4_
-  - [-] 3.10 Green: integer-parse guard for normalised-score
+  - [x] 3.10 Green: integer-parse guard for normalised-score
     - Commit: `"feat(green): integer-parse guard for normalised-score"`
     - _Requirements: 1.4_
-  - [~] 3.11 Red: normalised score of 0 returns ParseError
+  - [x] 3.11 Red: normalised score of 0 returns ParseError
     - Write a failing unit test for score = 0
     - Commit: `"test(red): normalised score 0 returns ParseError"`
     - _Requirements: 1.2_
-  - [~] 3.12 Green: range guard [1, 100] for normalised-score
+  - [-] 3.12 Green: range guard [1, 100] for normalised-score
     - Commit: `"feat(green): range guard [1,100] for normalised-score"`
     - _Requirements: 1.2_
   - [~] 3.13 Red: normalised score of 101 returns ParseError
