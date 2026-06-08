@@ -19,4 +19,30 @@ class PipelineTest {
         assertThat(ok.value().definiteWinners()).isEmpty();
         assertThat(ok.value().tiedCandidates()).isEmpty();
     }
+
+    @Test
+    void validCsvListProducesCorrectRankedResultEndToEnd() {
+        List<String> lines = List.of(
+            "p1,Alice,g1,Chess,10,80",   // weighted score = 800
+            "p2,Bob,g2,Go,5,60",         // weighted score = 300
+            "p3,Charlie,g3,Poker,3,50"   // weighted score = 150
+        );
+
+        Result<RankedResult, PipelineError> result = pipeline.run(lines);
+
+        assertThat(result).isInstanceOf(Result.Ok.class);
+        Result.Ok<RankedResult, PipelineError> ok = (Result.Ok<RankedResult, PipelineError>) result;
+        RankedResult ranked = ok.value();
+
+        assertThat(ranked.tiedCandidates()).isEmpty();
+        assertThat(ranked.definiteWinners()).hasSize(3);
+
+        // Verify descending order by totalScore
+        assertThat(ranked.definiteWinners().get(0)).isEqualTo(
+            new PlayerAggregate(new Player("p1", "Alice"), 800));
+        assertThat(ranked.definiteWinners().get(1)).isEqualTo(
+            new PlayerAggregate(new Player("p2", "Bob"), 300));
+        assertThat(ranked.definiteWinners().get(2)).isEqualTo(
+            new PlayerAggregate(new Player("p3", "Charlie"), 150));
+    }
 }
