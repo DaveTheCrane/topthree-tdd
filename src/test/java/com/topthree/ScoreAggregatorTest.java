@@ -55,6 +55,26 @@ class ScoreAggregatorTest {
     }
 
     @Test
+    void samePlayerIdWithDifferentDisplayNamesLastSeenNameWins() {
+        ScoreRecord record1 = new ScoreRecord(
+                new Player("p1", "Alice"),
+                new GameEntry("g1", "Chess", 2, 50)
+        );
+        ScoreRecord record2 = new ScoreRecord(
+                new Player("p1", "Alicia"),
+                new GameEntry("g2", "Go", 3, 80)
+        );
+
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(List.of(record1, record2));
+
+        assertThat(result).isInstanceOf(Result.Ok.class);
+        List<PlayerAggregate> aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+        assertThat(aggregates).hasSize(1);
+        PlayerAggregate aggregate = aggregates.get(0);
+        assertThat(aggregate.player().playerName()).isEqualTo("Alicia");
+    }
+
+    @Test
     void twoRecordsForSamePlayerSumWeightedScores() {
         ScoreRecord record1 = new ScoreRecord(
                 new Player("p1", "Alice"),
