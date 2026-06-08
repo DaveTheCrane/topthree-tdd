@@ -104,14 +104,14 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test with two valid lines; assert order is preserved
     - Commit: `"test(red): parseLines preserves order of valid records"`
     - _Requirements: 1.9_
-  - [-] 3.22 Green: implement parseLines delegating to parseLine
+  - [x] 3.22 Green: implement parseLines delegating to parseLine
     - Commit: `"feat(green): parseLines delegates to parseLine"`
     - _Requirements: 1.9_
-  - [~] 3.23 Red: parseLines returns first ParseError on a mixed valid/invalid list
+  - [x] 3.23 Red: parseLines returns first ParseError on a mixed valid/invalid list
     - Write a failing unit test where the second line is invalid
     - Commit: `"test(red): parseLines short-circuits on first error"`
     - _Requirements: 1.9_
-  - [~] 3.24 Green: short-circuit parseLines on first error
+  - [-] 3.24 Green: short-circuit parseLines on first error
     - Commit: `"feat(green): parseLines short-circuits on first error"`
     - _Requirements: 1.9_
   - [~] 3.25 Red: PrettyPrinter formats a ScoreRecord as six-field CSV
