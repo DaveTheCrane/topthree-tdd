@@ -165,21 +165,21 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test: `aggregate([])` returns `Ok([])`
     - Commit: `"test(red): empty input returns empty aggregate list"`
     - _Requirements: 2.7_
-  - [-] 4.2 Green: handle empty input
+  - [x] 4.2 Green: handle empty input
     - Commit: `"feat(green): ScoreAggregator handles empty input"`
     - _Requirements: 2.7_
-  - [~] 4.3 Red: single ScoreRecord produces one PlayerAggregate with correct totalScore
+  - [x] 4.3 Red: single ScoreRecord produces one PlayerAggregate with correct totalScore
     - Write a failing unit test: one record with hours=2, score=50 → totalScore=100
     - Commit: `"test(red): single record produces PlayerAggregate with correct totalScore"`
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
-  - [~] 4.4 Green: compute weighted score and wrap in PlayerAggregate
+  - [x] 4.4 Green: compute weighted score and wrap in PlayerAggregate
     - Commit: `"feat(green): weighted score computation and PlayerAggregate creation"`
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
-  - [~] 4.5 Red: two records for the same player sum their weighted scores
+  - [x] 4.5 Red: two records for the same player sum their weighted scores
     - Write a failing unit test: two records for player "p1" → totalScore = sum of both weighted scores
     - Commit: `"test(red): two records for same player sum weighted scores"`
     - _Requirements: 2.5_
-  - [~] 4.6 Green: accumulate weighted scores per player id
+  - [-] 4.6 Green: accumulate weighted scores per player id
     - Commit: `"feat(green): accumulate weighted scores per player id"`
     - _Requirements: 2.5_
   - [~] 4.7 Red: two records for different players produce two PlayerAggregates
