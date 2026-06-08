@@ -281,7 +281,7 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Commit: `"test(property-11): tie-at-boundary produces correct partition"`
     - _Validates: Requirements 3.3, 3.6_
 
-- [ ] 6. Pipeline — TDD cycle
+- [x] 6. Pipeline — TDD cycle
   - [x] 6.1 Red: empty input returns empty RankedResult
     - Write a failing unit test: `run([])` returns `Ok(RankedResult([], []))`
     - Commit: `"test(red): empty pipeline input returns empty RankedResult"`
@@ -329,7 +329,7 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Commit: `"test(property-14): pipeline rejects duplicate playerId/gameId pairs"`
     - _Validates: Requirements 4.3_
   - [x] 6.13 Checkpoint — run the full test suite; all unit tests and any completed property tests must be green
-  - [-] 6.14 Commit: `"feat: Pipeline — all tests green"`
+  - [x] 6.14 Commit: `"feat: Pipeline — all tests green"`
 
 ## Notes
 
