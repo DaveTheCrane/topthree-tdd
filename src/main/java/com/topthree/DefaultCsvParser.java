@@ -10,13 +10,16 @@ public class DefaultCsvParser implements CsvParser {
         if (fields.length != 6) {
             return new Result.Err<>(new ParseError("Expected 6 fields but got " + fields.length, csvLine));
         }
+        for (int i = 0; i < fields.length; i++) {
+            fields[i] = fields[i].trim();
+        }
         String playerId = fields[0];
-        if (playerId.trim().isEmpty()) {
+        if (playerId.isEmpty()) {
             return new Result.Err<>(new ParseError("Player id must not be empty", csvLine));
         }
         String playerName = fields[1];
         String gameId = fields[2];
-        if (gameId.trim().isEmpty()) {
+        if (gameId.isEmpty()) {
             return new Result.Err<>(new ParseError("Game id must not be empty", csvLine));
         }
         String gameName = fields[3];
