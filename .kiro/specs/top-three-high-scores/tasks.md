@@ -293,21 +293,21 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test with two or three valid CSV lines; assert expected winners
     - Commit: `"test(red): valid CSV list produces correct RankedResult"`
     - _Requirements: 4.1_
-  - [-] 6.4 Green: full pipeline wiring for the happy path
+  - [x] 6.4 Green: full pipeline wiring for the happy path
     - Commit: `"feat(green): full pipeline happy path"`
     - _Requirements: 4.1_
-  - [~] 6.5 Red: invalid CSV line in input returns PipelineError
+  - [x] 6.5 Red: invalid CSV line in input returns PipelineError
     - Write a failing unit test with one malformed line in the list
     - Commit: `"test(red): invalid CSV line returns PipelineError"`
     - _Requirements: 4.2_
-  - [~] 6.6 Green: propagate ParseError as PipelineError
+  - [x] 6.6 Green: propagate ParseError as PipelineError
     - Commit: `"feat(green): ParseError propagated as PipelineError"`
     - _Requirements: 4.2_
-  - [~] 6.7 Red: duplicate (playerId, gameId) pair returns PipelineError
+  - [x] 6.7 Red: duplicate (playerId, gameId) pair returns PipelineError
     - Write a failing unit test with two lines sharing the same player id and game id
     - Commit: `"test(red): duplicate playerId/gameId returns PipelineError"`
     - _Requirements: 4.3_
-  - [~] 6.8 Green: duplicate-pair detection before aggregation
+  - [-] 6.8 Green: duplicate-pair detection before aggregation
     - Commit: `"feat(green): duplicate playerId/gameId detection"`
     - _Requirements: 4.3_
   - [~] 6.9 Refactor Pipeline if duplication warrants it
