@@ -149,12 +149,12 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Generate lines with field counts other than six; assert ParseError returned
     - Commit: `"test(property-5): wrong field count returns error"`
     - _Validates: Requirements 1.5, 1.6_
-  - [-] 3.33 Write property test — Property 6: whitespace trimming preserves field values
+  - [x] 3.33 Write property test — Property 6: whitespace trimming preserves field values
     - `// Feature: top-three-high-scores, Property 6: Whitespace trimming preserves field values`
     - Generate valid lines; add arbitrary whitespace around fields; assert same ScoreRecord as unpadded version
     - Commit: `"test(property-6): whitespace trimming preserves field values"`
     - _Validates: Requirements 1.10_
-  - [~] 3.34 Write property test — Property 7: parse → print → parse round trip
+  - [-] 3.34 Write property test — Property 7: parse → print → parse round trip
     - `// Feature: top-three-high-scores, Property 7: Parse → print → parse round trip`
     - Generate arbitrary valid ScoreRecords; print then parse; assert result equals original
     - Commit: `"test(property-7): parse-print-parse round trip"`
