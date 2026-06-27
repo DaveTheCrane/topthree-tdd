@@ -48,35 +48,35 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test for a line with seven fields
     - Commit: `"test(red): more than six fields returns ParseError"`
     - _Requirements: 1.6_
-  - [-] 3.6 Green: extend field-count guard to cover both under and over
+  - [x] 3.6 Green: extend field-count guard to cover both under and over
     - Commit: `"feat(green): field-count guard covers under and over"`
     - _Requirements: 1.6_
-  - [~] 3.7 Red: non-integer hours-played returns ParseError
+  - [x] 3.7 Red: non-integer hours-played returns ParseError
     - Write a failing unit test with `"abc"` in the hours-played field
     - Commit: `"test(red): non-integer hours-played returns ParseError"`
     - _Requirements: 1.3_
-  - [~] 3.8 Green: integer-parse guard for hours-played
+  - [x] 3.8 Green: integer-parse guard for hours-played
     - Commit: `"feat(green): integer-parse guard for hours-played"`
     - _Requirements: 1.3_
-  - [~] 3.9 Red: non-integer normalised-score returns ParseError
+  - [x] 3.9 Red: non-integer normalised-score returns ParseError
     - Write a failing unit test with `"1.5"` in the normalised-score field
     - Commit: `"test(red): non-integer normalised-score returns ParseError"`
     - _Requirements: 1.4_
-  - [~] 3.10 Green: integer-parse guard for normalised-score
+  - [x] 3.10 Green: integer-parse guard for normalised-score
     - Commit: `"feat(green): integer-parse guard for normalised-score"`
     - _Requirements: 1.4_
-  - [~] 3.11 Red: normalised score of 0 returns ParseError
+  - [x] 3.11 Red: normalised score of 0 returns ParseError
     - Write a failing unit test for score = 0
     - Commit: `"test(red): normalised score 0 returns ParseError"`
     - _Requirements: 1.2_
-  - [~] 3.12 Green: range guard [1, 100] for normalised-score
+  - [x] 3.12 Green: range guard [1, 100] for normalised-score
     - Commit: `"feat(green): range guard [1,100] for normalised-score"`
     - _Requirements: 1.2_
-  - [~] 3.13 Red: normalised score of 101 returns ParseError
+  - [x] 3.13 Red: normalised score of 101 returns ParseError
     - Write a failing unit test for score = 101 (confirms upper bound)
     - Commit: `"test(red): normalised score 101 returns ParseError"`
     - _Requirements: 1.2_
-  - [~] 3.14 Green: confirm range guard already covers upper bound (no new code expected)
+  - [-] 3.14 Green: confirm range guard already covers upper bound (no new code expected)
     - Commit: `"feat(green): upper-bound confirmed by existing range guard"`
     - _Requirements: 1.2_
   - [~] 3.15 Red: empty player id returns ParseError

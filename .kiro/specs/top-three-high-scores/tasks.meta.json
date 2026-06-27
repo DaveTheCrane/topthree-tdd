@@ -147,6 +147,11 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580824519
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580866903
       }
     ],
     "3.7 Red: non-integer hours-played returns ParseError": [
@@ -154,6 +159,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580254066
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580870870
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580925966
       }
     ],
     "3.8 Green: integer-parse guard for hours-played": [
@@ -161,6 +176,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580254212
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580930147
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580975531
       }
     ],
     "3.9 Red: non-integer normalised-score returns ParseError": [
@@ -168,6 +193,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580254331
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580979331
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581026831
       }
     ],
     "3.10 Green: integer-parse guard for normalised-score": [
@@ -175,6 +210,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580254434
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581030401
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581075665
       }
     ],
     "3.11 Red: normalised score of 0 returns ParseError": [
@@ -182,6 +227,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580254592
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581078914
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581125658
       }
     ],
     "3.12 Green: range guard [1, 100] for normalised-score": [
@@ -189,6 +244,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580254700
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581129036
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581174904
       }
     ],
     "3.13 Red: normalised score of 101 returns ParseError": [
@@ -196,6 +261,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580254829
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581178715
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581226650
       }
     ],
     "3.14 Green: confirm range guard already covers upper bound (no new code expected)": [
@@ -203,6 +278,11 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580255015
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581230503
       }
     ],
     "3.15 Red: empty player id returns ParseError": [
