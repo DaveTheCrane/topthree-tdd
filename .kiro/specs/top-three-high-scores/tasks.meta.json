@@ -1,0 +1,678 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Project setup": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580252844
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580280279
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580387847
+      }
+    ],
+    "2.1 Create core records and sealed Result type": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580253030
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580396623
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580459016
+      }
+    ],
+    "2.2 Define component interfaces": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580253145
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580462561
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580517704
+      }
+    ],
+    "3.1 Red: valid six-field line parses to correct ScoreRecord": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580253298
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580522183
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580596040
+      }
+    ],
+    "3.2 Green: minimal CsvParser implementation for the happy path": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580253448
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580599770
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580656156
+      }
+    ],
+    "3.3 Red: fewer than six fields returns ParseError": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580253559
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580660100
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580717106
+      }
+    ],
+    "3.4 Green: field-count validation": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580253679
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580720530
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580769597
+      }
+    ],
+    "3.5 Red: more than six fields returns ParseError": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580253843
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580773753
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580820847
+      }
+    ],
+    "3.6 Green: extend field-count guard to cover both under and over": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580253947
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580824519
+      }
+    ],
+    "3.7 Red: non-integer hours-played returns ParseError": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580254066
+      }
+    ],
+    "3.8 Green: integer-parse guard for hours-played": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580254212
+      }
+    ],
+    "3.9 Red: non-integer normalised-score returns ParseError": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580254331
+      }
+    ],
+    "3.10 Green: integer-parse guard for normalised-score": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580254434
+      }
+    ],
+    "3.11 Red: normalised score of 0 returns ParseError": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580254592
+      }
+    ],
+    "3.12 Green: range guard [1, 100] for normalised-score": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580254700
+      }
+    ],
+    "3.13 Red: normalised score of 101 returns ParseError": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580254829
+      }
+    ],
+    "3.14 Green: confirm range guard already covers upper bound (no new code expected)": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580255015
+      }
+    ],
+    "3.15 Red: empty player id returns ParseError": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580255197
+      }
+    ],
+    "3.16 Green: empty-id guard for player id": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580255309
+      }
+    ],
+    "3.17 Red: empty game id returns ParseError": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580255471
+      }
+    ],
+    "3.18 Green: empty-id guard for game id": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580255579
+      }
+    ],
+    "3.19 Red: fields with leading/trailing whitespace parse to trimmed values": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580255686
+      }
+    ],
+    "3.20 Green: trim each field before validation and construction": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580255835
+      }
+    ],
+    "3.21 Red: parseLines returns all ScoreRecords in order for a valid list": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580255952
+      }
+    ],
+    "3.22 Green: implement parseLines delegating to parseLine": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580256076
+      }
+    ],
+    "3.23 Red: parseLines returns first ParseError on a mixed valid/invalid list": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580256226
+      }
+    ],
+    "3.24 Green: short-circuit parseLines on first error": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580256347
+      }
+    ],
+    "3.25 Red: PrettyPrinter formats a ScoreRecord as six-field CSV": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580256451
+      }
+    ],
+    "3.26 Green: implement PrettyPrinter.print": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580256601
+      }
+    ],
+    "3.27 Refactor CsvParser if duplication warrants it": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580256719
+      }
+    ],
+    "3.28 Write property test — Property 1: valid CSV line parses to correct fields": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580256837
+      }
+    ],
+    "3.29 Write property test — Property 2: out-of-range normalised score returns error": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580256990
+      }
+    ],
+    "3.30 Write property test — Property 3: non-integer hours-played returns error": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580257093
+      }
+    ],
+    "3.31 Write property test — Property 4: non-integer normalised-score field returns error": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580257220
+      }
+    ],
+    "3.32 Write property test — Property 5: wrong field count returns error": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580257367
+      }
+    ],
+    "3.33 Write property test — Property 6: whitespace trimming preserves field values": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580257483
+      }
+    ],
+    "3.34 Write property test — Property 7: parse → print → parse round trip": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580257592
+      }
+    ],
+    "4.1 Red: empty input returns empty list": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580257741
+      }
+    ],
+    "4.2 Green: handle empty input": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580257860
+      }
+    ],
+    "4.3 Red: single ScoreRecord produces one PlayerAggregate with correct totalScore": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580257965
+      }
+    ],
+    "4.4 Green: compute weighted score and wrap in PlayerAggregate": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580258125
+      }
+    ],
+    "4.5 Red: two records for the same player sum their weighted scores": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580258249
+      }
+    ],
+    "4.6 Green: accumulate weighted scores per player id": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580258367
+      }
+    ],
+    "4.7 Red: two records for different players produce two PlayerAggregates": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580258516
+      }
+    ],
+    "4.8 Green: group by player id (no new logic expected beyond accumulation)": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580258643
+      }
+    ],
+    "4.9 Red: same player id with different display names — last-seen name wins": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580258768
+      }
+    ],
+    "4.10 Green: overwrite player name on each encounter, keeping the last-seen value": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580258919
+      }
+    ],
+    "4.11 Red: player display name is preserved in PlayerAggregate": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580259029
+      }
+    ],
+    "4.12 Green: carry player name through to PlayerAggregate (likely already passing; confirm)": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580259148
+      }
+    ],
+    "4.13 Refactor ScoreAggregator if duplication warrants it": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580259309
+      }
+    ],
+    "4.14 Write property test — Property 8: aggregation correctness": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580259435
+      }
+    ],
+    "4.15 Write property test — Property 9: last-seen display name wins on name conflict": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580259551
+      }
+    ],
+    "5.1 Red: empty input returns empty RankedResult": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580259701
+      }
+    ],
+    "5.2 Green: handle empty input": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580259817
+      }
+    ],
+    "5.3 Red: single player goes into definiteWinners, tiedCandidates empty": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580259918
+      }
+    ],
+    "5.4 Green: place single player in definiteWinners": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580260085
+      }
+    ],
+    "5.5 Red: three players with distinct scores — all in definiteWinners, descending order": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580260202
+      }
+    ],
+    "5.6 Green: sort descending and take up to three into definiteWinners": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580260336
+      }
+    ],
+    "5.7 Red: four players, no tie — top three in definiteWinners, fourth excluded": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580260494
+      }
+    ],
+    "5.8 Green: confirm existing logic handles N > 3 without tie (likely already passing)": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580260601
+      }
+    ],
+    "5.9 Red: tie at position 3 — players above boundary in definiteWinners, tied players in tiedCandidates": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580260718
+      }
+    ],
+    "5.10 Green: boundary-tie detection and partition logic": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580260870
+      }
+    ],
+    "5.11 Red: all players share the same score — definiteWinners empty, all in tiedCandidates": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580260977
+      }
+    ],
+    "5.12 Green: degenerate all-tied case (definiteWinners empty)": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580261090
+      }
+    ],
+    "5.13 Red: two players with distinct scores — both in definiteWinners": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580261231
+      }
+    ],
+    "5.14 Green: confirm fewer-than-three no-tie case (likely already passing)": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580261349
+      }
+    ],
+    "5.15 Refactor LeaderboardRanker if duplication warrants it": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580261486
+      }
+    ],
+    "5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580261626
+      }
+    ],
+    "5.17 Write property test — Property 11: tie-at-boundary produces correct partition": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580261752
+      }
+    ],
+    "6.1 Red: empty input returns empty RankedResult": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580261866
+      }
+    ],
+    "6.2 Green: wire CsvParser → ScoreAggregator → LeaderboardRanker; handle empty list": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580262012
+      }
+    ],
+    "6.3 Red: valid CSV list produces correct RankedResult end-to-end": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580262129
+      }
+    ],
+    "6.4 Green: full pipeline wiring for the happy path": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580262248
+      }
+    ],
+    "6.5 Red: invalid CSV line in input returns PipelineError": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580262396
+      }
+    ],
+    "6.6 Green: propagate ParseError as PipelineError": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580262533
+      }
+    ],
+    "6.7 Red: duplicate (playerId, gameId) pair returns PipelineError": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580262650
+      }
+    ],
+    "6.8 Green: duplicate-pair detection before aggregation": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580262799
+      }
+    ],
+    "6.9 Refactor Pipeline if duplication warrants it": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580262911
+      }
+    ],
+    "6.10 Write property test — Property 12: pipeline composition correctness": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580263020
+      }
+    ],
+    "6.11 Write property test — Property 13: pipeline propagates CSV parse errors": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580263167
+      }
+    ],
+    "6.12 Write property test — Property 14: pipeline rejects duplicate player-id/game-id pairs": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580263278
+      }
+    ],
+    "6.13 Checkpoint — run the full test suite; all unit tests and any completed property tests must be green": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580263385
+      }
+    ],
+    "6.14 Commit: `\"feat: Pipeline — all tests green\"`": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580263536
+      }
+    ],
+    "2. Define data models (no logic)": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782580517853
+      }
+    ]
+  }
+}
