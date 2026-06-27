@@ -63,6 +63,16 @@ class LeaderboardRankerTest {
     }
 
     @Test
+    void twoPlayersWithDistinctScoresBothInDefiniteWinners() {
+        var p1 = new PlayerAggregate(new Player("p1", "Alice"), 200);
+        var p2 = new PlayerAggregate(new Player("p2", "Bob"), 100);
+
+        var result = ranker.rank(List.of(p1, p2));
+
+        assertEquals(new RankedResult(List.of(p1, p2), List.of()), result);
+    }
+
+    @Test
     void tieAtPosition3SplitsDefiniteWinnersAndTiedCandidates() {
         var p1 = new PlayerAggregate(new Player("p1", "Alice"), 400);
         var p2 = new PlayerAggregate(new Player("p2", "Bob"), 300);
