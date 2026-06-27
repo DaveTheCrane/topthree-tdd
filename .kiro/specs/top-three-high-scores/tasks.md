@@ -186,14 +186,14 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test: records for "p1" and "p2" → two aggregates
     - Commit: `"test(red): different players produce separate PlayerAggregates"`
     - _Requirements: 2.1_
-  - [-] 4.8 Green: group by player id (no new logic expected beyond accumulation)
+  - [x] 4.8 Green: group by player id (no new logic expected beyond accumulation)
     - Commit: `"feat(green): grouping by player id confirmed"`
     - _Requirements: 2.1_
-  - [~] 4.9 Red: same player id with different display names — last-seen name wins
+  - [x] 4.9 Red: same player id with different display names — last-seen name wins
     - Write a failing unit test: two records for "p1" with names "Alice" then "Alicia"; assert the resulting PlayerAggregate has playerName = "Alicia"
     - Commit: `"test(red): last-seen display name wins on name conflict"`
     - _Requirements: 2.6_
-  - [~] 4.10 Green: overwrite player name on each encounter, keeping the last-seen value
+  - [-] 4.10 Green: overwrite player name on each encounter, keeping the last-seen value
     - Commit: `"feat(green): last-seen player name wins"`
     - _Requirements: 2.6_
   - [~] 4.11 Red: player display name is preserved in PlayerAggregate
