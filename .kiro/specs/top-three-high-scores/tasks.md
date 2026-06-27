@@ -243,21 +243,21 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test with scores 400, 300, 200, 100
     - Commit: `"test(red): four players no tie — fourth excluded"`
     - _Requirements: 3.2_
-  - [-] 5.8 Green: confirm existing logic handles N > 3 without tie (likely already passing)
+  - [x] 5.8 Green: confirm existing logic handles N > 3 without tie (likely already passing)
     - Commit: `"feat(green): N>3 no-tie case confirmed"`
     - _Requirements: 3.2_
-  - [~] 5.9 Red: tie at position 3 — players above boundary in definiteWinners, tied players in tiedCandidates
+  - [x] 5.9 Red: tie at position 3 — players above boundary in definiteWinners, tied players in tiedCandidates
     - Write a failing unit test: scores 400, 300, 200, 200 → definiteWinners=[400,300], tiedCandidates=[200,200]
     - Commit: `"test(red): tie at position 3 splits definiteWinners and tiedCandidates"`
     - _Requirements: 3.3_
-  - [~] 5.10 Green: boundary-tie detection and partition logic
+  - [x] 5.10 Green: boundary-tie detection and partition logic
     - Commit: `"feat(green): boundary-tie detection and partition"`
     - _Requirements: 3.3_
-  - [~] 5.11 Red: all players share the same score — definiteWinners empty, all in tiedCandidates
+  - [x] 5.11 Red: all players share the same score — definiteWinners empty, all in tiedCandidates
     - Write a failing unit test: three players all at score 100
     - Commit: `"test(red): all-tied — definiteWinners empty, all in tiedCandidates"`
     - _Requirements: 3.6_
-  - [~] 5.12 Green: degenerate all-tied case (definiteWinners empty)
+  - [-] 5.12 Green: degenerate all-tied case (definiteWinners empty)
     - Commit: `"feat(green): all-tied degenerate case"`
     - _Requirements: 3.6_
   - [~] 5.13 Red: two players with distinct scores — both in definiteWinners
