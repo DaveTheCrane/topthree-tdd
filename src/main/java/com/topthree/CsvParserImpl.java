@@ -22,6 +22,9 @@ public class CsvParserImpl implements CsvParser {
         } catch (NumberFormatException e) {
             return new Result.Err<>(new ParseError("Invalid integer for normalised-score: " + fields[5], csvLine));
         }
+        if (normalisedScore < 1 || normalisedScore > 100) {
+            return new Result.Err<>(new ParseError("normalised-score out of range [1,100]: " + normalisedScore, csvLine));
+        }
         Player player = new Player(fields[0], fields[1]);
         GameEntry gameEntry = new GameEntry(
                 fields[2],
