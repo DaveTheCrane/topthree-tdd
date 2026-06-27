@@ -19,4 +19,26 @@ class PipelineTest {
             result
         );
     }
+
+    @Test
+    void validCsvListProducesCorrectRankedResult() {
+        var csvLines = List.of(
+            "p1,Alice,g1,Chess,10,50",
+            "p2,Bob,g2,Go,5,80",
+            "p3,Charlie,g3,Poker,8,30"
+        );
+
+        var result = pipeline.run(csvLines);
+
+        var expected = new Result.Ok<RankedResult, PipelineError>(new RankedResult(
+            List.of(
+                new PlayerAggregate(new Player("p1", "Alice"), 500),
+                new PlayerAggregate(new Player("p2", "Bob"), 400),
+                new PlayerAggregate(new Player("p3", "Charlie"), 240)
+            ),
+            List.of()
+        ));
+
+        assertEquals(expected, result);
+    }
 }
