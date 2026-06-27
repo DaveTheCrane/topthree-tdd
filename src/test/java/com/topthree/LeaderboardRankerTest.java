@@ -60,4 +60,17 @@ class LeaderboardRankerTest {
         assertEquals(List.of(p1, p2, p3), result.definiteWinners());
         assertEquals(List.of(), result.tiedCandidates());
     }
+
+    @Test
+    void tieAtPositionThreeSplitsDefiniteWinnersAndTiedCandidates() {
+        PlayerAggregate p1 = new PlayerAggregate(new Player("p1", "Alice"), 400);
+        PlayerAggregate p2 = new PlayerAggregate(new Player("p2", "Bob"), 300);
+        PlayerAggregate p3 = new PlayerAggregate(new Player("p3", "Charlie"), 200);
+        PlayerAggregate p4 = new PlayerAggregate(new Player("p4", "Diana"), 200);
+
+        RankedResult result = ranker.rank(List.of(p3, p1, p4, p2));
+
+        assertEquals(List.of(p1, p2), result.definiteWinners());
+        assertEquals(List.of(p3, p4), result.tiedCandidates());
+    }
 }
