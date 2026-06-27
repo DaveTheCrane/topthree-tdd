@@ -233,6 +233,25 @@ class CsvParserTest {
         assertInstanceOf(Result.Err.class, result);
     }
 
+    // Feature: top-three-high-scores, Property 4: Non-integer normalised-score field returns an error
+    // Validates: Requirements 1.4
+    @Property(tries = 1000)
+    void nonIntegerNormalisedScoreReturnsParseErrorProperty(
+            @ForAll("playerIds") String playerId,
+            @ForAll("playerNames") String playerName,
+            @ForAll("gameIds") String gameId,
+            @ForAll("gameNames") String gameName,
+            @ForAll @IntRange(min = 0, max = 10000) int hoursPlayed,
+            @ForAll("nonIntegerStrings") String normalisedScore
+    ) {
+        String csvLine = String.join(",", playerId, playerName, gameId, gameName,
+                String.valueOf(hoursPlayed), normalisedScore);
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertInstanceOf(Result.Err.class, result);
+    }
+
     @Provide
     Arbitrary<String> nonIntegerStrings() {
         return Arbitraries.strings()
