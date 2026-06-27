@@ -194,6 +194,70 @@ class ScoreAggregatorTest {
         });
     }
 
+    // Feature: top-three-high-scores, Property 9: Last-seen display name wins on name conflict
+    // **Validates: Requirements 2.6, 2.8**
+    @Property(tries = 1000)
+    void lastSeenDisplayNameWinsOnNameConflict(@ForAll("conflictingNameRecords") List<ScoreRecord> records) {
+        var result = aggregator.aggregate(records);
+
+        assertInstanceOf(Result.Ok.class, result);
+        var aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+
+        // There should be exactly one aggregate (all records share same player id)
+        assertEquals(1, aggregates.size());
+
+        // The player name should be the name from the LAST record in the list
+        String expectedName = records.get(records.size() - 1).player().playerName();
+        assertEquals(expectedName, aggregates.get(0).player().playerName(),
+                "Expected last-seen display name to win");
+    }
+
+    @Provide
+    Arbitrary<List<ScoreRecord>> conflictingNameRecords() {
+        // Generate 2-4 records for a single player id, each with a DIFFERENT display name
+        Arbitrary<String> playerIdArb = Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8);
+        Arbitrary<Integer> recordCountArb = Arbitraries.integers().between(2, 4);
+
+        return Combinators.combine(playerIdArb, recordCountArb).flatAs((playerId, recordCount) -> {
+            // Generate exactly recordCount distinct names
+            Arbitrary<List<String>> distinctNamesArb = Arbitraries.strings()
+                    .alpha().ofMinLength(1).ofMaxLength(10)
+                    .list().ofSize(recordCount)
+                    .filter(names -> names.stream().distinct().count() == recordCount);
+
+            return distinctNamesArb.flatMap(names -> {
+                List<Arbitrary<ScoreRecord>> recordArbs = new ArrayList<>();
+                for (int i = 0; i < recordCount; i++) {
+                    String name = names.get(i);
+                    Player player = new Player(playerId, name);
+                    Arbitrary<ScoreRecord> recordArb = Combinators.combine(
+                            Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),
+                            Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(10),
+                            Arbitraries.integers().between(1, 100),
+                            Arbitraries.integers().between(1, 100)
+                    ).as((gameId, gameName, hours, score) ->
+                            new ScoreRecord(player, new GameEntry(gameId, gameName, hours, score))
+                    );
+                    recordArbs.add(recordArb);
+                }
+
+                // Combine all record arbitraries into a single list
+                Arbitrary<List<ScoreRecord>> combined = recordArbs.get(0).map(r -> {
+                    List<ScoreRecord> list = new ArrayList<>();
+                    list.add(r);
+                    return list;
+                });
+                for (int i = 1; i < recordArbs.size(); i++) {
+                    combined = Combinators.combine(combined, recordArbs.get(i)).as((acc, r) -> {
+                        acc.add(r);
+                        return acc;
+                    });
+                }
+                return combined.map(Collections::unmodifiableList);
+            });
+        });
+    }
+
     private Arbitrary<List<ScoreRecord>> combineRecordLists(List<Arbitrary<List<ScoreRecord>>> arbs) {
         if (arbs.isEmpty()) {
             return Arbitraries.just(List.of());
