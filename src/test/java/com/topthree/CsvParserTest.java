@@ -244,6 +244,47 @@ class CsvParserTest {
         assertInstanceOf(Result.Err.class, result);
     }
 
+    // Feature: top-three-high-scores, Property 6: Whitespace trimming preserves field values
+    // Validates: Requirements 1.10
+    @Property(tries = 1000)
+    void whitespaceTrimmingPreservesFieldValues(
+            @ForAll("playerIds") String playerId,
+            @ForAll("playerNames") String playerName,
+            @ForAll("gameIds") String gameId,
+            @ForAll("gameNames") String gameName,
+            @ForAll @IntRange(min = 0, max = 10000) int hoursPlayed,
+            @ForAll @IntRange(min = 1, max = 100) int normalisedScore,
+            @ForAll("whitespacePadding") String pad1,
+            @ForAll("whitespacePadding") String pad2,
+            @ForAll("whitespacePadding") String pad3,
+            @ForAll("whitespacePadding") String pad4,
+            @ForAll("whitespacePadding") String pad5,
+            @ForAll("whitespacePadding") String pad6
+    ) {
+        String hoursStr = String.valueOf(hoursPlayed);
+        String scoreStr = String.valueOf(normalisedScore);
+
+        String unpadded = String.join(",", playerId, playerName, gameId, gameName, hoursStr, scoreStr);
+        String padded = String.join(",",
+                pad1 + playerId + pad1,
+                pad2 + playerName + pad2,
+                pad3 + gameId + pad3,
+                pad4 + gameName + pad4,
+                pad5 + hoursStr + pad5,
+                pad6 + scoreStr + pad6);
+
+        Result<ScoreRecord, ParseError> unpaddedResult = parser.parseLine(unpadded);
+        Result<ScoreRecord, ParseError> paddedResult = parser.parseLine(padded);
+
+        assertInstanceOf(Result.Ok.class, unpaddedResult);
+        assertInstanceOf(Result.Ok.class, paddedResult);
+
+        ScoreRecord unpaddedRecord = ((Result.Ok<ScoreRecord, ParseError>) unpaddedResult).value();
+        ScoreRecord paddedRecord = ((Result.Ok<ScoreRecord, ParseError>) paddedResult).value();
+
+        assertEquals(unpaddedRecord, paddedRecord);
+    }
+
     // Feature: top-three-high-scores, Property 4: Non-integer normalised-score field returns an error
     // Validates: Requirements 1.4
     @Property(tries = 1000)
@@ -315,6 +356,13 @@ class CsvParserTest {
                 .alpha().numeric().withChars(' ', '-', '_')
                 .ofMaxLength(40)
                 .filter(s -> !s.contains(","));
+    }
+
+    @Provide
+    Arbitrary<String> whitespacePadding() {
+        return Arbitraries.strings()
+                .withChars(' ', '\t')
+                .ofMinLength(0).ofMaxLength(5);
     }
 
     @Provide
