@@ -4,6 +4,11 @@ public class PrettyPrinterImpl implements PrettyPrinter {
 
     @Override
     public String print(ScoreRecord record) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return record.player().playerId() + ","
+                + record.player().playerName() + ","
+                + record.gameEntry().gameId() + ","
+                + record.gameEntry().gameName() + ","
+                + record.gameEntry().hoursPlayed() + ","
+                + record.gameEntry().normalisedScore();
     }
 }
