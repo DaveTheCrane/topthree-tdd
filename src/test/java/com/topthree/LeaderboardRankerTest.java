@@ -1,9 +1,14 @@
 package com.topthree;
 
+import net.jqwik.api.*;
+import net.jqwik.api.constraints.IntRange;
+import net.jqwik.api.constraints.Size;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -95,5 +100,47 @@ class LeaderboardRankerTest {
 
         assertEquals(List.of(p1, p2), result.definiteWinners());
         assertEquals(List.of(), result.tiedCandidates());
+    }
+
+    // Feature: top-three-high-scores, Property 10: No-tie ranking places top players in definite_winners
+    // **Validates: Requirements 3.2, 3.4**
+    @Property(tries = 1000)
+    void noTieRankingPlacesTopPlayersInDefiniteWinners(
+            @ForAll("distinctScorePlayerAggregates") List<PlayerAggregate> aggregates) {
+
+        LeaderboardRanker ranker = new LeaderboardRankerImpl();
+        RankedResult result = ranker.rank(aggregates);
+
+        int n = aggregates.size();
+        int expectedWinnerCount = Math.min(3, n);
+
+        // Sort expected descending by totalScore
+        List<PlayerAggregate> sortedDesc = aggregates.stream()
+                .sorted(Comparator.comparingInt(PlayerAggregate::totalScore).reversed())
+                .toList();
+
+        List<PlayerAggregate> expectedWinners = sortedDesc.subList(0, expectedWinnerCount);
+
+        assertEquals(expectedWinners, result.definiteWinners());
+        assertEquals(List.of(), result.tiedCandidates());
+    }
+
+    @Provide
+    Arbitrary<List<PlayerAggregate>> distinctScorePlayerAggregates() {
+        return Arbitraries.integers().between(1, 6).flatMap(size ->
+                Arbitraries.integers().between(1, 100000)
+                        .set().ofSize(size)
+                        .map(scores -> {
+                            List<Integer> scoreList = new ArrayList<>(scores);
+                            List<PlayerAggregate> players = new ArrayList<>();
+                            for (int i = 0; i < scoreList.size(); i++) {
+                                players.add(new PlayerAggregate(
+                                        new Player("p" + (i + 1), "Player" + (i + 1)),
+                                        scoreList.get(i)));
+                            }
+                            Collections.shuffle(players);
+                            return players;
+                        })
+        );
     }
 }
