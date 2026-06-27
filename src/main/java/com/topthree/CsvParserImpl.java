@@ -16,12 +16,18 @@ public class CsvParserImpl implements CsvParser {
         } catch (NumberFormatException e) {
             return new Result.Err<>(new ParseError("Invalid integer for hours-played: " + fields[4], csvLine));
         }
+        int normalisedScore;
+        try {
+            normalisedScore = Integer.parseInt(fields[5]);
+        } catch (NumberFormatException e) {
+            return new Result.Err<>(new ParseError("Invalid integer for normalised-score: " + fields[5], csvLine));
+        }
         Player player = new Player(fields[0], fields[1]);
         GameEntry gameEntry = new GameEntry(
                 fields[2],
                 fields[3],
                 hoursPlayed,
-                Integer.parseInt(fields[5])
+                normalisedScore
         );
         return new Result.Ok<>(new ScoreRecord(player, gameEntry));
     }
