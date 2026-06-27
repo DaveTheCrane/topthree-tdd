@@ -198,4 +198,47 @@ class PipelineTest {
             return all;
         });
     }
+
+    // Feature: top-three-high-scores, Property 14: Pipeline rejects duplicate player-id/game-id pairs
+    // Validates: Requirements 4.3
+    @Property(tries = 1000)
+    void pipelineRejectsDuplicatePlayerIdGameIdPairs(@ForAll("csvLinesWithDuplicate") List<String> csvLines) {
+        Result<RankedResult, PipelineError> result = pipeline.run(csvLines);
+
+        assertInstanceOf(Result.Err.class, result);
+        Result.Err<RankedResult, PipelineError> err = (Result.Err<RankedResult, PipelineError>) result;
+        assertTrue(err.error().message().toLowerCase().contains("duplicate"));
+    }
+
+    @Provide
+    Arbitrary<List<String>> csvLinesWithDuplicate() {
+        // Generate 1-4 valid lines with distinct pairs, then duplicate one entry
+        return Arbitraries.integers().between(1, 4).flatMap(size -> {
+            return Arbitraries.just(size).flatMap(n -> {
+                List<Arbitrary<String>> lineArbitraries = new ArrayList<>();
+                for (int i = 0; i < n; i++) {
+                    final int idx = i;
+                    Arbitrary<String> line = Combinators.combine(
+                            Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),
+                            Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),
+                            Arbitraries.integers().between(1, 1000),
+                            Arbitraries.integers().between(1, 100)
+                    ).as((playerName, gameName, hours, score) ->
+                            "p" + idx + "," + playerName + ",g" + idx + "," + gameName + "," + hours + "," + score
+                    );
+                    lineArbitraries.add(line);
+                }
+                return Combinators.combine(lineArbitraries).as(lines -> {
+                    List<String> result = new ArrayList<>(lines);
+                    // Pick a random existing line to duplicate (same playerId, gameId but possibly different other fields)
+                    String original = result.get(0);
+                    String[] fields = original.split(",");
+                    // Create a duplicate with same playerId and gameId but different hours/score
+                    String duplicate = fields[0] + "," + fields[1] + "," + fields[2] + "," + fields[3] + ",1,50";
+                    result.add(duplicate);
+                    return result;
+                });
+            });
+        });
+    }
 }
