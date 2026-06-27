@@ -1116,6 +1116,11 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782598137085
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598201782
       }
     ],
     "5.15 Refactor LeaderboardRanker if duplication warrants it": [
@@ -1123,6 +1128,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593728008
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598206540
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598246578
       }
     ],
     "5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners": [
@@ -1130,6 +1145,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593728136
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598250796
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598339939
       }
     ],
     "5.17 Write property test — Property 11: tie-at-boundary produces correct partition": [
@@ -1137,6 +1162,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593728253
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598344214
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598538642
       }
     ],
     "6.1 Red: empty input returns empty RankedResult": [
@@ -1144,6 +1179,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593728373
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598544039
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598631165
       }
     ],
     "6.2 Green: wire CsvParser → ScoreAggregator → LeaderboardRanker; handle empty list": [
@@ -1151,6 +1196,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593728496
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598635349
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598704881
       }
     ],
     "6.3 Red: valid CSV list produces correct RankedResult end-to-end": [
@@ -1158,6 +1213,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593728613
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598709101
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598780933
       }
     ],
     "6.4 Green: full pipeline wiring for the happy path": [
@@ -1165,6 +1230,11 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593728759
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598785104
       }
     ],
     "6.5 Red: invalid CSV line in input returns PipelineError": [
@@ -1256,6 +1326,13 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782597269163
+      }
+    ],
+    "5. LeaderboardRanker — TDD cycle": [
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782598538834
       }
     ]
   }

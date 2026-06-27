@@ -217,7 +217,7 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Commit: `"test(property-9): last-seen display name wins on name conflict"`
     - _Validates: Requirements 2.6, 2.8_
 
-- [ ] 5. LeaderboardRanker — TDD cycle
+- [x] 5. LeaderboardRanker — TDD cycle
   - [x] 5.1 Red: empty input returns empty RankedResult
     - Write a failing unit test: `rank([])` returns `RankedResult([], [])`
     - Commit: `"test(red): empty input returns empty RankedResult"`
@@ -264,36 +264,36 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test with two players at scores 200, 100
     - Commit: `"test(red): two distinct-score players both in definiteWinners"`
     - _Requirements: 3.4_
-  - [-] 5.14 Green: confirm fewer-than-three no-tie case (likely already passing)
+  - [x] 5.14 Green: confirm fewer-than-three no-tie case (likely already passing)
     - Commit: `"feat(green): fewer-than-three no-tie case confirmed"`
     - _Requirements: 3.4_
-  - [~] 5.15 Refactor LeaderboardRanker if duplication warrants it
+  - [x] 5.15 Refactor LeaderboardRanker if duplication warrants it
     - All tests must stay green
     - Commit (if changes made): `"refactor: LeaderboardRanker deduplication"`
-  - [~] 5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners
+  - [x] 5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners
     - `// Feature: top-three-high-scores, Property 10: No-tie ranking places top players in definite_winners`
     - Generate lists of PlayerAggregates with all-distinct totalScores; assert definiteWinners = top min(3,N) in descending order, tiedCandidates empty
     - Commit: `"test(property-10): no-tie ranking places top players in definiteWinners"`
     - _Validates: Requirements 3.2, 3.4_
-  - [~] 5.17 Write property test — Property 11: tie-at-boundary produces correct partition
+  - [x] 5.17 Write property test — Property 11: tie-at-boundary produces correct partition
     - `// Feature: top-three-high-scores, Property 11: Tie-at-boundary produces correct partition`
     - Generate lists where two or more players share the boundary score; assert correct definiteWinners/tiedCandidates partition
     - Commit: `"test(property-11): tie-at-boundary produces correct partition"`
     - _Validates: Requirements 3.3, 3.6_
 
 - [ ] 6. Pipeline — TDD cycle
-  - [~] 6.1 Red: empty input returns empty RankedResult
+  - [x] 6.1 Red: empty input returns empty RankedResult
     - Write a failing unit test: `run([])` returns `Ok(RankedResult([], []))`
     - Commit: `"test(red): empty pipeline input returns empty RankedResult"`
     - _Requirements: 4.4_
-  - [~] 6.2 Green: wire CsvParser → ScoreAggregator → LeaderboardRanker; handle empty list
+  - [x] 6.2 Green: wire CsvParser → ScoreAggregator → LeaderboardRanker; handle empty list
     - Commit: `"feat(green): pipeline wired, empty input handled"`
     - _Requirements: 4.4_
-  - [~] 6.3 Red: valid CSV list produces correct RankedResult end-to-end
+  - [x] 6.3 Red: valid CSV list produces correct RankedResult end-to-end
     - Write a failing unit test with two or three valid CSV lines; assert expected winners
     - Commit: `"test(red): valid CSV list produces correct RankedResult"`
     - _Requirements: 4.1_
-  - [~] 6.4 Green: full pipeline wiring for the happy path
+  - [-] 6.4 Green: full pipeline wiring for the happy path
     - Commit: `"feat(green): full pipeline happy path"`
     - _Requirements: 4.1_
   - [~] 6.5 Red: invalid CSV line in input returns PipelineError
