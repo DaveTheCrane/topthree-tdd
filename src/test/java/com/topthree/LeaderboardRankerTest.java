@@ -50,6 +50,19 @@ class LeaderboardRankerTest {
     }
 
     @Test
+    void allPlayersShareSameScoreAllInTiedCandidates() {
+        var p1 = new PlayerAggregate(new Player("p1", "Alice"), 100);
+        var p2 = new PlayerAggregate(new Player("p2", "Bob"), 100);
+        var p3 = new PlayerAggregate(new Player("p3", "Charlie"), 100);
+
+        var result = ranker.rank(List.of(p1, p2, p3));
+
+        assertEquals(List.of(), result.definiteWinners());
+        assertTrue(result.tiedCandidates().containsAll(List.of(p1, p2, p3)));
+        assertEquals(3, result.tiedCandidates().size());
+    }
+
+    @Test
     void tieAtPosition3SplitsDefiniteWinnersAndTiedCandidates() {
         var p1 = new PlayerAggregate(new Player("p1", "Alice"), 400);
         var p2 = new PlayerAggregate(new Player("p2", "Bob"), 300);
