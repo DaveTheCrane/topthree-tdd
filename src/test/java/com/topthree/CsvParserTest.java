@@ -1,5 +1,7 @@
 package com.topthree;
 
+import net.jqwik.api.*;
+import net.jqwik.api.constraints.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -164,5 +166,62 @@ class CsvParserTest {
         String result = prettyPrinter.print(record);
 
         assertEquals("p1,Alice,g1,Chess,3,50", result);
+    }
+
+    // Feature: top-three-high-scores, Property 1: Valid CSV line parses to correct fields
+    // Validates: Requirements 1.1
+    @Property(tries = 1000)
+    void validCsvLineParsesToCorrectFields(
+            @ForAll("playerIds") String playerId,
+            @ForAll("playerNames") String playerName,
+            @ForAll("gameIds") String gameId,
+            @ForAll("gameNames") String gameName,
+            @ForAll @IntRange(min = 0, max = 10000) int hoursPlayed,
+            @ForAll @IntRange(min = 1, max = 100) int normalisedScore
+    ) {
+        String csvLine = String.join(",", playerId, playerName, gameId, gameName,
+                String.valueOf(hoursPlayed), String.valueOf(normalisedScore));
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertInstanceOf(Result.Ok.class, result);
+        ScoreRecord record = ((Result.Ok<ScoreRecord, ParseError>) result).value();
+
+        assertEquals(playerId.trim(), record.player().playerId());
+        assertEquals(playerName.trim(), record.player().playerName());
+        assertEquals(gameId.trim(), record.gameEntry().gameId());
+        assertEquals(gameName.trim(), record.gameEntry().gameName());
+        assertEquals(hoursPlayed, record.gameEntry().hoursPlayed());
+        assertEquals(normalisedScore, record.gameEntry().normalisedScore());
+    }
+
+    @Provide
+    Arbitrary<String> playerIds() {
+        return Arbitraries.strings()
+                .alpha().numeric()
+                .ofMinLength(1).ofMaxLength(20);
+    }
+
+    @Provide
+    Arbitrary<String> playerNames() {
+        return Arbitraries.strings()
+                .alpha().numeric().withChars(' ', '-', '_')
+                .ofMinLength(1).ofMaxLength(30)
+                .filter(s -> !s.contains(","));
+    }
+
+    @Provide
+    Arbitrary<String> gameIds() {
+        return Arbitraries.strings()
+                .alpha().numeric().withChars('-')
+                .ofMinLength(1).ofMaxLength(20);
+    }
+
+    @Provide
+    Arbitrary<String> gameNames() {
+        return Arbitraries.strings()
+                .alpha().numeric().withChars(' ', '-', '_')
+                .ofMaxLength(40)
+                .filter(s -> !s.contains(","));
     }
 }
