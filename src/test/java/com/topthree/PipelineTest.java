@@ -21,6 +21,21 @@ class PipelineTest {
     }
 
     @Test
+    void invalidCsvLineReturnsPipelineError() {
+        List<String> csvLines = List.of(
+                "p1,Alice,g1,Chess,10,80",
+                "this,is,malformed"
+        );
+
+        Result<RankedResult, PipelineError> result = pipeline.run(csvLines);
+
+        assertInstanceOf(Result.Err.class, result);
+        Result.Err<RankedResult, PipelineError> err = (Result.Err<RankedResult, PipelineError>) result;
+        assertNotNull(err.error().message());
+        assertEquals("this,is,malformed", err.error().context());
+    }
+
+    @Test
     void validCsvListProducesCorrectRankedResult() {
         // p1: 10*80 = 800, p2: 5*60 = 300, p3: 3*90 = 270
         List<String> csvLines = List.of(
