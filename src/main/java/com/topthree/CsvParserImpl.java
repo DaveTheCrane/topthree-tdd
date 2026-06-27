@@ -10,6 +10,16 @@ public class CsvParserImpl implements CsvParser {
         if (fields.length != 6) {
             return new Result.Err<>(new ParseError("Expected 6 fields but got " + fields.length, csvLine));
         }
+        // Trim fields before validation
+        for (int i = 0; i < fields.length; i++) {
+            fields[i] = fields[i].trim();
+        }
+
+        // Validate player id is not empty/blank
+        if (fields[0].isEmpty()) {
+            return new Result.Err<>(new ParseError("Player id must not be blank", csvLine));
+        }
+
         int hoursPlayed;
         try {
             hoursPlayed = Integer.parseInt(fields[4]);
