@@ -36,4 +36,16 @@ class LeaderboardRankerTest {
 
         assertEquals(new RankedResult(List.of(p3, p1, p2), List.of()), result);
     }
+
+    @Test
+    void fourPlayersNoTieTopThreeInDefiniteWinnersFourthExcluded() {
+        var p1 = new PlayerAggregate(new Player("p1", "Alice"), 400);
+        var p2 = new PlayerAggregate(new Player("p2", "Bob"), 300);
+        var p3 = new PlayerAggregate(new Player("p3", "Charlie"), 200);
+        var p4 = new PlayerAggregate(new Player("p4", "Diana"), 100);
+
+        var result = ranker.rank(List.of(p4, p2, p1, p3));
+
+        assertEquals(new RankedResult(List.of(p1, p2, p3), List.of()), result);
+    }
 }
