@@ -103,6 +103,95 @@ class PipelineTest {
         assertEquals(expectedResult, pipelineResult);
     }
 
+    // Feature: top-three-high-scores, Property 13: Pipeline propagates CSV parse errors
+    // Validates: Requirements 4.2
+    @Property(tries = 1000)
+    void pipelinePropagatesCsvParseErrors(
+            @ForAll("csvLineListsWithAtLeastOneInvalid") List<String> csvLines
+    ) {
+        var result = pipeline.run(csvLines);
+
+        assertInstanceOf(Result.Err.class, result);
+        var err = (Result.Err<RankedResult, PipelineError>) result;
+        assertNotNull(err.error());
+        assertInstanceOf(PipelineError.class, err.error());
+    }
+
+    @Provide
+    Arbitrary<List<String>> csvLineListsWithAtLeastOneInvalid() {
+        Arbitrary<String> validLineArb = validCsvLine();
+        Arbitrary<String> invalidLineArb = invalidCsvLine();
+
+        return Combinators.combine(
+                validLineArb.list().ofMinSize(0).ofMaxSize(2),
+                invalidLineArb
+        ).as((validLines, invalidLine) -> {
+            List<String> combined = new ArrayList<>(validLines);
+            combined.add(invalidLine);
+            Collections.shuffle(combined);
+            return combined;
+        });
+    }
+
+    private Arbitrary<String> validCsvLine() {
+        Arbitrary<String> playerIdArb = Arbitraries.strings()
+                .alpha().numeric()
+                .ofMinLength(1).ofMaxLength(10);
+        Arbitrary<String> playerNameArb = Arbitraries.strings()
+                .alpha().numeric().withChars('-', '_')
+                .ofMinLength(1).ofMaxLength(15)
+                .filter(s -> !s.contains(","));
+        Arbitrary<String> gameIdArb = Arbitraries.strings()
+                .alpha().numeric().withChars('-')
+                .ofMinLength(1).ofMaxLength(10);
+        Arbitrary<String> gameNameArb = Arbitraries.strings()
+                .alpha().numeric().withChars('-', '_')
+                .ofMinLength(1).ofMaxLength(15)
+                .filter(s -> !s.contains(","));
+        Arbitrary<Integer> hoursArb = Arbitraries.integers().between(1, 100);
+        Arbitrary<Integer> scoreArb = Arbitraries.integers().between(1, 100);
+
+        return Combinators.combine(playerIdArb, playerNameArb, gameIdArb, gameNameArb, hoursArb, scoreArb)
+                .as((pid, pname, gid, gname, hours, score) ->
+                        String.join(",", pid, pname, gid, gname,
+                                String.valueOf(hours), String.valueOf(score)));
+    }
+
+    private Arbitrary<String> invalidCsvLine() {
+        // Multiple types of invalid lines
+        Arbitrary<String> wrongFieldCount = Arbitraries.of(
+                "p1,Alice,g1",           // too few fields
+                "p1,Alice,g1,Chess,10",  // 5 fields
+                "p1,Alice,g1,Chess,10,50,extra"  // 7 fields
+        );
+
+        Arbitrary<String> nonIntegerHours = Arbitraries.of(
+                "p1,Alice,g1,Chess,abc,50",
+                "p1,Alice,g1,Chess,1.5,50",
+                "p1,Alice,g1,Chess,,50"
+        );
+
+        Arbitrary<String> nonIntegerScore = Arbitraries.of(
+                "p1,Alice,g1,Chess,10,xyz",
+                "p1,Alice,g1,Chess,10,1.5",
+                "p1,Alice,g1,Chess,10,"
+        );
+
+        Arbitrary<String> outOfRangeScore = Arbitraries.of(
+                "p1,Alice,g1,Chess,10,0",
+                "p1,Alice,g1,Chess,10,-5",
+                "p1,Alice,g1,Chess,10,101",
+                "p1,Alice,g1,Chess,10,999"
+        );
+
+        Arbitrary<String> emptyIds = Arbitraries.of(
+                ",Alice,g1,Chess,10,50",      // empty player id
+                "p1,Alice,,Chess,10,50"       // empty game id
+        );
+
+        return Arbitraries.oneOf(wrongFieldCount, nonIntegerHours, nonIntegerScore, outOfRangeScore, emptyIds);
+    }
+
     @Provide
     Arbitrary<List<String>> validCsvLineLists() {
         return Arbitraries.integers().between(1, 5).flatMap(size ->
