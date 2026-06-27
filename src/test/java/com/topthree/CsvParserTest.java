@@ -76,4 +76,15 @@ class CsvParserTest {
         ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
         assertEquals(line, error.offendingLine());
     }
+
+    @Test
+    void normalisedScore101ReturnsParseError() {
+        String line = "p1,Alice,g1,Chess,3,101";
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(line);
+
+        assertInstanceOf(Result.Err.class, result);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertEquals(line, error.offendingLine());
+    }
 }
