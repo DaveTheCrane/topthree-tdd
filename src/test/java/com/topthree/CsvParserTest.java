@@ -2,6 +2,8 @@ package com.topthree;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CsvParserTest {
@@ -128,5 +130,34 @@ class CsvParserTest {
         assertEquals("Chess", record.gameEntry().gameName());
         assertEquals(2, record.gameEntry().hoursPlayed());
         assertEquals(50, record.gameEntry().normalisedScore());
+    }
+
+    @Test
+    void parseLinesReturnsAllScoreRecordsInOrderForValidList() {
+        List<String> lines = List.of(
+                "p1,Alice,g1,Chess,10,85",
+                "p2,Bob,g2,Poker,5,70"
+        );
+
+        Result<List<ScoreRecord>, ParseError> result = parser.parseLines(lines);
+
+        assertInstanceOf(Result.Ok.class, result);
+        List<ScoreRecord> records = ((Result.Ok<List<ScoreRecord>, ParseError>) result).value();
+
+        assertEquals(2, records.size());
+
+        assertEquals("p1", records.get(0).player().playerId());
+        assertEquals("Alice", records.get(0).player().playerName());
+        assertEquals("g1", records.get(0).gameEntry().gameId());
+        assertEquals("Chess", records.get(0).gameEntry().gameName());
+        assertEquals(10, records.get(0).gameEntry().hoursPlayed());
+        assertEquals(85, records.get(0).gameEntry().normalisedScore());
+
+        assertEquals("p2", records.get(1).player().playerId());
+        assertEquals("Bob", records.get(1).player().playerName());
+        assertEquals("g2", records.get(1).gameEntry().gameId());
+        assertEquals("Poker", records.get(1).gameEntry().gameName());
+        assertEquals(5, records.get(1).gameEntry().hoursPlayed());
+        assertEquals(70, records.get(1).gameEntry().normalisedScore());
     }
 }
