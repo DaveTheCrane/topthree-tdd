@@ -73,6 +73,21 @@ class ScoreAggregatorTest {
     }
 
     @Test
+    void playerDisplayNameIsPreserved() {
+        var record = new ScoreRecord(
+                new Player("p1", "Alice"),
+                new GameEntry("g1", "Chess", 2, 50)
+        );
+
+        var result = aggregator.aggregate(List.of(record));
+
+        assertInstanceOf(Result.Ok.class, result);
+        var aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+        assertEquals(1, aggregates.size());
+        assertEquals("Alice", aggregates.get(0).player().playerName());
+    }
+
+    @Test
     void twoRecordsForSamePlayerSumTheirWeightedScores() {
         var record1 = new ScoreRecord(
                 new Player("p1", "Alice"),
