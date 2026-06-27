@@ -24,4 +24,14 @@ class LeaderboardRankerTest {
         assertEquals(List.of(), result.definiteWinners());
         assertEquals(List.of(), result.tiedCandidates());
     }
+
+    @Test
+    void singlePlayerGoesIntoDefiniteWinners() {
+        PlayerAggregate player = new PlayerAggregate(new Player("p1", "Alice"), 100);
+
+        RankedResult result = ranker.rank(List.of(player));
+
+        assertEquals(List.of(player), result.definiteWinners());
+        assertEquals(List.of(), result.tiedCandidates());
+    }
 }
