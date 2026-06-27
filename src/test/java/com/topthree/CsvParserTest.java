@@ -309,6 +309,52 @@ class CsvParserTest {
         );
     }
 
+    // Feature: top-three-high-scores, Property 6: Whitespace trimming preserves field values
+    // **Validates: Requirements 1.10**
+    @Property(tries = 1000)
+    void whitespaceTrimmingPreservesFieldValues(
+            @ForAll("nonEmptyNoCommaStrings") String playerId,
+            @ForAll("noCommaStrings") String playerName,
+            @ForAll("nonEmptyNoCommaStrings") String gameId,
+            @ForAll("noCommaStrings") String gameName,
+            @ForAll @IntRange(min = 0, max = 1000) int hoursPlayed,
+            @ForAll @IntRange(min = 1, max = 100) int normalisedScore,
+            @ForAll("whitespace") String ws1,
+            @ForAll("whitespace") String ws2,
+            @ForAll("whitespace") String ws3,
+            @ForAll("whitespace") String ws4,
+            @ForAll("whitespace") String ws5,
+            @ForAll("whitespace") String ws6,
+            @ForAll("whitespace") String ws7,
+            @ForAll("whitespace") String ws8,
+            @ForAll("whitespace") String ws9,
+            @ForAll("whitespace") String ws10,
+            @ForAll("whitespace") String ws11,
+            @ForAll("whitespace") String ws12
+    ) {
+        String cleanLine = playerId + "," + playerName + "," + gameId + "," + gameName + "," + hoursPlayed + "," + normalisedScore;
+        String paddedLine = ws1 + playerId + ws2 + "," + ws3 + playerName + ws4 + "," + ws5 + gameId + ws6 + "," + ws7 + gameName + ws8 + "," + ws9 + hoursPlayed + ws10 + "," + ws11 + normalisedScore + ws12;
+
+        Result<ScoreRecord, ParseError> cleanResult = parser.parseLine(cleanLine);
+        Result<ScoreRecord, ParseError> paddedResult = parser.parseLine(paddedLine);
+
+        assertInstanceOf(Result.Ok.class, cleanResult);
+        assertInstanceOf(Result.Ok.class, paddedResult);
+
+        ScoreRecord cleanRecord = ((Result.Ok<ScoreRecord, ParseError>) cleanResult).value();
+        ScoreRecord paddedRecord = ((Result.Ok<ScoreRecord, ParseError>) paddedResult).value();
+
+        assertEquals(cleanRecord, paddedRecord);
+    }
+
+    @Provide
+    Arbitrary<String> whitespace() {
+        return Arbitraries.strings()
+                .ofMinLength(0)
+                .ofMaxLength(5)
+                .withChars(' ', '\t');
+    }
+
     @Provide
     Arbitrary<String> nonEmptyNoCommaStrings() {
         return Arbitraries.strings()
