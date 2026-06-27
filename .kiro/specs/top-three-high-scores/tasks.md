@@ -48,70 +48,70 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test for a line with seven fields
     - Commit: `"test(red): more than six fields returns ParseError"`
     - _Requirements: 1.6_
-  - [-] 3.6 Green: extend field-count guard to cover both under and over
+  - [x] 3.6 Green: extend field-count guard to cover both under and over
     - Commit: `"feat(green): field-count guard covers under and over"`
     - _Requirements: 1.6_
-  - [~] 3.7 Red: non-integer hours-played returns ParseError
+  - [x] 3.7 Red: non-integer hours-played returns ParseError
     - Write a failing unit test with `"abc"` in the hours-played field
     - Commit: `"test(red): non-integer hours-played returns ParseError"`
     - _Requirements: 1.3_
-  - [~] 3.8 Green: integer-parse guard for hours-played
+  - [x] 3.8 Green: integer-parse guard for hours-played
     - Commit: `"feat(green): integer-parse guard for hours-played"`
     - _Requirements: 1.3_
-  - [~] 3.9 Red: non-integer normalised-score returns ParseError
+  - [x] 3.9 Red: non-integer normalised-score returns ParseError
     - Write a failing unit test with `"1.5"` in the normalised-score field
     - Commit: `"test(red): non-integer normalised-score returns ParseError"`
     - _Requirements: 1.4_
-  - [~] 3.10 Green: integer-parse guard for normalised-score
+  - [x] 3.10 Green: integer-parse guard for normalised-score
     - Commit: `"feat(green): integer-parse guard for normalised-score"`
     - _Requirements: 1.4_
-  - [~] 3.11 Red: normalised score of 0 returns ParseError
+  - [x] 3.11 Red: normalised score of 0 returns ParseError
     - Write a failing unit test for score = 0
     - Commit: `"test(red): normalised score 0 returns ParseError"`
     - _Requirements: 1.2_
-  - [~] 3.12 Green: range guard [1, 100] for normalised-score
+  - [x] 3.12 Green: range guard [1, 100] for normalised-score
     - Commit: `"feat(green): range guard [1,100] for normalised-score"`
     - _Requirements: 1.2_
-  - [~] 3.13 Red: normalised score of 101 returns ParseError
+  - [x] 3.13 Red: normalised score of 101 returns ParseError
     - Write a failing unit test for score = 101 (confirms upper bound)
     - Commit: `"test(red): normalised score 101 returns ParseError"`
     - _Requirements: 1.2_
-  - [~] 3.14 Green: confirm range guard already covers upper bound (no new code expected)
+  - [x] 3.14 Green: confirm range guard already covers upper bound (no new code expected)
     - Commit: `"feat(green): upper-bound confirmed by existing range guard"`
     - _Requirements: 1.2_
-  - [~] 3.15 Red: empty player id returns ParseError
+  - [x] 3.15 Red: empty player id returns ParseError
     - Write a failing unit test for a line where player id is blank after trim
     - Commit: `"test(red): empty player id returns ParseError"`
     - _Requirements: 1.7_
-  - [~] 3.16 Green: empty-id guard for player id
+  - [x] 3.16 Green: empty-id guard for player id
     - Commit: `"feat(green): empty-id guard for player id"`
     - _Requirements: 1.7_
-  - [~] 3.17 Red: empty game id returns ParseError
+  - [x] 3.17 Red: empty game id returns ParseError
     - Write a failing unit test for a line where game id is blank after trim
     - Commit: `"test(red): empty game id returns ParseError"`
     - _Requirements: 1.8_
-  - [~] 3.18 Green: empty-id guard for game id
+  - [x] 3.18 Green: empty-id guard for game id
     - Commit: `"feat(green): empty-id guard for game id"`
     - _Requirements: 1.8_
-  - [~] 3.19 Red: fields with leading/trailing whitespace parse to trimmed values
+  - [x] 3.19 Red: fields with leading/trailing whitespace parse to trimmed values
     - Write a failing unit test with padded fields (e.g. `" p1 , Alice , g1 , Chess , 2 , 50 "`)
     - Commit: `"test(red): whitespace-padded fields parse to trimmed values"`
     - _Requirements: 1.10_
-  - [~] 3.20 Green: trim each field before validation and construction
+  - [x] 3.20 Green: trim each field before validation and construction
     - Commit: `"feat(green): trim fields before validation"`
     - _Requirements: 1.10_
-  - [~] 3.21 Red: parseLines returns all ScoreRecords in order for a valid list
+  - [x] 3.21 Red: parseLines returns all ScoreRecords in order for a valid list
     - Write a failing unit test with two valid lines; assert order is preserved
     - Commit: `"test(red): parseLines preserves order of valid records"`
     - _Requirements: 1.9_
-  - [~] 3.22 Green: implement parseLines delegating to parseLine
+  - [x] 3.22 Green: implement parseLines delegating to parseLine
     - Commit: `"feat(green): parseLines delegates to parseLine"`
     - _Requirements: 1.9_
-  - [~] 3.23 Red: parseLines returns first ParseError on a mixed valid/invalid list
+  - [x] 3.23 Red: parseLines returns first ParseError on a mixed valid/invalid list
     - Write a failing unit test where the second line is invalid
     - Commit: `"test(red): parseLines short-circuits on first error"`
     - _Requirements: 1.9_
-  - [~] 3.24 Green: short-circuit parseLines on first error
+  - [-] 3.24 Green: short-circuit parseLines on first error
     - Commit: `"feat(green): parseLines short-circuits on first error"`
     - _Requirements: 1.9_
   - [~] 3.25 Red: PrettyPrinter formats a ScoreRecord as six-field CSV
