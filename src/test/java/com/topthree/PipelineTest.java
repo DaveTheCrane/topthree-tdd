@@ -21,6 +21,18 @@ class PipelineTest {
     }
 
     @Test
+    void invalidCsvLineReturnsPipelineError() {
+        var csvLines = List.of("p1,Alice,g1");
+
+        var result = pipeline.run(csvLines);
+
+        assertInstanceOf(Result.Err.class, result);
+        var err = (Result.Err<RankedResult, PipelineError>) result;
+        assertNotNull(err.error());
+        assertInstanceOf(PipelineError.class, err.error());
+    }
+
+    @Test
     void validCsvListProducesCorrectRankedResult() {
         var csvLines = List.of(
             "p1,Alice,g1,Chess,10,50",
