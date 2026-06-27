@@ -285,6 +285,19 @@ class CsvParserTest {
         assertEquals(unpaddedRecord, paddedRecord);
     }
 
+    // Feature: top-three-high-scores, Property 7: Parse → print → parse round trip
+    // Validates: Requirements 1.11, 1.12
+    @Property(tries = 1000)
+    void parsePrintParseRoundTrip(
+            @ForAll("validScoreRecords") ScoreRecord record
+    ) {
+        String csvString = prettyPrinter.print(record);
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvString);
+
+        assertInstanceOf(Result.Ok.class, result);
+        assertEquals(record, ((Result.Ok<ScoreRecord, ParseError>) result).value());
+    }
+
     // Feature: top-three-high-scores, Property 4: Non-integer normalised-score field returns an error
     // Validates: Requirements 1.4
     @Property(tries = 1000)
@@ -363,6 +376,33 @@ class CsvParserTest {
         return Arbitraries.strings()
                 .withChars(' ', '\t')
                 .ofMinLength(0).ofMaxLength(5);
+    }
+
+    @Provide
+    Arbitrary<ScoreRecord> validScoreRecords() {
+        Arbitrary<String> playerIdArb = Arbitraries.strings()
+                .alpha().numeric()
+                .ofMinLength(1).ofMaxLength(20);
+        Arbitrary<String> playerNameArb = Arbitraries.strings()
+                .alpha().numeric().withChars('-', '_')
+                .ofMinLength(1).ofMaxLength(30)
+                .filter(s -> s.equals(s.trim()));
+        Arbitrary<String> gameIdArb = Arbitraries.strings()
+                .alpha().numeric().withChars('-')
+                .ofMinLength(1).ofMaxLength(20);
+        Arbitrary<String> gameNameArb = Arbitraries.strings()
+                .alpha().numeric().withChars('-', '_')
+                .ofMaxLength(40)
+                .filter(s -> s.equals(s.trim()));
+        Arbitrary<Integer> hoursArb = Arbitraries.integers().between(0, 10000);
+        Arbitrary<Integer> scoreArb = Arbitraries.integers().between(1, 100);
+
+        return Combinators.combine(playerIdArb, playerNameArb, gameIdArb, gameNameArb, hoursArb, scoreArb)
+                .as((pid, pname, gid, gname, hours, score) ->
+                        new ScoreRecord(
+                                new Player(pid, pname),
+                                new GameEntry(gid, gname, hours, score)
+                        ));
     }
 
     @Provide
