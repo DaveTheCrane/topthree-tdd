@@ -21,4 +21,15 @@ class CsvParserTest {
         assertInstanceOf(Result.Ok.class, result);
         assertEquals(expectedRecord, ((Result.Ok<ScoreRecord, ParseError>) result).value());
     }
+
+    @Test
+    void fewerThanSixFieldsReturnsParseError() {
+        String line = "p1,Alice,g1,Chess,3";
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(line);
+
+        assertInstanceOf(Result.Err.class, result);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertEquals(line, error.offendingLine());
+    }
 }
