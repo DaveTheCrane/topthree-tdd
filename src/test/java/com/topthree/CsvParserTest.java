@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CsvParserTest {
 
     private final CsvParser parser = new CsvParserImpl();
+    private final PrettyPrinter prettyPrinter = new PrettyPrinterImpl();
 
     @Test
     void validSixFieldLineParsesToCorrectScoreRecord() {
@@ -151,5 +152,17 @@ class CsvParserTest {
         assertInstanceOf(Result.Ok.class, result);
         List<ScoreRecord> records = ((Result.Ok<List<ScoreRecord>, ParseError>) result).value();
         assertEquals(List.of(expected1, expected2), records);
+    }
+
+    @Test
+    void prettyPrinterFormatsScoreRecordAsCsv() {
+        ScoreRecord record = new ScoreRecord(
+                new Player("p1", "Alice"),
+                new GameEntry("g1", "Chess", 3, 50)
+        );
+
+        String result = prettyPrinter.print(record);
+
+        assertEquals("p1,Alice,g1,Chess,3,50", result);
     }
 }
