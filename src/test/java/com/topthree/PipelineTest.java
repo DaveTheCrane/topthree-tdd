@@ -134,4 +134,68 @@ class PipelineTest {
             });
         });
     }
+
+    // Feature: top-three-high-scores, Property 13: Pipeline propagates CSV parse errors
+    // Validates: Requirements 4.2
+    @Property(tries = 1000)
+    void pipelinePropagatesCsvParseErrors(@ForAll("csvLinesWithAtLeastOneInvalid") List<String> csvLines) {
+        Result<RankedResult, PipelineError> result = pipeline.run(csvLines);
+
+        assertInstanceOf(Result.Err.class, result);
+    }
+
+    @Provide
+    Arbitrary<List<String>> csvLinesWithAtLeastOneInvalid() {
+        Arbitrary<String> validLine = Combinators.combine(
+                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),
+                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),
+                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),
+                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),
+                Arbitraries.integers().between(1, 1000),
+                Arbitraries.integers().between(1, 100)
+        ).as((pid, pname, gid, gname, hours, score) ->
+                pid + "," + pname + "," + gid + "," + gname + "," + hours + "," + score
+        );
+
+        // Invalid lines: wrong field count, non-integer hours, out-of-range score
+        Arbitrary<String> invalidLine = Arbitraries.oneOf(
+                // Too few fields
+                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5)
+                        .map(s -> s + ",field2,field3"),
+                // Non-integer hours-played
+                Combinators.combine(
+                        Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5),
+                        Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5),
+                        Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5),
+                        Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5)
+                ).as((pid, pname, gid, gname) ->
+                        pid + "," + pname + "," + gid + "," + gname + ",notAnInt,50"
+                ),
+                // Out-of-range normalised score
+                Combinators.combine(
+                        Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5),
+                        Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5),
+                        Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5),
+                        Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(5),
+                        Arbitraries.integers().between(1, 100),
+                        Arbitraries.oneOf(
+                                Arbitraries.integers().between(-1000, 0),
+                                Arbitraries.integers().between(101, 1000)
+                        )
+                ).as((pid, pname, gid, gname, hours, score) ->
+                        pid + "," + pname + "," + gid + "," + gname + "," + hours + "," + score
+                )
+        );
+
+        // Generate 0-4 valid lines + at least 1 invalid, then shuffle
+        return Combinators.combine(
+                validLine.list().ofMinSize(0).ofMaxSize(4),
+                invalidLine.list().ofMinSize(1).ofMaxSize(3)
+        ).as((valids, invalids) -> {
+            List<String> all = new ArrayList<>(valids);
+            all.addAll(invalids);
+            Collections.shuffle(all);
+            return all;
+        });
+    }
 }
