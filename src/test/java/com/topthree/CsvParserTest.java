@@ -195,6 +195,33 @@ class CsvParserTest {
         assertEquals(normalisedScore, record.gameEntry().normalisedScore());
     }
 
+    // Feature: top-three-high-scores, Property 2: Out-of-range normalised score returns an error
+    // Validates: Requirements 1.2
+    @Property(tries = 1000)
+    void outOfRangeNormalisedScoreReturnsError(
+            @ForAll("playerIds") String playerId,
+            @ForAll("playerNames") String playerName,
+            @ForAll("gameIds") String gameId,
+            @ForAll("gameNames") String gameName,
+            @ForAll @IntRange(min = 0, max = 10000) int hoursPlayed,
+            @ForAll("outOfRangeScores") int normalisedScore
+    ) {
+        String csvLine = String.join(",", playerId, playerName, gameId, gameName,
+                String.valueOf(hoursPlayed), String.valueOf(normalisedScore));
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertInstanceOf(Result.Err.class, result);
+    }
+
+    @Provide
+    Arbitrary<Integer> outOfRangeScores() {
+        return Arbitraries.oneOf(
+                Arbitraries.integers().between(-1000, 0),
+                Arbitraries.integers().between(101, 1000)
+        );
+    }
+
     @Provide
     Arbitrary<String> playerIds() {
         return Arbitraries.strings()
