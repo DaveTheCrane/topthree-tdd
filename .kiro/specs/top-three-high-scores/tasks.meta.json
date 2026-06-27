@@ -793,6 +793,11 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782596797136
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782596844153
       }
     ],
     "4.11 Red: player display name is preserved in PlayerAggregate": [
@@ -800,6 +805,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593725674
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782596848056
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782596902831
       }
     ],
     "4.12 Green: carry player name through to PlayerAggregate (likely already passing; confirm)": [
@@ -807,6 +822,11 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593725802
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782596906444
       }
     ],
     "4.13 Refactor ScoreAggregator if duplication warrants it": [
