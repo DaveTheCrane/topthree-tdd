@@ -14,7 +14,7 @@ public class ScoreAggregatorImpl implements ScoreAggregator {
 
         for (ScoreRecord record : records) {
             String id = record.player().playerId();
-            playerById.putIfAbsent(id, record.player());
+            playerById.put(id, record.player());
             int weightedScore = record.gameEntry().hoursPlayed() * record.gameEntry().normalisedScore();
             scoreById.merge(id, weightedScore, Integer::sum);
         }
