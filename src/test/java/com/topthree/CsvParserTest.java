@@ -214,6 +214,41 @@ class CsvParserTest {
         assertInstanceOf(Result.Err.class, result);
     }
 
+    // Feature: top-three-high-scores, Property 3: Non-integer hours-played returns an error
+    // Validates: Requirements 1.3
+    @Property(tries = 1000)
+    void nonIntegerHoursPlayedReturnsParseError(
+            @ForAll("playerIds") String playerId,
+            @ForAll("playerNames") String playerName,
+            @ForAll("gameIds") String gameId,
+            @ForAll("gameNames") String gameName,
+            @ForAll("nonIntegerStrings") String hoursPlayed,
+            @ForAll @IntRange(min = 1, max = 100) int normalisedScore
+    ) {
+        String csvLine = String.join(",", playerId, playerName, gameId, gameName,
+                hoursPlayed, String.valueOf(normalisedScore));
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertInstanceOf(Result.Err.class, result);
+    }
+
+    @Provide
+    Arbitrary<String> nonIntegerStrings() {
+        return Arbitraries.strings()
+                .alpha()
+                .ofMinLength(1)
+                .ofMaxLength(10)
+                .filter(s -> {
+                    try {
+                        Integer.parseInt(s);
+                        return false;
+                    } catch (NumberFormatException e) {
+                        return true;
+                    }
+                });
+    }
+
     @Provide
     Arbitrary<Integer> outOfRangeScores() {
         return Arbitraries.oneOf(
