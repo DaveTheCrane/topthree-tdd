@@ -117,6 +117,74 @@ class PipelineTest {
         assertInstanceOf(PipelineError.class, err.error());
     }
 
+    // Feature: top-three-high-scores, Property 14: Pipeline rejects duplicate player-id/game-id pairs
+    // Validates: Requirements 4.3
+    @Property(tries = 1000)
+    void pipelineRejectsDuplicatePlayerIdGameIdPairs(
+            @ForAll("csvLineListsWithDuplicate") List<String> csvLines
+    ) {
+        var result = pipeline.run(csvLines);
+
+        assertInstanceOf(Result.Err.class, result);
+        var err = (Result.Err<RankedResult, PipelineError>) result;
+        assertNotNull(err.error());
+        assertInstanceOf(PipelineError.class, err.error());
+    }
+
+    @Provide
+    Arbitrary<List<String>> csvLineListsWithDuplicate() {
+        // Generate a valid base line, then create a duplicate with same playerId/gameId but different hours/score
+        Arbitrary<String> playerIdArb = Arbitraries.strings()
+                .alpha().numeric()
+                .ofMinLength(1).ofMaxLength(10);
+        Arbitrary<String> playerNameArb = Arbitraries.strings()
+                .alpha().numeric().withChars('-', '_')
+                .ofMinLength(1).ofMaxLength(15)
+                .filter(s -> !s.contains(","));
+        Arbitrary<String> gameIdArb = Arbitraries.strings()
+                .alpha().numeric().withChars('-')
+                .ofMinLength(1).ofMaxLength(10);
+        Arbitrary<String> gameNameArb = Arbitraries.strings()
+                .alpha().numeric().withChars('-', '_')
+                .ofMinLength(1).ofMaxLength(15)
+                .filter(s -> !s.contains(","));
+        Arbitrary<Integer> hoursArb = Arbitraries.integers().between(1, 100);
+        Arbitrary<Integer> scoreArb = Arbitraries.integers().between(1, 100);
+
+        Arbitrary<String[]> baseFieldsArb = Combinators.combine(
+                playerIdArb, playerNameArb, gameIdArb, gameNameArb, hoursArb, scoreArb
+        ).as((pid, pname, gid, gname, hours, score) ->
+                new String[]{pid, pname, gid, gname, String.valueOf(hours), String.valueOf(score)});
+
+        // Second line has same playerId and gameId but different hours/score
+        Arbitrary<Integer> hours2Arb = Arbitraries.integers().between(1, 100);
+        Arbitrary<Integer> score2Arb = Arbitraries.integers().between(1, 100);
+
+        // 0-2 additional unique lines
+        Arbitrary<List<String>> extraLinesArb = validCsvLine().list().ofMinSize(0).ofMaxSize(2);
+
+        return Combinators.combine(baseFieldsArb, hours2Arb, score2Arb, extraLinesArb)
+                .as((baseFields, hours2, score2, extraLines) -> {
+                    String line1 = String.join(",", baseFields);
+                    // Duplicate: same playerId (index 0) and gameId (index 2), different hours/score
+                    String line2 = String.join(",", baseFields[0], baseFields[1], baseFields[2],
+                            baseFields[3], String.valueOf(hours2), String.valueOf(score2));
+
+                    List<String> combined = new ArrayList<>();
+                    combined.add(line1);
+                    combined.add(line2);
+                    // Make extra lines unique by appending suffix to playerId and gameId
+                    for (int i = 0; i < extraLines.size(); i++) {
+                        String[] fields = extraLines.get(i).split(",", -1);
+                        fields[0] = fields[0] + "_extra" + i;
+                        fields[2] = fields[2] + "_extra" + i;
+                        combined.add(String.join(",", fields));
+                    }
+                    Collections.shuffle(combined);
+                    return combined;
+                });
+    }
+
     @Provide
     Arbitrary<List<String>> csvLineListsWithAtLeastOneInvalid() {
         Arbitrary<String> validLineArb = validCsvLine();
