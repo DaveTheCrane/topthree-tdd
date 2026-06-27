@@ -9,6 +9,6 @@ public class LeaderboardRankerImpl implements LeaderboardRanker {
         if (aggregates.isEmpty()) {
             return new RankedResult(List.of(), List.of());
         }
-        return null;
+        return new RankedResult(List.copyOf(aggregates), List.of());
     }
 }
