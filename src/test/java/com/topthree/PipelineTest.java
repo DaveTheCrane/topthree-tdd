@@ -21,6 +21,20 @@ class PipelineTest {
     }
 
     @Test
+    void duplicatePlayerIdGameIdReturnsPipelineError() {
+        List<String> csvLines = List.of(
+                "p1,Alice,g1,Chess,10,80",
+                "p1,Alice,g1,Chess,5,60"
+        );
+
+        Result<RankedResult, PipelineError> result = pipeline.run(csvLines);
+
+        assertInstanceOf(Result.Err.class, result);
+        Result.Err<RankedResult, PipelineError> err = (Result.Err<RankedResult, PipelineError>) result;
+        assertTrue(err.error().message().contains("duplicate") || err.error().message().contains("Duplicate"));
+    }
+
+    @Test
     void invalidCsvLineReturnsPipelineError() {
         List<String> csvLines = List.of(
                 "p1,Alice,g1,Chess,10,80",
