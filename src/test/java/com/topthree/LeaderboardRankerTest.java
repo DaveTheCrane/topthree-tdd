@@ -85,4 +85,15 @@ class LeaderboardRankerTest {
         assertEquals(List.of(), result.definiteWinners());
         assertEquals(List.of(p1, p2, p3), result.tiedCandidates());
     }
+
+    @Test
+    void twoDistinctScorePlayersBothInDefiniteWinners() {
+        PlayerAggregate p1 = new PlayerAggregate(new Player("p1", "Alice"), 200);
+        PlayerAggregate p2 = new PlayerAggregate(new Player("p2", "Bob"), 100);
+
+        RankedResult result = ranker.rank(List.of(p2, p1));
+
+        assertEquals(List.of(p1, p2), result.definiteWinners());
+        assertEquals(List.of(), result.tiedCandidates());
+    }
 }
