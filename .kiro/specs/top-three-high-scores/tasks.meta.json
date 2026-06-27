@@ -385,6 +385,11 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782581532012
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581570290
       }
     ],
     "3.21 Red: parseLines returns all ScoreRecords in order for a valid list": [
@@ -392,6 +397,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580255952
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581574312
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581633202
       }
     ],
     "3.22 Green: implement parseLines delegating to parseLine": [
@@ -399,6 +414,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580256076
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581636709
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581701839
       }
     ],
     "3.23 Red: parseLines returns first ParseError on a mixed valid/invalid list": [
@@ -406,6 +431,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580256226
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581705441
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581752166
       }
     ],
     "3.24 Green: short-circuit parseLines on first error": [
@@ -413,6 +448,11 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580256347
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581755726
       }
     ],
     "3.25 Red: PrettyPrinter formats a ScoreRecord as six-field CSV": [
