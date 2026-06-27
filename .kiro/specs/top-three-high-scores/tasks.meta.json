@@ -453,6 +453,11 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782581755726
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581794030
       }
     ],
     "3.25 Red: PrettyPrinter formats a ScoreRecord as six-field CSV": [
@@ -460,6 +465,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580256451
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581798058
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581857250
       }
     ],
     "3.26 Green: implement PrettyPrinter.print": [
@@ -467,6 +482,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580256601
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581860892
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581913327
       }
     ],
     "3.27 Refactor CsvParser if duplication warrants it": [
@@ -474,6 +499,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580256719
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581919002
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581989310
       }
     ],
     "3.28 Write property test — Property 1: valid CSV line parses to correct fields": [
@@ -481,6 +516,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580256837
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782581994355
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582095221
       }
     ],
     "3.29 Write property test — Property 2: out-of-range normalised score returns error": [
@@ -488,6 +533,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580256990
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582099659
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582169582
       }
     ],
     "3.30 Write property test — Property 3: non-integer hours-played returns error": [
@@ -495,6 +550,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580257093
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582174078
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582253503
       }
     ],
     "3.31 Write property test — Property 4: non-integer normalised-score field returns error": [
@@ -502,6 +567,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580257220
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582265199
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582347394
       }
     ],
     "3.32 Write property test — Property 5: wrong field count returns error": [
@@ -509,6 +584,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580257367
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582351140
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582430435
       }
     ],
     "3.33 Write property test — Property 6: whitespace trimming preserves field values": [
@@ -516,6 +601,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580257483
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582434247
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582516157
       }
     ],
     "3.34 Write property test — Property 7: parse → print → parse round trip": [
@@ -523,6 +618,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580257592
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582520157
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582598902
       }
     ],
     "4.1 Red: empty input returns empty list": [
@@ -530,6 +635,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580257741
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582603919
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582681760
       }
     ],
     "4.2 Green: handle empty input": [
@@ -537,6 +652,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580257860
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582685657
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582741776
       }
     ],
     "4.3 Red: single ScoreRecord produces one PlayerAggregate with correct totalScore": [
@@ -544,6 +669,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580257965
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582745948
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582799148
       }
     ],
     "4.4 Green: compute weighted score and wrap in PlayerAggregate": [
@@ -551,6 +686,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580258125
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582802934
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582861082
       }
     ],
     "4.5 Red: two records for the same player sum their weighted scores": [
@@ -558,6 +703,16 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580258249
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582864666
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582921596
       }
     ],
     "4.6 Green: accumulate weighted scores per player id": [
@@ -565,6 +720,11 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580258367
+      },
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582925382
       }
     ],
     "4.7 Red: two records for different players produce two PlayerAggregates": [
@@ -852,6 +1012,13 @@
         "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
         "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
         "timestamp": 1782580517853
+      }
+    ],
+    "3. CsvParser — TDD cycle": [
+      {
+        "executionId": "27389c55-67cb-4fa9-b827-753ecdbe42d1",
+        "chatSessionId": "sess_a81f6df7-59aa-4932-ac18-5f2d941d6045",
+        "timestamp": 1782582599060
       }
     ]
   }
