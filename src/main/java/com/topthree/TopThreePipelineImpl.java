@@ -1,5 +1,6 @@
 package com.topthree;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class TopThreePipelineImpl implements TopThreePipeline {
@@ -16,6 +17,15 @@ public class TopThreePipelineImpl implements TopThreePipeline {
             return new Result.Err<>(new PipelineError(pe.message(), pe.offendingLine()));
         }
         var records = ((Result.Ok<List<ScoreRecord>, ParseError>) parseResult).value();
+
+        var seen = new HashSet<String>();
+        for (var record : records) {
+            var key = record.player().playerId() + "|" + record.gameEntry().gameId();
+            if (!seen.add(key)) {
+                return new Result.Err<>(new PipelineError(
+                    "Duplicate playerId/gameId pair", key));
+            }
+        }
 
         var aggregateResult = aggregator.aggregate(records);
         if (aggregateResult instanceof Result.Err<List<PlayerAggregate>, AggregationError> err) {
