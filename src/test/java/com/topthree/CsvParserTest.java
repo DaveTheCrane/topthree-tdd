@@ -1,5 +1,7 @@
 package com.topthree;
 
+import net.jqwik.api.*;
+import net.jqwik.api.constraints.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -173,5 +175,52 @@ class CsvParserTest {
         assertEquals("Poker", records.get(1).gameEntry().gameName());
         assertEquals(5, records.get(1).gameEntry().hoursPlayed());
         assertEquals(70, records.get(1).gameEntry().normalisedScore());
+    }
+
+    // Feature: top-three-high-scores, Property 1: Valid CSV line parses to correct fields
+    // **Validates: Requirements 1.1**
+    @Property(tries = 1000)
+    void validCsvLineParsesToCorrectFields(
+            @ForAll("nonEmptyNoCommaStrings") String playerId,
+            @ForAll("noCommaStrings") String playerName,
+            @ForAll("nonEmptyNoCommaStrings") String gameId,
+            @ForAll("noCommaStrings") String gameName,
+            @ForAll @IntRange(min = Integer.MIN_VALUE, max = Integer.MAX_VALUE) int hoursPlayed,
+            @ForAll @IntRange(min = 1, max = 100) int normalisedScore
+    ) {
+        String csvLine = playerId + "," + playerName + "," + gameId + "," + gameName + "," + hoursPlayed + "," + normalisedScore;
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+
+        assertInstanceOf(Result.Ok.class, result);
+        ScoreRecord record = ((Result.Ok<ScoreRecord, ParseError>) result).value();
+
+        assertEquals(playerId.trim(), record.player().playerId());
+        assertEquals(playerName.trim(), record.player().playerName());
+        assertEquals(gameId.trim(), record.gameEntry().gameId());
+        assertEquals(gameName.trim(), record.gameEntry().gameName());
+        assertEquals(hoursPlayed, record.gameEntry().hoursPlayed());
+        assertEquals(normalisedScore, record.gameEntry().normalisedScore());
+    }
+
+    @Provide
+    Arbitrary<String> nonEmptyNoCommaStrings() {
+        return Arbitraries.strings()
+                .ofMinLength(1)
+                .ofMaxLength(20)
+                .alpha()
+                .numeric()
+                .withChars('_', '-', '.')
+                .filter(s -> !s.trim().isEmpty());
+    }
+
+    @Provide
+    Arbitrary<String> noCommaStrings() {
+        return Arbitraries.strings()
+                .ofMinLength(0)
+                .ofMaxLength(20)
+                .alpha()
+                .numeric()
+                .withChars('_', '-', '.', ' ');
     }
 }
