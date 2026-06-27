@@ -23,18 +23,19 @@ public class CsvParserImpl implements CsvParser {
             return new Result.Err<>(new ParseError("Game id must not be empty", csvLine));
         }
         String gameName = fields[3];
-        int hoursPlayed;
-        try {
-            hoursPlayed = Integer.parseInt(fields[4]);
-        } catch (NumberFormatException e) {
-            return new Result.Err<>(new ParseError("Invalid integer for hours-played: " + fields[4], csvLine));
+
+        Result<Integer, ParseError> hoursResult = parseIntField(fields[4], "hours-played", csvLine);
+        if (hoursResult instanceof Result.Err<Integer, ParseError> err) {
+            return new Result.Err<>(err.error());
         }
-        int normalisedScore;
-        try {
-            normalisedScore = Integer.parseInt(fields[5]);
-        } catch (NumberFormatException e) {
-            return new Result.Err<>(new ParseError("Invalid integer for normalised-score: " + fields[5], csvLine));
+        int hoursPlayed = ((Result.Ok<Integer, ParseError>) hoursResult).value();
+
+        Result<Integer, ParseError> scoreResult = parseIntField(fields[5], "normalised-score", csvLine);
+        if (scoreResult instanceof Result.Err<Integer, ParseError> err) {
+            return new Result.Err<>(err.error());
         }
+        int normalisedScore = ((Result.Ok<Integer, ParseError>) scoreResult).value();
+
         if (normalisedScore < 1 || normalisedScore > 100) {
             return new Result.Err<>(new ParseError("normalised-score out of range [1,100]: " + normalisedScore, csvLine));
         }
@@ -43,6 +44,14 @@ public class CsvParserImpl implements CsvParser {
         GameEntry gameEntry = new GameEntry(gameId, gameName, hoursPlayed, normalisedScore);
         ScoreRecord record = new ScoreRecord(player, gameEntry);
         return new Result.Ok<>(record);
+    }
+
+    private Result<Integer, ParseError> parseIntField(String value, String fieldName, String csvLine) {
+        try {
+            return new Result.Ok<>(Integer.parseInt(value));
+        } catch (NumberFormatException e) {
+            return new Result.Err<>(new ParseError("Invalid integer for " + fieldName + ": " + value, csvLine));
+        }
     }
 
     @Override
