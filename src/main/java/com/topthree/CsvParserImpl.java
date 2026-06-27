@@ -10,7 +10,10 @@ public class CsvParserImpl implements CsvParser {
         if (fields.length != 6) {
             return new Result.Err<>(new ParseError("Expected 6 fields but got " + fields.length, csvLine));
         }
-        String playerId = fields[0];
+        String playerId = fields[0].trim();
+        if (playerId.isEmpty()) {
+            return new Result.Err<>(new ParseError("Player id must not be empty", csvLine));
+        }
         String playerName = fields[1];
         String gameId = fields[2];
         String gameName = fields[3];
