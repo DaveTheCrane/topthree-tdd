@@ -112,4 +112,21 @@ class CsvParserTest {
         assertEquals(10, record.gameEntry().hoursPlayed());
         assertEquals(85, record.gameEntry().normalisedScore());
     }
+
+    @Test
+    void whitespacePaddedFieldsParsToTrimmedValues() {
+        String line = " p1 , Alice , g1 , Chess , 2 , 50 ";
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(line);
+
+        assertInstanceOf(Result.Ok.class, result);
+        ScoreRecord record = ((Result.Ok<ScoreRecord, ParseError>) result).value();
+
+        assertEquals("p1", record.player().playerId());
+        assertEquals("Alice", record.player().playerName());
+        assertEquals("g1", record.gameEntry().gameId());
+        assertEquals("Chess", record.gameEntry().gameName());
+        assertEquals(2, record.gameEntry().hoursPlayed());
+        assertEquals(50, record.gameEntry().normalisedScore());
+    }
 }
