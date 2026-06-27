@@ -20,6 +20,17 @@ class CsvParserTest {
     }
 
     @Test
+    void moreThanSixFieldsReturnsParseError() {
+        String line = "p1,Alice,g1,Chess,10,85,extra";
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(line);
+
+        assertInstanceOf(Result.Err.class, result);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertEquals(line, error.offendingLine());
+    }
+
+    @Test
     void validSixFieldLineParseToCorrectScoreRecord() {
         String line = "p1,Alice,g1,Chess,10,85";
 
