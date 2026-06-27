@@ -34,4 +34,20 @@ class ScoreAggregatorTest {
         assertEquals(new Player("p1", "Alice"), aggregate.player());
         assertEquals(100, aggregate.totalScore());
     }
+
+    @Test
+    void twoRecordsForSamePlayerSumTheirWeightedScores() {
+        Player player = new Player("p1", "Alice");
+        ScoreRecord record1 = new ScoreRecord(player, new GameEntry("g1", "Chess", 2, 50));   // weighted = 100
+        ScoreRecord record2 = new ScoreRecord(player, new GameEntry("g2", "Poker", 3, 30));   // weighted = 90
+
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(List.of(record1, record2));
+
+        assertInstanceOf(Result.Ok.class, result);
+        List<PlayerAggregate> aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+        assertEquals(1, aggregates.size());
+        PlayerAggregate aggregate = aggregates.get(0);
+        assertEquals(new Player("p1", "Alice"), aggregate.player());
+        assertEquals(190, aggregate.totalScore());
+    }
 }
