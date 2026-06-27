@@ -124,37 +124,37 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
   - [ ] 3.27 Refactor CsvParser if duplication warrants it
     - Review for repeated patterns (e.g. field-guard logic); refactor only if duplication exists; all tests must stay green
     - Commit (if changes made): `"refactor: CsvParser field-guard deduplication"`
-  - [ ]* 3.28 Write property test — Property 1: valid CSV line parses to correct fields
+  - [ ] 3.28 Write property test — Property 1: valid CSV line parses to correct fields
     - `// Feature: top-three-high-scores, Property 1: Valid CSV line parses to correct fields`
     - Generate arbitrary valid six-field CSV strings; assert parsed fields match input values
     - Commit: `"test(property-1): valid CSV line parses to correct fields"`
     - _Validates: Requirements 1.1_
-  - [ ]* 3.29 Write property test — Property 2: out-of-range normalised score returns error
+  - [ ] 3.29 Write property test — Property 2: out-of-range normalised score returns error
     - `// Feature: top-three-high-scores, Property 2: Out-of-range normalised score returns an error`
     - Generate otherwise-valid lines with score outside [1, 100]; assert ParseError returned
     - Commit: `"test(property-2): out-of-range normalised score returns error"`
     - _Validates: Requirements 1.2_
-  - [ ]* 3.30 Write property test — Property 3: non-integer hours-played returns error
+  - [ ] 3.30 Write property test — Property 3: non-integer hours-played returns error
     - `// Feature: top-three-high-scores, Property 3: Non-integer hours-played returns an error`
     - Generate lines with non-integer hours-played strings; assert ParseError returned
     - Commit: `"test(property-3): non-integer hours-played returns error"`
     - _Validates: Requirements 1.3_
-  - [ ]* 3.31 Write property test — Property 4: non-integer normalised-score field returns error
+  - [ ] 3.31 Write property test — Property 4: non-integer normalised-score field returns error
     - `// Feature: top-three-high-scores, Property 4: Non-integer normalised-score field returns an error`
     - Generate lines with non-integer normalised-score strings; assert ParseError returned
     - Commit: `"test(property-4): non-integer normalised-score returns error"`
     - _Validates: Requirements 1.4_
-  - [ ]* 3.32 Write property test — Property 5: wrong field count returns error
+  - [ ] 3.32 Write property test — Property 5: wrong field count returns error
     - `// Feature: top-three-high-scores, Property 5: Wrong field count returns an error`
     - Generate lines with field counts other than six; assert ParseError returned
     - Commit: `"test(property-5): wrong field count returns error"`
     - _Validates: Requirements 1.5, 1.6_
-  - [ ]* 3.33 Write property test — Property 6: whitespace trimming preserves field values
+  - [ ] 3.33 Write property test — Property 6: whitespace trimming preserves field values
     - `// Feature: top-three-high-scores, Property 6: Whitespace trimming preserves field values`
     - Generate valid lines; add arbitrary whitespace around fields; assert same ScoreRecord as unpadded version
     - Commit: `"test(property-6): whitespace trimming preserves field values"`
     - _Validates: Requirements 1.10_
-  - [ ]* 3.34 Write property test — Property 7: parse → print → parse round trip
+  - [ ] 3.34 Write property test — Property 7: parse → print → parse round trip
     - `// Feature: top-three-high-scores, Property 7: Parse → print → parse round trip`
     - Generate arbitrary valid ScoreRecords; print then parse; assert result equals original
     - Commit: `"test(property-7): parse-print-parse round trip"`
@@ -206,12 +206,12 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
   - [ ] 4.13 Refactor ScoreAggregator if duplication warrants it
     - All tests must stay green
     - Commit (if changes made): `"refactor: ScoreAggregator deduplication"`
-  - [ ]* 4.14 Write property test — Property 8: aggregation correctness
+  - [ ] 4.14 Write property test — Property 8: aggregation correctness
     - `// Feature: top-three-high-scores, Property 8: Aggregation correctness — count, total score, and name preservation`
     - Generate arbitrary non-empty lists of ScoreRecords with consistent names; assert one aggregate per player id, correct totalScore, name preserved
     - Commit: `"test(property-8): aggregation correctness"`
     - _Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.8_
-  - [ ]* 4.15 Write property test — Property 9: last-seen display name wins on name conflict
+  - [ ] 4.15 Write property test — Property 9: last-seen display name wins on name conflict
     - `// Feature: top-three-high-scores, Property 9: Last-seen display name wins on name conflict`
     - Generate lists containing at least two records with the same player id but different names; assert the resulting PlayerAggregate carries the name from the last such record
     - Commit: `"test(property-9): last-seen display name wins on name conflict"`
@@ -270,12 +270,12 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
   - [ ] 5.15 Refactor LeaderboardRanker if duplication warrants it
     - All tests must stay green
     - Commit (if changes made): `"refactor: LeaderboardRanker deduplication"`
-  - [ ]* 5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners
+  - [ ] 5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners
     - `// Feature: top-three-high-scores, Property 10: No-tie ranking places top players in definite_winners`
     - Generate lists of PlayerAggregates with all-distinct totalScores; assert definiteWinners = top min(3,N) in descending order, tiedCandidates empty
     - Commit: `"test(property-10): no-tie ranking places top players in definiteWinners"`
     - _Validates: Requirements 3.2, 3.4_
-  - [ ]* 5.17 Write property test — Property 11: tie-at-boundary produces correct partition
+  - [ ] 5.17 Write property test — Property 11: tie-at-boundary produces correct partition
     - `// Feature: top-three-high-scores, Property 11: Tie-at-boundary produces correct partition`
     - Generate lists where two or more players share the boundary score; assert correct definiteWinners/tiedCandidates partition
     - Commit: `"test(property-11): tie-at-boundary produces correct partition"`
@@ -313,17 +313,17 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
   - [ ] 6.9 Refactor Pipeline if duplication warrants it
     - All tests must stay green
     - Commit (if changes made): `"refactor: Pipeline deduplication"`
-  - [ ]* 6.10 Write property test — Property 12: pipeline composition correctness
+  - [ ] 6.10 Write property test — Property 12: pipeline composition correctness
     - `// Feature: top-three-high-scores, Property 12: Pipeline composition correctness`
     - Generate arbitrary valid CSV string lists; assert pipeline result equals manual chaining of the three components
     - Commit: `"test(property-12): pipeline composition correctness"`
     - _Validates: Requirements 4.1_
-  - [ ]* 6.11 Write property test — Property 13: pipeline propagates CSV parse errors
+  - [ ] 6.11 Write property test — Property 13: pipeline propagates CSV parse errors
     - `// Feature: top-three-high-scores, Property 13: Pipeline propagates CSV parse errors`
     - Generate lists containing at least one invalid CSV line; assert PipelineError returned
     - Commit: `"test(property-13): pipeline propagates CSV parse errors"`
     - _Validates: Requirements 4.2_
-  - [ ]* 6.12 Write property test — Property 14: pipeline rejects duplicate player-id/game-id pairs
+  - [ ] 6.12 Write property test — Property 14: pipeline rejects duplicate player-id/game-id pairs
     - `// Feature: top-three-high-scores, Property 14: Pipeline rejects duplicate player-id/game-id pairs`
     - Generate valid CSV lists then inject a duplicate (playerId, gameId) line; assert PipelineError returned
     - Commit: `"test(property-14): pipeline rejects duplicate playerId/gameId pairs"`
