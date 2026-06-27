@@ -7,6 +7,9 @@ public class CsvParserImpl implements CsvParser {
     @Override
     public Result<ScoreRecord, ParseError> parseLine(String csvLine) {
         String[] fields = csvLine.split(",");
+        if (fields.length != 6) {
+            return new Result.Err<>(new ParseError("Expected 6 fields but got " + fields.length, csvLine));
+        }
         Player player = new Player(fields[0], fields[1]);
         GameEntry gameEntry = new GameEntry(
                 fields[2],
