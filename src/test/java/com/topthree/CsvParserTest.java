@@ -109,4 +109,18 @@ class CsvParserTest {
         ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
         assertEquals(line, error.offendingLine());
     }
+
+    @Test
+    void fieldsWithWhitespaceParseTrimmed() {
+        String line = " p1 , Alice , g1 , Chess , 2 , 50 ";
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(line);
+
+        Player expectedPlayer = new Player("p1", "Alice");
+        GameEntry expectedGame = new GameEntry("g1", "Chess", 2, 50);
+        ScoreRecord expectedRecord = new ScoreRecord(expectedPlayer, expectedGame);
+
+        assertInstanceOf(Result.Ok.class, result);
+        assertEquals(expectedRecord, ((Result.Ok<ScoreRecord, ParseError>) result).value());
+    }
 }
