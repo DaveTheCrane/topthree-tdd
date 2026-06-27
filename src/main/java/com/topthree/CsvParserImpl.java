@@ -20,6 +20,11 @@ public class CsvParserImpl implements CsvParser {
             return new Result.Err<>(new ParseError("Player id must not be blank", csvLine));
         }
 
+        // Validate game id is not empty/blank
+        if (fields[2].isEmpty()) {
+            return new Result.Err<>(new ParseError("Game id must not be blank", csvLine));
+        }
+
         int hoursPlayed;
         try {
             hoursPlayed = Integer.parseInt(fields[4]);
