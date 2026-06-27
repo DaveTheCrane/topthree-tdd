@@ -725,6 +725,11 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782596561381
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782596613012
       }
     ],
     "4.7 Red: two records for different players produce two PlayerAggregates": [
@@ -732,6 +737,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593725188
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782596617190
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782596671497
       }
     ],
     "4.8 Green: group by player id (no new logic expected beyond accumulation)": [
@@ -739,6 +754,11 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593725307
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782596675481
       }
     ],
     "4.9 Red: same player id with different display names — last-seen name wins": [
