@@ -2,6 +2,8 @@ package com.topthree;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CsvParserTest {
@@ -122,5 +124,20 @@ class CsvParserTest {
 
         assertInstanceOf(Result.Ok.class, result);
         assertEquals(expectedRecord, ((Result.Ok<ScoreRecord, ParseError>) result).value());
+    }
+
+    @Test
+    void parseLinesReturnsAllRecordsInOrder() {
+        String line1 = "p1,Alice,g1,Chess,5,80";
+        String line2 = "p2,Bob,g2,Go,10,95";
+
+        Result<List<ScoreRecord>, ParseError> result = parser.parseLines(List.of(line1, line2));
+
+        ScoreRecord expected1 = new ScoreRecord(new Player("p1", "Alice"), new GameEntry("g1", "Chess", 5, 80));
+        ScoreRecord expected2 = new ScoreRecord(new Player("p2", "Bob"), new GameEntry("g2", "Go", 10, 95));
+
+        assertInstanceOf(Result.Ok.class, result);
+        List<ScoreRecord> records = ((Result.Ok<List<ScoreRecord>, ParseError>) result).value();
+        assertEquals(List.of(expected1, expected2), records);
     }
 }
