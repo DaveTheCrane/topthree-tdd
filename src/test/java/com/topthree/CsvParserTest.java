@@ -127,6 +127,18 @@ class CsvParserTest {
     }
 
     @Test
+    void parseLinesReturnsFirstParseErrorOnMixedList() {
+        String validLine = "p1,Alice,g1,Chess,5,80";
+        String invalidLine = "p2,Bob,g2";
+
+        Result<List<ScoreRecord>, ParseError> result = parser.parseLines(List.of(validLine, invalidLine));
+
+        assertInstanceOf(Result.Err.class, result);
+        ParseError error = ((Result.Err<List<ScoreRecord>, ParseError>) result).error();
+        assertEquals(invalidLine, error.offendingLine());
+    }
+
+    @Test
     void parseLinesReturnsAllRecordsInOrder() {
         String line1 = "p1,Alice,g1,Chess,5,80";
         String line2 = "p2,Bob,g2,Go,10,95";
