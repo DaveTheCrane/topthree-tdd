@@ -25,18 +25,18 @@ public class CsvParserImpl implements CsvParser {
             return new Result.Err<>(new ParseError("Game id must not be blank", csvLine));
         }
 
-        int hoursPlayed;
-        try {
-            hoursPlayed = Integer.parseInt(fields[4]);
-        } catch (NumberFormatException e) {
-            return new Result.Err<>(new ParseError("Invalid integer for hours-played: " + fields[4], csvLine));
+        Result<Integer, ParseError> hoursResult = parseIntField(fields[4], "hours-played", csvLine);
+        if (hoursResult instanceof Result.Err<Integer, ParseError> err) {
+            return new Result.Err<>(err.error());
         }
-        int normalisedScore;
-        try {
-            normalisedScore = Integer.parseInt(fields[5]);
-        } catch (NumberFormatException e) {
-            return new Result.Err<>(new ParseError("Invalid integer for normalised-score: " + fields[5], csvLine));
+        int hoursPlayed = ((Result.Ok<Integer, ParseError>) hoursResult).value();
+
+        Result<Integer, ParseError> scoreResult = parseIntField(fields[5], "normalised-score", csvLine);
+        if (scoreResult instanceof Result.Err<Integer, ParseError> err) {
+            return new Result.Err<>(err.error());
         }
+        int normalisedScore = ((Result.Ok<Integer, ParseError>) scoreResult).value();
+
         if (normalisedScore < 1 || normalisedScore > 100) {
             return new Result.Err<>(new ParseError("normalised-score out of range [1,100]: " + normalisedScore, csvLine));
         }
@@ -48,6 +48,14 @@ public class CsvParserImpl implements CsvParser {
                 normalisedScore
         );
         return new Result.Ok<>(new ScoreRecord(player, gameEntry));
+    }
+
+    private Result<Integer, ParseError> parseIntField(String raw, String fieldName, String csvLine) {
+        try {
+            return new Result.Ok<>(Integer.parseInt(raw));
+        } catch (NumberFormatException e) {
+            return new Result.Err<>(new ParseError("Invalid integer for " + fieldName + ": " + raw, csvLine));
+        }
     }
 
     @Override
