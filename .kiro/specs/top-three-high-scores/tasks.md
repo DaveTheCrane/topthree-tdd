@@ -257,14 +257,14 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test: three players all at score 100
     - Commit: `"test(red): all-tied — definiteWinners empty, all in tiedCandidates"`
     - _Requirements: 3.6_
-  - [-] 5.12 Green: degenerate all-tied case (definiteWinners empty)
+  - [x] 5.12 Green: degenerate all-tied case (definiteWinners empty)
     - Commit: `"feat(green): all-tied degenerate case"`
     - _Requirements: 3.6_
-  - [~] 5.13 Red: two players with distinct scores — both in definiteWinners
+  - [x] 5.13 Red: two players with distinct scores — both in definiteWinners
     - Write a failing unit test with two players at scores 200, 100
     - Commit: `"test(red): two distinct-score players both in definiteWinners"`
     - _Requirements: 3.4_
-  - [~] 5.14 Green: confirm fewer-than-three no-tie case (likely already passing)
+  - [-] 5.14 Green: confirm fewer-than-three no-tie case (likely already passing)
     - Commit: `"feat(green): fewer-than-three no-tie case confirmed"`
     - _Requirements: 3.4_
   - [~] 5.15 Refactor LeaderboardRanker if duplication warrants it
