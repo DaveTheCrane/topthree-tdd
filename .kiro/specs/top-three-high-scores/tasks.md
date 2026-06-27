@@ -76,28 +76,28 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test for score = 101 (confirms upper bound)
     - Commit: `"test(red): normalised score 101 returns ParseError"`
     - _Requirements: 1.2_
-  - [-] 3.14 Green: confirm range guard already covers upper bound (no new code expected)
+  - [x] 3.14 Green: confirm range guard already covers upper bound (no new code expected)
     - Commit: `"feat(green): upper-bound confirmed by existing range guard"`
     - _Requirements: 1.2_
-  - [~] 3.15 Red: empty player id returns ParseError
+  - [x] 3.15 Red: empty player id returns ParseError
     - Write a failing unit test for a line where player id is blank after trim
     - Commit: `"test(red): empty player id returns ParseError"`
     - _Requirements: 1.7_
-  - [~] 3.16 Green: empty-id guard for player id
+  - [x] 3.16 Green: empty-id guard for player id
     - Commit: `"feat(green): empty-id guard for player id"`
     - _Requirements: 1.7_
-  - [~] 3.17 Red: empty game id returns ParseError
+  - [x] 3.17 Red: empty game id returns ParseError
     - Write a failing unit test for a line where game id is blank after trim
     - Commit: `"test(red): empty game id returns ParseError"`
     - _Requirements: 1.8_
-  - [~] 3.18 Green: empty-id guard for game id
+  - [x] 3.18 Green: empty-id guard for game id
     - Commit: `"feat(green): empty-id guard for game id"`
     - _Requirements: 1.8_
-  - [~] 3.19 Red: fields with leading/trailing whitespace parse to trimmed values
+  - [x] 3.19 Red: fields with leading/trailing whitespace parse to trimmed values
     - Write a failing unit test with padded fields (e.g. `" p1 , Alice , g1 , Chess , 2 , 50 "`)
     - Commit: `"test(red): whitespace-padded fields parse to trimmed values"`
     - _Requirements: 1.10_
-  - [~] 3.20 Green: trim each field before validation and construction
+  - [-] 3.20 Green: trim each field before validation and construction
     - Commit: `"feat(green): trim fields before validation"`
     - _Requirements: 1.10_
   - [~] 3.21 Red: parseLines returns all ScoreRecords in order for a valid list
