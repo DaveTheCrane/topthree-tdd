@@ -1,14 +1,19 @@
 package com.topthree;
 
+import net.jqwik.api.*;
+import net.jqwik.api.constraints.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PipelineTest {
 
     private final TopThreePipeline pipeline = new TopThreePipelineImpl();
+    private final CsvParser parser = new CsvParserImpl();
+    private final ScoreAggregator aggregator = new ScoreAggregatorImpl();
+    private final LeaderboardRanker ranker = new LeaderboardRankerImpl();
 
     @Test
     void emptyInputReturnsEmptyRankedResult() {
@@ -66,5 +71,78 @@ class PipelineTest {
         ));
 
         assertEquals(expected, result);
+    }
+
+    // Feature: top-three-high-scores, Property 12: Pipeline composition correctness
+    // Validates: Requirements 4.1
+    @Property(tries = 1000)
+    void pipelineCompositionCorrectness(
+            @ForAll("validCsvLineLists") List<String> csvLines
+    ) {
+        var pipelineResult = pipeline.run(csvLines);
+
+        // Manual chaining: parse → aggregate → rank
+        var parseResult = parser.parseLines(csvLines);
+        assertInstanceOf(Result.Ok.class, parseResult);
+        var records = ((Result.Ok<List<ScoreRecord>, ParseError>) parseResult).value();
+
+        // Verify no duplicate (playerId, gameId) pairs
+        var seen = new HashSet<String>();
+        for (var record : records) {
+            var key = record.player().playerId() + "|" + record.gameEntry().gameId();
+            assertTrue(seen.add(key), "Generated data should have distinct playerId/gameId pairs");
+        }
+
+        var aggregateResult = aggregator.aggregate(records);
+        assertInstanceOf(Result.Ok.class, aggregateResult);
+        var aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) aggregateResult).value();
+
+        var rankedResult = ranker.rank(aggregates);
+        var expectedResult = new Result.Ok<RankedResult, PipelineError>(rankedResult);
+
+        assertEquals(expectedResult, pipelineResult);
+    }
+
+    @Provide
+    Arbitrary<List<String>> validCsvLineLists() {
+        return Arbitraries.integers().between(1, 5).flatMap(size ->
+            Arbitraries.just(size).flatMap(n -> {
+                // Generate n distinct (playerId, gameId) pairs with valid fields
+                Arbitrary<String> playerIdArb = Arbitraries.strings()
+                        .alpha().numeric()
+                        .ofMinLength(1).ofMaxLength(10);
+                Arbitrary<String> playerNameArb = Arbitraries.strings()
+                        .alpha().numeric().withChars('-', '_')
+                        .ofMinLength(1).ofMaxLength(15)
+                        .filter(s -> !s.contains(","));
+                Arbitrary<String> gameIdArb = Arbitraries.strings()
+                        .alpha().numeric().withChars('-')
+                        .ofMinLength(1).ofMaxLength(10);
+                Arbitrary<String> gameNameArb = Arbitraries.strings()
+                        .alpha().numeric().withChars('-', '_')
+                        .ofMinLength(1).ofMaxLength(15)
+                        .filter(s -> !s.contains(","));
+                Arbitrary<Integer> hoursArb = Arbitraries.integers().between(1, 100);
+                Arbitrary<Integer> scoreArb = Arbitraries.integers().between(1, 100);
+
+                return Combinators.combine(playerIdArb, playerNameArb, gameIdArb, gameNameArb, hoursArb, scoreArb)
+                        .as((pid, pname, gid, gname, hours, score) ->
+                                String.join(",", pid, pname, gid, gname,
+                                        String.valueOf(hours), String.valueOf(score)))
+                        .list().ofSize(n)
+                        .map(lines -> {
+                            // Ensure distinct (playerId, gameId) pairs by appending index
+                            List<String> result = new ArrayList<>();
+                            for (int i = 0; i < lines.size(); i++) {
+                                String[] fields = lines.get(i).split(",", -1);
+                                // Make playerId and gameId unique per line by appending index
+                                fields[0] = fields[0] + i;
+                                fields[2] = fields[2] + i;
+                                result.add(String.join(",", fields));
+                            }
+                            return result;
+                        });
+            })
+        );
     }
 }
