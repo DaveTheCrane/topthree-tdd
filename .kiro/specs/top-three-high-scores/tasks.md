@@ -27,7 +27,7 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Commit: `"feat: component interfaces"`
     - _Requirements: 1.1, 2.1, 3.1, 4.1_
 
-- [ ] 3. CsvParser — TDD cycle
+- [x] 3. CsvParser — TDD cycle
   - [x] 3.1 Red: valid six-field line parses to correct ScoreRecord
     - Write a failing unit test: a well-formed CSV line produces a `ScoreRecord` with the expected field values
     - Commit: `"test(red): valid CSV line parses to ScoreRecord"`
@@ -111,75 +111,75 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - Write a failing unit test where the second line is invalid
     - Commit: `"test(red): parseLines short-circuits on first error"`
     - _Requirements: 1.9_
-  - [-] 3.24 Green: short-circuit parseLines on first error
+  - [x] 3.24 Green: short-circuit parseLines on first error
     - Commit: `"feat(green): parseLines short-circuits on first error"`
     - _Requirements: 1.9_
-  - [~] 3.25 Red: PrettyPrinter formats a ScoreRecord as six-field CSV
+  - [x] 3.25 Red: PrettyPrinter formats a ScoreRecord as six-field CSV
     - Write a failing unit test: `print(record)` returns the expected comma-separated string
     - Commit: `"test(red): PrettyPrinter formats ScoreRecord as CSV"`
     - _Requirements: 1.11_
-  - [~] 3.26 Green: implement PrettyPrinter.print
+  - [x] 3.26 Green: implement PrettyPrinter.print
     - Commit: `"feat(green): PrettyPrinter.print implementation"`
     - _Requirements: 1.11_
-  - [~] 3.27 Refactor CsvParser if duplication warrants it
+  - [x] 3.27 Refactor CsvParser if duplication warrants it
     - Review for repeated patterns (e.g. field-guard logic); refactor only if duplication exists; all tests must stay green
     - Commit (if changes made): `"refactor: CsvParser field-guard deduplication"`
-  - [~] 3.28 Write property test — Property 1: valid CSV line parses to correct fields
+  - [x] 3.28 Write property test — Property 1: valid CSV line parses to correct fields
     - `// Feature: top-three-high-scores, Property 1: Valid CSV line parses to correct fields`
     - Generate arbitrary valid six-field CSV strings; assert parsed fields match input values
     - Commit: `"test(property-1): valid CSV line parses to correct fields"`
     - _Validates: Requirements 1.1_
-  - [~] 3.29 Write property test — Property 2: out-of-range normalised score returns error
+  - [x] 3.29 Write property test — Property 2: out-of-range normalised score returns error
     - `// Feature: top-three-high-scores, Property 2: Out-of-range normalised score returns an error`
     - Generate otherwise-valid lines with score outside [1, 100]; assert ParseError returned
     - Commit: `"test(property-2): out-of-range normalised score returns error"`
     - _Validates: Requirements 1.2_
-  - [~] 3.30 Write property test — Property 3: non-integer hours-played returns error
+  - [x] 3.30 Write property test — Property 3: non-integer hours-played returns error
     - `// Feature: top-three-high-scores, Property 3: Non-integer hours-played returns an error`
     - Generate lines with non-integer hours-played strings; assert ParseError returned
     - Commit: `"test(property-3): non-integer hours-played returns error"`
     - _Validates: Requirements 1.3_
-  - [~] 3.31 Write property test — Property 4: non-integer normalised-score field returns error
+  - [x] 3.31 Write property test — Property 4: non-integer normalised-score field returns error
     - `// Feature: top-three-high-scores, Property 4: Non-integer normalised-score field returns an error`
     - Generate lines with non-integer normalised-score strings; assert ParseError returned
     - Commit: `"test(property-4): non-integer normalised-score returns error"`
     - _Validates: Requirements 1.4_
-  - [~] 3.32 Write property test — Property 5: wrong field count returns error
+  - [x] 3.32 Write property test — Property 5: wrong field count returns error
     - `// Feature: top-three-high-scores, Property 5: Wrong field count returns an error`
     - Generate lines with field counts other than six; assert ParseError returned
     - Commit: `"test(property-5): wrong field count returns error"`
     - _Validates: Requirements 1.5, 1.6_
-  - [~] 3.33 Write property test — Property 6: whitespace trimming preserves field values
+  - [x] 3.33 Write property test — Property 6: whitespace trimming preserves field values
     - `// Feature: top-three-high-scores, Property 6: Whitespace trimming preserves field values`
     - Generate valid lines; add arbitrary whitespace around fields; assert same ScoreRecord as unpadded version
     - Commit: `"test(property-6): whitespace trimming preserves field values"`
     - _Validates: Requirements 1.10_
-  - [~] 3.34 Write property test — Property 7: parse → print → parse round trip
+  - [x] 3.34 Write property test — Property 7: parse → print → parse round trip
     - `// Feature: top-three-high-scores, Property 7: Parse → print → parse round trip`
     - Generate arbitrary valid ScoreRecords; print then parse; assert result equals original
     - Commit: `"test(property-7): parse-print-parse round trip"`
     - _Validates: Requirements 1.11, 1.12_
 
 - [ ] 4. ScoreAggregator — TDD cycle
-  - [~] 4.1 Red: empty input returns empty list
+  - [x] 4.1 Red: empty input returns empty list
     - Write a failing unit test: `aggregate([])` returns `Ok([])`
     - Commit: `"test(red): empty input returns empty aggregate list"`
     - _Requirements: 2.7_
-  - [~] 4.2 Green: handle empty input
+  - [x] 4.2 Green: handle empty input
     - Commit: `"feat(green): ScoreAggregator handles empty input"`
     - _Requirements: 2.7_
-  - [~] 4.3 Red: single ScoreRecord produces one PlayerAggregate with correct totalScore
+  - [x] 4.3 Red: single ScoreRecord produces one PlayerAggregate with correct totalScore
     - Write a failing unit test: one record with hours=2, score=50 → totalScore=100
     - Commit: `"test(red): single record produces PlayerAggregate with correct totalScore"`
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
-  - [~] 4.4 Green: compute weighted score and wrap in PlayerAggregate
+  - [x] 4.4 Green: compute weighted score and wrap in PlayerAggregate
     - Commit: `"feat(green): weighted score computation and PlayerAggregate creation"`
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
-  - [~] 4.5 Red: two records for the same player sum their weighted scores
+  - [x] 4.5 Red: two records for the same player sum their weighted scores
     - Write a failing unit test: two records for player "p1" → totalScore = sum of both weighted scores
     - Commit: `"test(red): two records for same player sum weighted scores"`
     - _Requirements: 2.5_
-  - [~] 4.6 Green: accumulate weighted scores per player id
+  - [-] 4.6 Green: accumulate weighted scores per player id
     - Commit: `"feat(green): accumulate weighted scores per player id"`
     - _Requirements: 2.5_
   - [~] 4.7 Red: two records for different players produce two PlayerAggregates
