@@ -141,6 +141,121 @@ class ScoreAggregatorTest {
         }
     }
 
+    // Feature: top-three-high-scores, Property 9: Last-seen display name wins on name conflict
+    /**
+     * Validates: Requirements 2.6, 2.8
+     */
+    @Property(tries = 1000)
+    void lastSeenDisplayNameWinsOnNameConflict(@ForAll("scoreRecordsWithNameConflict") List<ScoreRecord> records) {
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(records);
+
+        assertInstanceOf(Result.Ok.class, result);
+        List<PlayerAggregate> aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+
+        // Find the conflicting player id (the one that appears with different names)
+        // and determine the last-seen name for that player
+        Map<String, String> lastSeenNameById = new HashMap<>();
+        for (ScoreRecord record : records) {
+            lastSeenNameById.put(record.player().playerId(), record.player().playerName());
+        }
+
+        Map<String, PlayerAggregate> aggregateById = aggregates.stream()
+                .collect(Collectors.toMap(a -> a.player().playerId(), a -> a));
+
+        // Verify that for every player, the aggregate carries the last-seen name
+        for (Map.Entry<String, String> entry : lastSeenNameById.entrySet()) {
+            String playerId = entry.getKey();
+            String expectedName = entry.getValue();
+            assertTrue(aggregateById.containsKey(playerId),
+                    "Missing aggregate for player id: " + playerId);
+            assertEquals(expectedName, aggregateById.get(playerId).player().playerName(),
+                    "Last-seen name should win for player: " + playerId);
+        }
+    }
+
+    @Provide
+    Arbitrary<List<ScoreRecord>> scoreRecordsWithNameConflict() {
+        // Generate a player id that will have a name conflict
+        Arbitrary<String> conflictPlayerIdArb = Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8)
+                .map(s -> "conflict_" + s);
+
+        // Generate at least 2 different names for the conflicting player
+        Arbitrary<List<String>> conflictNamesArb = Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(10)
+                .list().ofMinSize(2).ofMaxSize(5)
+                .filter(names -> names.stream().distinct().count() >= 2);
+
+        // Generate additional records for other players (0-3 other players)
+        Arbitrary<Integer> otherPlayerCountArb = Arbitraries.integers().between(0, 3);
+
+        return Combinators.combine(conflictPlayerIdArb, conflictNamesArb, otherPlayerCountArb)
+                .flatAs((conflictPlayerId, conflictNames, otherCount) -> {
+                    // Create records for the conflict player (one per name)
+                    List<Arbitrary<ScoreRecord>> conflictRecordArbs = new ArrayList<>();
+                    for (String name : conflictNames) {
+                        Player player = new Player(conflictPlayerId, name);
+                        Arbitrary<ScoreRecord> recordArb = Combinators.combine(
+                                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),
+                                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(10),
+                                Arbitraries.integers().between(1, 1000),
+                                Arbitraries.integers().between(1, 100)
+                        ).as((gameId, gameName, hours, score) ->
+                                new ScoreRecord(player, new GameEntry(gameId, gameName, hours, score))
+                        );
+                        conflictRecordArbs.add(recordArb);
+                    }
+
+                    // Create records for other players
+                    List<Arbitrary<List<ScoreRecord>>> otherRecordArbs = new ArrayList<>();
+                    for (int i = 0; i < otherCount; i++) {
+                        int idx = i;
+                        Arbitrary<List<ScoreRecord>> otherPlayerRecords = Combinators.combine(
+                                Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(10),
+                                Arbitraries.integers().between(1, 3)
+                        ).flatAs((otherName, numGames) -> {
+                            Player otherPlayer = new Player("other_" + idx, otherName);
+                            List<Arbitrary<ScoreRecord>> gameArbs = new ArrayList<>();
+                            for (int g = 0; g < numGames; g++) {
+                                Arbitrary<ScoreRecord> gameArb = Combinators.combine(
+                                        Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(8),
+                                        Arbitraries.strings().alpha().ofMinLength(1).ofMaxLength(10),
+                                        Arbitraries.integers().between(1, 1000),
+                                        Arbitraries.integers().between(1, 100)
+                                ).as((gId, gName, hrs, scr) ->
+                                        new ScoreRecord(otherPlayer, new GameEntry(gId, gName, hrs, scr))
+                                );
+                                gameArbs.add(gameArb);
+                            }
+                            return Combinators.combine(gameArbs).as(list -> list);
+                        });
+                        otherRecordArbs.add(otherPlayerRecords);
+                    }
+
+                    // Combine conflict records and other records, keeping conflict records in order
+                    Arbitrary<List<ScoreRecord>> conflictListArb = Combinators.combine(conflictRecordArbs).as(list -> list);
+
+                    if (otherRecordArbs.isEmpty()) {
+                        return conflictListArb;
+                    }
+
+                    Arbitrary<List<ScoreRecord>> otherListArb = Combinators.combine(otherRecordArbs)
+                            .as(lists -> {
+                                List<ScoreRecord> all = new ArrayList<>();
+                                for (List<ScoreRecord> list : lists) {
+                                    all.addAll(list);
+                                }
+                                return all;
+                            });
+
+                    // Combine: put other records first, conflict records at end
+                    // This ensures the last occurrence of the conflict player has the last name in conflictNames
+                    return Combinators.combine(otherListArb, conflictListArb).as((others, conflicts) -> {
+                        List<ScoreRecord> all = new ArrayList<>(others);
+                        all.addAll(conflicts);
+                        return all;
+                    });
+                });
+    }
+
     @Provide
     Arbitrary<List<ScoreRecord>> scoreRecordsWithConsistentNames() {
         // Generate 1-5 distinct players, each with a consistent name
