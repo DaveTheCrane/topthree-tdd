@@ -827,6 +827,11 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782596906444
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782596973402
       }
     ],
     "4.13 Refactor ScoreAggregator if duplication warrants it": [
@@ -834,6 +839,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593725920
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782596977201
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597033571
       }
     ],
     "4.14 Write property test — Property 8: aggregation correctness": [
@@ -841,6 +856,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593726086
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597037765
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597142362
       }
     ],
     "4.15 Write property test — Property 9: last-seen display name wins on name conflict": [
@@ -848,6 +873,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593726214
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597147095
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597268980
       }
     ],
     "5.1 Red: empty input returns empty RankedResult": [
@@ -855,6 +890,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593726326
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597276619
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597350996
       }
     ],
     "5.2 Green: handle empty input": [
@@ -862,6 +907,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593726442
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597355011
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597416553
       }
     ],
     "5.3 Red: single player goes into definiteWinners, tiedCandidates empty": [
@@ -869,6 +924,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593726550
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597420567
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597474997
       }
     ],
     "5.4 Green: place single player in definiteWinners": [
@@ -876,6 +941,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593726671
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597479676
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597540503
       }
     ],
     "5.5 Red: three players with distinct scores — all in definiteWinners, descending order": [
@@ -883,6 +958,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593726770
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597545148
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597605436
       }
     ],
     "5.6 Green: sort descending and take up to three into definiteWinners": [
@@ -890,6 +975,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593726890
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597609769
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597671580
       }
     ],
     "5.7 Red: four players, no tie — top three in definiteWinners, fourth excluded": [
@@ -897,6 +992,16 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593727021
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597675658
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597737987
       }
     ],
     "5.8 Green: confirm existing logic handles N > 3 without tie (likely already passing)": [
@@ -904,6 +1009,11 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782593727132
+      },
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597742097
       }
     ],
     "5.9 Red: tie at position 3 — players above boundary in definiteWinners, tied players in tiedCandidates": [
@@ -1079,6 +1189,13 @@
         "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782596223063
+      }
+    ],
+    "4. ScoreAggregator — TDD cycle": [
+      {
+        "executionId": "8fc31572-4a23-47cf-a277-2af072e68990",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782597269163
       }
     ]
   }
