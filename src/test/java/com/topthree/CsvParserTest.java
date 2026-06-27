@@ -355,6 +355,31 @@ class CsvParserTest {
                 .withChars(' ', '\t');
     }
 
+    // Feature: top-three-high-scores, Property 7: Parse → print → parse round trip
+    // **Validates: Requirements 1.11, 1.12**
+    @Property(tries = 1000)
+    void parsePrintParseRoundTrip(
+            @ForAll("nonEmptyNoCommaStrings") String playerId,
+            @ForAll("noCommaStrings") String playerName,
+            @ForAll("nonEmptyNoCommaStrings") String gameId,
+            @ForAll("noCommaStrings") String gameName,
+            @ForAll @IntRange(min = Integer.MIN_VALUE, max = Integer.MAX_VALUE) int hoursPlayed,
+            @ForAll @IntRange(min = 1, max = 100) int normalisedScore
+    ) {
+        Player player = new Player(playerId.trim(), playerName.trim());
+        GameEntry gameEntry = new GameEntry(gameId.trim(), gameName.trim(), hoursPlayed, normalisedScore);
+        ScoreRecord original = new ScoreRecord(player, gameEntry);
+
+        PrettyPrinter printer = new PrettyPrinterImpl();
+        String csv = printer.print(original);
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csv);
+
+        assertInstanceOf(Result.Ok.class, result);
+        ScoreRecord parsed = ((Result.Ok<ScoreRecord, ParseError>) result).value();
+        assertEquals(original, parsed);
+    }
+
     @Provide
     Arbitrary<String> nonEmptyNoCommaStrings() {
         return Arbitraries.strings()
