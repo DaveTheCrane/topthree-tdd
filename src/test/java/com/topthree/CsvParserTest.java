@@ -2,6 +2,8 @@ package com.topthree;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CsvParserTest {
@@ -96,5 +98,53 @@ class CsvParserTest {
         assertTrue(result.isErr());
         ParseError error = result.getError();
         assertTrue(error.message().toLowerCase().contains("score"));
+    }
+
+    // Feature: top-three-high-scores, Property 6: Whitespace trimming preserves field values
+    @Test
+    void parseLine_trimsWhitespaceFromFields() {
+        String csvLine = " p1 , Alice , g1 , Chess , 2 , 50 ";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertTrue(result.isOk());
+        ScoreRecord record = result.get();
+        assertEquals("p1", record.player().playerId());
+        assertEquals("Alice", record.player().playerName());
+        assertEquals("g1", record.gameEntry().gameId());
+        assertEquals("Chess", record.gameEntry().gameName());
+        assertEquals(2, record.gameEntry().hoursPlayed());
+        assertEquals(50, record.gameEntry().normalisedScore());
+    }
+
+    // Feature: top-three-high-scores, Property 1: Valid CSV line parses to correct fields
+    // Test parseLines - order preservation
+    @Test
+    void parseLines_preservesOrder() {
+        List<String> csvLines = List.of(
+            "p1,Alice,g1,Chess,2,50",
+            "p2,Bob,g2,Checkers,3,75"
+        );
+        
+        Result<List<ScoreRecord>, ParseError> result = csvParser.parseLines(csvLines);
+        
+        assertTrue(result.isOk());
+        List<ScoreRecord> records = result.get();
+        assertEquals(2, records.size());
+        assertEquals("p1", records.get(0).player().playerId());
+        assertEquals("p2", records.get(1).player().playerId());
+    }
+
+    // Feature: top-three-high-scores, Property 6: Whitespace trimming preserves field values
+    @Test
+    void parseLines_shortCircuitsOnFirstError() {
+        List<String> csvLines = List.of(
+            "p1,Alice,g1,Chess,2,50",
+            "p2,Bob,g2,Checkers,abc,75"  // invalid hours
+        );
+        
+        Result<List<ScoreRecord>, ParseError> result = csvParser.parseLines(csvLines);
+        
+        assertTrue(result.isErr());
     }
 }
