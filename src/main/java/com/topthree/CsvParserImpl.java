@@ -20,9 +20,32 @@ public class CsvParserImpl implements CsvParser {
             return Result.err(new ParseError("Too many fields: expected 6, got " + fields.length, csvLine));
         }
         
-        Player player = new Player(fields[0].trim(), fields[1].trim());
-        GameEntry gameEntry = new GameEntry(fields[2].trim(), fields[3].trim(), 
-                Integer.parseInt(fields[4].trim()), Integer.parseInt(fields[5].trim()));
+        // Trim all fields
+        String playerId = fields[0].trim();
+        String playerName = fields[1].trim();
+        String gameId = fields[2].trim();
+        String gameName = fields[3].trim();
+        String hoursPlayedStr = fields[4].trim();
+        String normalisedScoreStr = fields[5].trim();
+        
+        // Parse hours played - must be an integer
+        int hoursPlayed;
+        try {
+            hoursPlayed = Integer.parseInt(hoursPlayedStr);
+        } catch (NumberFormatException e) {
+            return Result.err(new ParseError("Hours played is not an integer: " + hoursPlayedStr, csvLine));
+        }
+        
+        // Parse normalised score - must be an integer
+        int normalisedScore;
+        try {
+            normalisedScore = Integer.parseInt(normalisedScoreStr);
+        } catch (NumberFormatException e) {
+            return Result.err(new ParseError("Normalised score is not an integer: " + normalisedScoreStr, csvLine));
+        }
+        
+        Player player = new Player(playerId, playerName);
+        GameEntry gameEntry = new GameEntry(gameId, gameName, hoursPlayed, normalisedScore);
         ScoreRecord scoreRecord = new ScoreRecord(player, gameEntry);
         
         return Result.ok(scoreRecord);
