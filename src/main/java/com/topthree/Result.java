@@ -18,6 +18,20 @@ public sealed interface Result<V, E> permits Result.Ok, Result.Err {
     record Err<V, E>(E error) implements Result<V, E> {}
 
     /**
+     * Creates a success result with the given value.
+     */
+    static <V, E> Result<V, E> ok(V value) {
+        return new Ok<>(value);
+    }
+
+    /**
+     * Creates an error result with the given error.
+     */
+    static <V, E> Result<V, E> err(E error) {
+        return new Err<>(error);
+    }
+
+    /**
      * Checks if this is an Ok result.
      */
     default boolean isOk() {
