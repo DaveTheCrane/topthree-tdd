@@ -45,6 +45,11 @@
         "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782637870043
+      },
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637935559
       }
     ],
     "3.1 Red: valid six-field line parses to correct ScoreRecord": [
@@ -52,6 +57,16 @@
         "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782637688537
+      },
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637940980
+      },
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782638044341
       }
     ],
     "3.2 Green: minimal CsvParser implementation for the happy path": [
@@ -59,6 +74,11 @@
         "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782637688715
+      },
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782638053968
       }
     ],
     "3.3 Red: fewer than six fields returns ParseError": [
@@ -507,6 +527,13 @@
         "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782637697609
+      }
+    ],
+    "2. Define data models (no logic)": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637935798
       }
     ]
   }

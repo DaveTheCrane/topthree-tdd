@@ -1,43 +1,26 @@
 package com.topthree;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import net.jqwik.api.*;
+import net.jqwik.api.constraints.*;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Unit tests for CsvParser following TDD Red-Green-Refactor cycles.
+ * Unit tests and property-based tests for CsvParser following TDD Red-Green-Refactor cycles.
  */
 class CsvParserTest {
-    private CsvParser csvParser;
+    private static final CsvParser csvParser = new CsvParserImpl();
+    private static final PrettyPrinter prettyPrinter = new PrettyPrinterImpl();
 
-    @BeforeEach
-    void setUp() {
-        // During RED phase, CsvParser implementation does not exist yet.
-        // This will be implemented in the GREEN phase (3.2).
-        // For now, we use a stub that throws UnsupportedOperationException.
-        csvParser = new CsvParser() {
-            @Override
-            public Result<ScoreRecord, ParseError> parseLine(String csvLine) {
-                throw new UnsupportedOperationException("CsvParser.parseLine not yet implemented");
-            }
-
-            @Override
-            public Result<List<ScoreRecord>, ParseError> parseLines(List<String> csvLines) {
-                throw new UnsupportedOperationException("CsvParser.parseLines not yet implemented");
-            }
-        };
-    }
+    // ─────────────────────────────────────────────────────
+    // UNIT TESTS (RED/GREEN/REFACTOR PHASES)
+    // ─────────────────────────────────────────────────────
 
     /**
-     * RED PHASE TEST: Valid six-field CSV line parses to correct ScoreRecord
-     * 
-     * Input: "alice,Alice Wonder,pac-man,Pac-Man,10,75"
-     * Expected: ScoreRecord with:
-     *   - Player(alice, Alice Wonder)
-     *   - GameEntry(pac-man, Pac-Man, 10, 75)
+     * Test 3.1 & 3.2: Valid six-field CSV line parses to correct ScoreRecord
      */
     @Test
     void testValidSixFieldLineParses() {
@@ -51,5 +34,239 @@ class CsvParserTest {
         );
         
         assertThat(result).isEqualTo(new Result.Ok<ScoreRecord, ParseError>(expected));
+    }
+
+    /**
+     * Test 3.3 & 3.4: Fewer than six fields returns ParseError
+     */
+    @Test
+    void testFewerThanSixFieldsReturnsError() {
+        String csvLine = "alice,Alice Wonder,pac-man,Pac-Man,10";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+        if (result instanceof Result.Err<ScoreRecord, ParseError> err) {
+            assertThat(err.error().message()).contains("6");
+        }
+    }
+
+    /**
+     * Test 3.5 & 3.6: More than six fields returns ParseError
+     */
+    @Test
+    void testMoreThanSixFieldsReturnsError() {
+        String csvLine = "alice,Alice Wonder,pac-man,Pac-Man,10,75,extra";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+        if (result instanceof Result.Err<ScoreRecord, ParseError> err) {
+            assertThat(err.error().message()).contains("6");
+        }
+    }
+
+    /**
+     * Test 3.7 & 3.8: Non-integer hours-played returns ParseError
+     */
+    @Test
+    void testNonIntegerHoursPlayedReturnsError() {
+        String csvLine = "alice,Alice Wonder,pac-man,Pac-Man,abc,75";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Test 3.9 & 3.10: Non-integer normalised-score returns ParseError
+     */
+    @Test
+    void testNonIntegerNormalisedScoreReturnsError() {
+        String csvLine = "alice,Alice Wonder,pac-man,Pac-Man,10,1.5";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Test 3.11 & 3.12: Normalised score of 0 returns ParseError
+     */
+    @Test
+    void testNormalisedScoreZeroReturnsError() {
+        String csvLine = "alice,Alice Wonder,pac-man,Pac-Man,10,0";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Test 3.13 & 3.14: Normalised score of 101 returns ParseError
+     */
+    @Test
+    void testNormalisedScore101ReturnsError() {
+        String csvLine = "alice,Alice Wonder,pac-man,Pac-Man,10,101";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Test 3.15 & 3.16: Empty player id returns ParseError
+     */
+    @Test
+    void testEmptyPlayerIdReturnsError() {
+        String csvLine = ",Alice Wonder,pac-man,Pac-Man,10,75";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Test 3.17 & 3.18: Empty game id returns ParseError
+     */
+    @Test
+    void testEmptyGameIdReturnsError() {
+        String csvLine = "alice,Alice Wonder,,Pac-Man,10,75";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Test 3.19 & 3.20: Fields with leading/trailing whitespace parse to trimmed values
+     */
+    @Test
+    void testWhitespaceTrimmingPreservesValues() {
+        String csvLine = "  alice  ,  Alice Wonder  ,  pac-man  ,  Pac-Man  ,  10  ,  75  ";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        ScoreRecord expected = new ScoreRecord(
+            new Player("alice", "Alice Wonder"),
+            new GameEntry("pac-man", "Pac-Man", 10, 75)
+        );
+        
+        assertThat(result).isEqualTo(new Result.Ok<ScoreRecord, ParseError>(expected));
+    }
+
+    /**
+     * Test 3.21 & 3.22: parseLines returns all ScoreRecords in order for a valid list
+     */
+    @Test
+    void testParseLinesPreservesOrderOfValidRecords() {
+        List<String> csvLines = List.of(
+            "alice,Alice Wonder,pac-man,Pac-Man,10,75",
+            "bob,Bob Builder,snake,Snake,5,50"
+        );
+        
+        Result<List<ScoreRecord>, ParseError> result = csvParser.parseLines(csvLines);
+        
+        assertThat(result).isInstanceOf(Result.Ok.class);
+        if (result instanceof Result.Ok<List<ScoreRecord>, ParseError> ok) {
+            assertThat(ok.value()).hasSize(2);
+            assertThat(ok.value().get(0).player().playerId()).isEqualTo("alice");
+            assertThat(ok.value().get(1).player().playerId()).isEqualTo("bob");
+        }
+    }
+
+    /**
+     * Test 3.23 & 3.24: parseLines short-circuits on first error
+     */
+    @Test
+    void testParseLinesShortCircuitsOnFirstError() {
+        List<String> csvLines = List.of(
+            "alice,Alice Wonder,pac-man,Pac-Man,10,75",
+            "invalid,line,with,only,four",
+            "bob,Bob Builder,snake,Snake,5,50"
+        );
+        
+        Result<List<ScoreRecord>, ParseError> result = csvParser.parseLines(csvLines);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Test 3.25 & 3.26: PrettyPrinter formats a ScoreRecord as six-field CSV
+     */
+    @Test
+    void testPrettyPrinterFormatsScoreRecordAsCsv() {
+        ScoreRecord record = new ScoreRecord(
+            new Player("alice", "Alice Wonder"),
+            new GameEntry("pac-man", "Pac-Man", 10, 75)
+        );
+        
+        String csv = prettyPrinter.print(record);
+        
+        assertThat(csv).isEqualTo("alice,Alice Wonder,pac-man,Pac-Man,10,75");
+    }
+
+    // ─────────────────────────────────────────────────────
+    // PROPERTY-BASED TESTS (jqwik) - simplified
+    // ─────────────────────────────────────────────────────
+
+    /**
+     * Feature: top-three-high-scores, Property 1: Valid CSV line parses to correct fields
+     * Validates: Requirements 1.1
+     */
+    @Property(tries = 20)
+    void property1_validCsvLineParses(
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String playerId,
+            @ForAll @StringLength(min = 1, max = 10) String playerName,
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String gameId,
+            @ForAll @StringLength(min = 1, max = 10) String gameName,
+            @ForAll @IntRange(min = 1, max = 100) int hoursPlayed,
+            @ForAll @IntRange(min = 1, max = 100) int score
+    ) {
+        // Filter out pure whitespace to avoid trimming issues in property tests
+        Assume.that(!playerName.trim().isEmpty() && !gameName.trim().isEmpty());
+        
+        String csvLine = String.format("%s,%s,%s,%s,%d,%d", 
+            playerId, playerName, gameId, gameName, hoursPlayed, score);
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Ok.class);
+        if (result instanceof Result.Ok<ScoreRecord, ParseError> ok) {
+            ScoreRecord record = ok.value();
+            assertThat(record.player().playerId()).isEqualTo(playerId);
+            assertThat(record.player().playerName()).isEqualTo(playerName.trim());
+            assertThat(record.gameEntry().gameId()).isEqualTo(gameId);
+            assertThat(record.gameEntry().gameName()).isEqualTo(gameName.trim());
+            assertThat(record.gameEntry().hoursPlayed()).isEqualTo(hoursPlayed);
+            assertThat(record.gameEntry().normalisedScore()).isEqualTo(score);
+        }
+    }
+
+    /**
+     * Feature: top-three-high-scores, Property 7: Parse → print → parse round trip
+     * Validates: Requirements 1.11, 1.12
+     */
+    @Property(tries = 20)
+    void property7_roundTripParsePrintParse(
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String playerId,
+            @ForAll @StringLength(min = 1, max = 10) String playerName,
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String gameId,
+            @ForAll @StringLength(min = 1, max = 10) String gameName,
+            @ForAll @IntRange(min = 1, max = 100) int hoursPlayed,
+            @ForAll @IntRange(min = 1, max = 100) int score
+    ) {
+        // Filter out pure whitespace
+        Assume.that(!playerName.trim().isEmpty() && !gameName.trim().isEmpty());
+        
+        ScoreRecord original = new ScoreRecord(
+            new Player(playerId, playerName.trim()),
+            new GameEntry(gameId, gameName.trim(), hoursPlayed, score)
+        );
+        
+        String csv = prettyPrinter.print(original);
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csv);
+        
+        assertThat(result).isEqualTo(new Result.Ok<ScoreRecord, ParseError>(original));
     }
 }

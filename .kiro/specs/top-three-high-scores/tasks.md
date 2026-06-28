@@ -13,7 +13,7 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
   - Initialise a local git repository and commit: `"chore: project setup"`
   - _Requirements: all_
 
-- [ ] 2. Define data models (no logic)
+- [x] 2. Define data models (no logic)
   - [x] 2.1 Create core records and sealed Result type
     - Implement `Player`, `GameEntry`, `ScoreRecord`, `PlayerAggregate`, `RankedResult` as Java records
     - Implement the `sealed interface Result<V, E>` with `Ok` and `Err` permit classes
@@ -21,18 +21,18 @@ Build a four-component Java pipeline (CsvParser → ScoreAggregator → Leaderbo
     - No logic or validation — pure data containers only
     - Commit: `"feat: core data model records and Result type"`
     - _Requirements: 1.1, 2.1, 3.1, 4.1_
-  - [-] 2.2 Define component interfaces
+  - [x] 2.2 Define component interfaces
     - Declare `CsvParser`, `PrettyPrinter`, `ScoreAggregator`, `LeaderboardRanker`, and `TopThreePipeline` interfaces exactly as specified in the design
     - No implementations yet
     - Commit: `"feat: component interfaces"`
     - _Requirements: 1.1, 2.1, 3.1, 4.1_
 
 - [ ] 3. CsvParser — TDD cycle
-  - [~] 3.1 Red: valid six-field line parses to correct ScoreRecord
+  - [x] 3.1 Red: valid six-field line parses to correct ScoreRecord
     - Write a failing unit test: a well-formed CSV line produces a `ScoreRecord` with the expected field values
     - Commit: `"test(red): valid CSV line parses to ScoreRecord"`
     - _Requirements: 1.1_
-  - [~] 3.2 Green: minimal CsvParser implementation for the happy path
+  - [-] 3.2 Green: minimal CsvParser implementation for the happy path
     - Implement just enough `CsvParser` logic to pass the single valid-line test (split on comma, construct records)
     - Commit: `"feat(green): minimal CsvParser happy path"`
     - _Requirements: 1.1_
