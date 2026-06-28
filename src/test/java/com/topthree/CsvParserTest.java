@@ -71,6 +71,30 @@ class CsvParserTest {
         
         assertTrue(result.isErr());
         ParseError error = result.getError();
-        assertTrue(error.message().contains("score"));
+        assertTrue(error.message().toLowerCase().contains("score"));
+    }
+
+    // Feature: top-three-high-scores, Property 2: Out-of-range normalised score returns an error
+    @Test
+    void parseLine_returnsParseError_withNormalisedScoreOf0() {
+        String csvLine = "p1,Alice,g1,Chess,2,0";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertTrue(result.isErr());
+        ParseError error = result.getError();
+        assertTrue(error.message().toLowerCase().contains("score"));
+    }
+
+    // Feature: top-three-high-scores, Property 2: Out-of-range normalised score returns an error
+    @Test
+    void parseLine_returnsParseError_withNormalisedScoreOf101() {
+        String csvLine = "p1,Alice,g1,Chess,2,101";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertTrue(result.isErr());
+        ParseError error = result.getError();
+        assertTrue(error.message().toLowerCase().contains("score"));
     }
 }
