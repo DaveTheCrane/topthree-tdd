@@ -1,0 +1,513 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Project setup": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637687941
+      },
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637703713
+      },
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637795615
+      }
+    ],
+    "2.1 Create core records and sealed Result type": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637688213
+      },
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637800022
+      },
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637867333
+      }
+    ],
+    "2.2 Define component interfaces": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637688381
+      },
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637870043
+      }
+    ],
+    "3.1 Red: valid six-field line parses to correct ScoreRecord": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637688537
+      }
+    ],
+    "3.2 Green: minimal CsvParser implementation for the happy path": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637688715
+      }
+    ],
+    "3.3 Red: fewer than six fields returns ParseError": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637688958
+      }
+    ],
+    "3.4 Green: field-count validation": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637689075
+      }
+    ],
+    "3.5 Red: more than six fields returns ParseError": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637689194
+      }
+    ],
+    "3.6 Green: extend field-count guard to cover both under and over": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637689308
+      }
+    ],
+    "3.7 Red: non-integer hours-played returns ParseError": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637689425
+      }
+    ],
+    "3.8 Green: integer-parse guard for hours-played": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637689565
+      }
+    ],
+    "3.9 Red: non-integer normalised-score returns ParseError": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637689701
+      }
+    ],
+    "3.10 Green: integer-parse guard for normalised-score": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637689864
+      }
+    ],
+    "3.11 Red: normalised score of 0 returns ParseError": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637689997
+      }
+    ],
+    "3.12 Green: range guard [1, 100] for normalised-score": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637690140
+      }
+    ],
+    "3.13 Red: normalised score of 101 returns ParseError": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637690264
+      }
+    ],
+    "3.14 Green: confirm range guard already covers upper bound (no new code expected)": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637690391
+      }
+    ],
+    "3.15 Red: empty player id returns ParseError": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637690514
+      }
+    ],
+    "3.16 Green: empty-id guard for player id": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637690687
+      }
+    ],
+    "3.17 Red: empty game id returns ParseError": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637690851
+      }
+    ],
+    "3.18 Green: empty-id guard for game id": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637690967
+      }
+    ],
+    "3.19 Red: fields with leading/trailing whitespace parse to trimmed values": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637691066
+      }
+    ],
+    "3.20 Green: trim each field before validation and construction": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637691169
+      }
+    ],
+    "3.21 Red: parseLines returns all ScoreRecords in order for a valid list": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637691312
+      }
+    ],
+    "3.22 Green: implement parseLines delegating to parseLine": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637691462
+      }
+    ],
+    "3.23 Red: parseLines returns first ParseError on a mixed valid/invalid list": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637691568
+      }
+    ],
+    "3.24 Green: short-circuit parseLines on first error": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637691682
+      }
+    ],
+    "3.25 Red: PrettyPrinter formats a ScoreRecord as six-field CSV": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637691798
+      }
+    ],
+    "3.26 Green: implement PrettyPrinter.print": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637691941
+      }
+    ],
+    "3.27 Refactor CsvParser if duplication warrants it": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637692057
+      }
+    ],
+    "4.1 Red: empty input returns empty list": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637692167
+      }
+    ],
+    "4.2 Green: handle empty input": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637692274
+      }
+    ],
+    "4.3 Red: single ScoreRecord produces one PlayerAggregate with correct totalScore": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637692424
+      }
+    ],
+    "4.4 Green: compute weighted score and wrap in PlayerAggregate": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637692535
+      }
+    ],
+    "4.5 Red: two records for the same player sum their weighted scores": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637692651
+      }
+    ],
+    "4.6 Green: accumulate weighted scores per player id": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637692765
+      }
+    ],
+    "4.7 Red: two records for different players produce two PlayerAggregates": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637692931
+      }
+    ],
+    "4.8 Green: group by player id (no new logic expected beyond accumulation)": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637693098
+      }
+    ],
+    "4.9 Red: same player id with different display names — last-seen name wins": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637693217
+      }
+    ],
+    "4.10 Green: overwrite player name on each encounter, keeping the last-seen value": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637693348
+      }
+    ],
+    "4.11 Red: player display name is preserved in PlayerAggregate": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637693467
+      }
+    ],
+    "4.12 Green: carry player name through to PlayerAggregate (likely already passing; confirm)": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637693613
+      }
+    ],
+    "4.13 Refactor ScoreAggregator if duplication warrants it": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637693741
+      }
+    ],
+    "5.1 Red: empty input returns empty RankedResult": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637693839
+      }
+    ],
+    "5.2 Green: handle empty input": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637693946
+      }
+    ],
+    "5.3 Red: single player goes into definiteWinners, tiedCandidates empty": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637694077
+      }
+    ],
+    "5.4 Green: place single player in definiteWinners": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637694191
+      }
+    ],
+    "5.5 Red: three players with distinct scores — all in definiteWinners, descending order": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637694319
+      }
+    ],
+    "5.6 Green: sort descending and take up to three into definiteWinners": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637694432
+      }
+    ],
+    "5.7 Red: four players, no tie — top three in definiteWinners, fourth excluded": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637694549
+      }
+    ],
+    "5.8 Green: confirm existing logic handles N > 3 without tie (likely already passing)": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637694699
+      }
+    ],
+    "5.9 Red: tie at position 3 — players above boundary in definiteWinners, tied players in tiedCandidates": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637695109
+      }
+    ],
+    "5.10 Green: boundary-tie detection and partition logic": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637695264
+      }
+    ],
+    "5.11 Red: all players share the same score — definiteWinners empty, all in tiedCandidates": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637695383
+      }
+    ],
+    "5.12 Green: degenerate all-tied case (definiteWinners empty)": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637695570
+      }
+    ],
+    "5.13 Red: two players with distinct scores — both in definiteWinners": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637695714
+      }
+    ],
+    "5.14 Green: confirm fewer-than-three no-tie case (likely already passing)": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637695819
+      }
+    ],
+    "5.15 Refactor LeaderboardRanker if duplication warrants it": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637695948
+      }
+    ],
+    "6.1 Red: empty input returns empty RankedResult": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637696112
+      }
+    ],
+    "6.2 Green: wire CsvParser → ScoreAggregator → LeaderboardRanker; handle empty list": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637696257
+      }
+    ],
+    "6.3 Red: valid CSV list produces correct RankedResult end-to-end": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637696391
+      }
+    ],
+    "6.4 Green: full pipeline wiring for the happy path": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637696527
+      }
+    ],
+    "6.5 Red: invalid CSV line in input returns PipelineError": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637696687
+      }
+    ],
+    "6.6 Green: propagate ParseError as PipelineError": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637696832
+      }
+    ],
+    "6.7 Red: duplicate (playerId, gameId) pair returns PipelineError": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637697026
+      }
+    ],
+    "6.8 Green: duplicate-pair detection before aggregation": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637697142
+      }
+    ],
+    "6.9 Refactor Pipeline if duplication warrants it": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637697297
+      }
+    ],
+    "6.13 Checkpoint — run the full test suite; all unit tests and any completed property tests must be green": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637697434
+      }
+    ],
+    "6.14 Commit: `\"feat: Pipeline — all tests green\"`": [
+      {
+        "executionId": "3a33c94d-478d-444c-8372-9cdd433c2c57",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782637697609
+      }
+    ]
+  }
+}
