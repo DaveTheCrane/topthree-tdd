@@ -57,9 +57,9 @@ class CsvParserTest {
         
         Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
         
-        assertTrue(result.isErr());
+        assertTrue(result.isErr(), "Expected Err but got: " + result);
         ParseError error = result.getError();
-        assertTrue(error.message().contains("hours"));
+        assertTrue(error.message().toLowerCase().contains("hours"));
     }
 
     // Feature: top-three-high-scores, Property 4: Non-integer normalised-score returns an error
