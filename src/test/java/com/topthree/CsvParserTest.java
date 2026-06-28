@@ -147,4 +147,16 @@ class CsvParserTest {
         
         assertTrue(result.isErr());
     }
+
+    // Feature: top-three-high-scores, Property 7: Parse -> print -> parse round trip
+    @Test
+    void prettyPrinter_formatsScoreRecordAsCSV() {
+        Player player = new Player("p1", "Alice");
+        GameEntry game = new GameEntry("g1", "Chess", 2, 50);
+        ScoreRecord record = new ScoreRecord(player, game);
+        
+        String csv = prettyPrinter.print(record);
+        
+        assertEquals("p1,Alice,g1,Chess,2,50", csv);
+    }
 }
