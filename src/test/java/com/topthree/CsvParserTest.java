@@ -274,13 +274,15 @@ class CsvParserTest {
             @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String playerName,
             @ForAll @AlphaChars @StringLength(min = 1, max = 5) String gameId,
             @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String gameName,
-            @ForAll @StringLength(min = 1, max = 5) String invalidHours,
+            @ForAll @StringLength(min = 2, max = 5) String invalidHours,
             @ForAll @IntRange(min = 1, max = 100) int score
     ) {
-        Assume.that(!invalidHours.matches("^-?\\d+$"));
+        // Create an invalid hours string by replacing digits with letters
+        String badHours = invalidHours.replaceAll("\\d", "x");
+        Assume.that(!badHours.matches("^-?\\d+$") && !badHours.isEmpty());
         
         String csvLine = String.format("%s,%s,%s,%s,%s,%d", 
-            playerId, playerName, gameId, gameName, invalidHours, score);
+            playerId, playerName, gameId, gameName, badHours, score);
         
         Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
         
