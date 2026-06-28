@@ -28,6 +28,16 @@ public class CsvParserImpl implements CsvParser {
         String hoursPlayedStr = fields[4].trim();
         String normalisedScoreStr = fields[5].trim();
         
+        // Validate non-empty player id
+        if (playerId.isEmpty()) {
+            return Result.err(new ParseError("Player ID is empty", csvLine));
+        }
+        
+        // Validate non-empty game id
+        if (gameId.isEmpty()) {
+            return Result.err(new ParseError("Game ID is empty", csvLine));
+        }
+        
         // Parse hours played - must be an integer
         int hoursPlayed;
         try {
