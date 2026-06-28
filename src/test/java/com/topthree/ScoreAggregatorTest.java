@@ -83,4 +83,58 @@ class ScoreAggregatorTest {
         assertEquals(1, aggregates.size());
         assertEquals("Alicia", aggregates.get(0).player().playerName());
     }
+
+    // Feature: top-three-high-scores, Property 8: Aggregation correctness
+    @Test
+    void aggregate_preservesCountAndTotalScoreAndName() {
+        Player player1 = new Player("p1", "Alice");
+        Player player2 = new Player("p2", "Bob");
+        ScoreRecord record1 = new ScoreRecord(player1, new GameEntry("g1", "Chess", 2, 50));
+        ScoreRecord record2 = new ScoreRecord(player2, new GameEntry("g2", "Checkers", 3, 60));
+        
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(List.of(record1, record2));
+        
+        assertTrue(result.isOk());
+        List<PlayerAggregate> aggregates = result.get();
+        assertEquals(2, aggregates.size());
+        
+        PlayerAggregate p1Aggregate = aggregates.stream()
+            .filter(a -> a.player().playerId().equals("p1"))
+            .findFirst()
+            .orElse(null);
+        PlayerAggregate p2Aggregate = aggregates.stream()
+            .filter(a -> a.player().playerId().equals("p2"))
+            .findFirst()
+            .orElse(null);
+        
+        assertNotNull(p1Aggregate);
+        assertEquals(100, p1Aggregate.totalScore());
+        assertNotNull(p2Aggregate);
+        assertEquals(180, p2Aggregate.totalScore());
+    }
+
+    // Feature: top-three-high-scores, Property 9: Last-seen display name wins on name conflict
+    @Test
+    void aggregate_multipleNameConflicts_lastSeenNameWins() {
+        ScoreRecord record1 = new ScoreRecord(
+            new Player("p1", "Alice"),
+            new GameEntry("g1", "Chess", 2, 50)
+        );
+        ScoreRecord record2 = new ScoreRecord(
+            new Player("p1", "Alicia"),
+            new GameEntry("g2", "Checkers", 3, 60)
+        );
+        ScoreRecord record3 = new ScoreRecord(
+            new Player("p1", "Alison"),
+            new GameEntry("g3", "Cards", 1, 100)
+        );
+        
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(List.of(record1, record2, record3));
+        
+        assertTrue(result.isOk());
+        List<PlayerAggregate> aggregates = result.get();
+        assertEquals(1, aggregates.size());
+        assertEquals("Alison", aggregates.get(0).player().playerName());
+    }
 }
+
