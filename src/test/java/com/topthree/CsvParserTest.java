@@ -159,4 +159,28 @@ class CsvParserTest {
         
         assertEquals("p1,Alice,g1,Chess,2,50", csv);
     }
+
+    // Feature: top-three-high-scores, Requirement 1.7: Empty player id returns ParseError
+    @Test
+    void parseLine_returnsParseError_withEmptyPlayerId() {
+        String csvLine = ",Alice,g1,Chess,2,50";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertTrue(result.isErr());
+        ParseError error = result.getError();
+        assertTrue(error.message().toLowerCase().contains("player"));
+    }
+
+    // Feature: top-three-high-scores, Requirement 1.8: Empty game id returns ParseError
+    @Test
+    void parseLine_returnsParseError_withEmptyGameId() {
+        String csvLine = "p1,Alice,,Chess,2,50";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertTrue(result.isErr());
+        ParseError error = result.getError();
+        assertTrue(error.message().toLowerCase().contains("game"));
+    }
 }
