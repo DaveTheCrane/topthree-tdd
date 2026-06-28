@@ -888,6 +888,104 @@
         "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
         "timestamp": 1782639910501
       }
+    ],
+    "3.28 Write property test — Property 1: valid CSV line parses to correct fields": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644725196
+      }
+    ],
+    "3.29 Write property test — Property 2: out-of-range normalised score returns error": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644725637
+      }
+    ],
+    "3.30 Write property test — Property 3: non-integer hours-played returns error": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644725864
+      }
+    ],
+    "3.31 Write property test — Property 4: non-integer normalised-score field returns error": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644726272
+      }
+    ],
+    "3.32 Write property test — Property 5: wrong field count returns error": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644726534
+      }
+    ],
+    "3.33 Write property test — Property 6: whitespace trimming preserves field values": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644726913
+      }
+    ],
+    "3.34 Write property test — Property 7: parse → print → parse round trip": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644727236
+      }
+    ],
+    "4.14 Write property test — Property 8: aggregation correctness": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644727643
+      }
+    ],
+    "4.15 Write property test — Property 9: last-seen display name wins on name conflict": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644728129
+      }
+    ],
+    "5.16 Write property test — Property 10: no-tie ranking places top players in definiteWinners": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644728465
+      }
+    ],
+    "5.17 Write property test — Property 11: tie-at-boundary produces correct partition": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644728837
+      }
+    ],
+    "6.10 Write property test — Property 12: pipeline composition correctness": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644729179
+      }
+    ],
+    "6.11 Write property test — Property 13: pipeline propagates CSV parse errors": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644729632
+      }
+    ],
+    "6.12 Write property test — Property 14: pipeline rejects duplicate player-id/game-id pairs": [
+      {
+        "executionId": "9c251956-f595-4eee-b765-28899d6944c6",
+        "chatSessionId": "sess_f9e8bf46-5b28-4e9a-aff4-bee0ce836447",
+        "timestamp": 1782644730082
+      }
     ]
   }
 }
