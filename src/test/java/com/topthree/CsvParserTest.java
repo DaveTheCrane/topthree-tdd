@@ -49,4 +49,28 @@ class CsvParserTest {
         ParseError error = result.getError();
         assertTrue(error.message().contains("fields"));
     }
+
+    // Feature: top-three-high-scores, Property 3: Non-integer hours-played returns an error
+    @Test
+    void parseLine_returnsParseError_withNonIntegerHoursPlayed() {
+        String csvLine = "p1,Alice,g1,Chess,abc,50";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertTrue(result.isErr());
+        ParseError error = result.getError();
+        assertTrue(error.message().contains("hours"));
+    }
+
+    // Feature: top-three-high-scores, Property 4: Non-integer normalised-score returns an error
+    @Test
+    void parseLine_returnsParseError_withNonIntegerNormalisedScore() {
+        String csvLine = "p1,Alice,g1,Chess,2,1.5";
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertTrue(result.isErr());
+        ParseError error = result.getError();
+        assertTrue(error.message().contains("score"));
+    }
 }
