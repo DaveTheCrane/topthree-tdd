@@ -66,4 +66,55 @@ class PipelineTest {
         PipelineError error = result.getError();
         assertTrue(error.message().toLowerCase().contains("duplicate"));
     }
+
+    // Feature: top-three-high-scores, Property 12: Pipeline composition correctness
+    @Test
+    void run_validCSV_matchesManualChaining() {
+        List<String> csvLines = List.of(
+            "p1,Alice,g1,Chess,2,50",
+            "p2,Bob,g2,Checkers,3,60"
+        );
+        
+        Result<RankedResult, PipelineError> pipelineResult = pipeline.run(csvLines);
+        
+        // Manually chain the components
+        Result<List<ScoreRecord>, ParseError> parseResult = new CsvParserImpl().parseLines(csvLines);
+        Result<List<PlayerAggregate>, AggregationError> aggregateResult = new ScoreAggregatorImpl().aggregate(parseResult.get());
+        RankedResult expected = new LeaderboardRankerImpl().rank(aggregateResult.get());
+        
+        assertTrue(pipelineResult.isOk());
+        RankedResult actual = pipelineResult.get();
+        assertEquals(expected.definiteWinners(), actual.definiteWinners());
+        assertEquals(expected.tiedCandidates(), actual.tiedCandidates());
+    }
+
+    // Feature: top-three-high-scores, Property 13: Pipeline propagates CSV parse errors
+    @Test
+    void run_csvParseError_propagatedAsPipelineError() {
+        List<String> csvLines = List.of(
+            "p1,Alice,g1,Chess,2,50",
+            "invalid,csv,line"
+        );
+        
+        Result<RankedResult, PipelineError> result = pipeline.run(csvLines);
+        
+        assertTrue(result.isErr());
+        PipelineError error = result.getError();
+        assertTrue(error.message().toLowerCase().contains("error") || error.context().toLowerCase().contains("parse"));
+    }
+
+    // Feature: top-three-high-scores, Property 14: Pipeline rejects duplicate playerId/gameId pairs
+    @Test
+    void run_duplicatePlayerGame_propagatedAsPipelineError() {
+        List<String> csvLines = List.of(
+            "p1,Alice,g1,Chess,2,50",
+            "p1,Alice,g1,Chess,3,60"
+        );
+        
+        Result<RankedResult, PipelineError> result = pipeline.run(csvLines);
+        
+        assertTrue(result.isErr());
+        PipelineError error = result.getError();
+        assertEquals("duplicate", error.context());
+    }
 }
