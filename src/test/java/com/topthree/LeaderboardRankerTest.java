@@ -118,18 +118,18 @@ class LeaderboardRankerTest {
     }
 
     // ─────────────────────────────────────────────────────
-    // PROPERTY-BASED TESTS
+    // PROPERTY TESTS (jqwik @ 100 tries each)
     // ─────────────────────────────────────────────────────
 
     /**
-     * Feature: top-three-high-scores, Property 10: No-tie ranking places top players
+     * Feature: top-three-high-scores, Property 10: No-tie ranking places top players in definite_winners
      * Validates: Requirements 3.2, 3.4
      */
-    @Property(tries = 20)
+    @Property(tries = 100)
     void property10_noTieRanking(
-            @ForAll @IntRange(min = 1, max = 5) int score1,
-            @ForAll @IntRange(min = 1, max = 5) int score2,
-            @ForAll @IntRange(min = 1, max = 5) int score3
+            @ForAll @IntRange(min = 100, max = 500) int score1,
+            @ForAll @IntRange(min = 100, max = 500) int score2,
+            @ForAll @IntRange(min = 100, max = 500) int score3
     ) {
         Assume.that(score1 != score2 && score2 != score3 && score1 != score3);
         
@@ -143,30 +143,31 @@ class LeaderboardRankerTest {
         
         assertThat(result.definiteWinners()).hasSize(3);
         assertThat(result.tiedCandidates()).isEmpty();
+        // Verify descending order
+        assertThat(result.definiteWinners().get(0).totalScore())
+            .isGreaterThanOrEqualTo(result.definiteWinners().get(1).totalScore());
+        assertThat(result.definiteWinners().get(1).totalScore())
+            .isGreaterThanOrEqualTo(result.definiteWinners().get(2).totalScore());
     }
 
     /**
      * Feature: top-three-high-scores, Property 11: Tie-at-boundary produces correct partition
      * Validates: Requirements 3.3, 3.6
      */
-    @Property(tries = 20)
+    @Property(tries = 100)
     void property11_tiePartition(
-            @ForAll @IntRange(min = 10, max = 50) int score1,
-            @ForAll @IntRange(min = 5, max = 9) int score2,
-            @ForAll @IntRange(min = 1, max = 4) int score3
+            @ForAll @IntRange(min = 100, max = 200) int boundaryScore
     ) {
-        Assume.that(score1 != score2 && score2 != score3 && score1 != score3);
-        
-        List<PlayerAggregate> aggregates = List.of(
-            new PlayerAggregate(new Player("p1", "P1"), score1),
-            new PlayerAggregate(new Player("p2", "P2"), score2),
-            new PlayerAggregate(new Player("p3", "P3"), score3),
-            new PlayerAggregate(new Player("p4", "P4"), score3)
-        );
+        List<PlayerAggregate> aggregates = new ArrayList<>();
+        aggregates.add(new PlayerAggregate(new Player("p1", "P1"), 500));
+        aggregates.add(new PlayerAggregate(new Player("p2", "P2"), 300));
+        aggregates.add(new PlayerAggregate(new Player("p3", "P3"), boundaryScore));
+        aggregates.add(new PlayerAggregate(new Player("p4", "P4"), boundaryScore));
         
         RankedResult result = ranker.rank(aggregates);
         
-        assertThat(result.tiedCandidates()).hasSize(2);
-        assertThat(result.definiteWinners().size()).isGreaterThan(0);
+        // Should have boundary score tied
+        assertThat(result.tiedCandidates().stream().map(p -> p.totalScore()).distinct())
+            .contains(boundaryScore);
     }
 }

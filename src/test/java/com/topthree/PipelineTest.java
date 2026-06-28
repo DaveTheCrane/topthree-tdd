@@ -2,6 +2,7 @@ package com.topthree;
 
 import org.junit.jupiter.api.Test;
 import net.jqwik.api.*;
+import net.jqwik.api.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,20 +107,86 @@ class PipelineTest {
     // PROPERTY-BASED TESTS
     // ─────────────────────────────────────────────────────
 
+    // ─────────────────────────────────────────────────────
+    // PROPERTY TESTS (jqwik @ 100 tries each)
+    // ─────────────────────────────────────────────────────
+
     /**
      * Feature: top-three-high-scores, Property 12: Pipeline composition correctness
      * Validates: Requirements 4.1
      */
-    @Property(tries = 10)
+    @Property(tries = 100)
     void property12_pipelineComposition(
-            @ForAll List<String> csvLines
+            @ForAll @AlphaChars @StringLength(min = 1, max = 3) String playerId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 5) String playerName,
+            @ForAll @IntRange(min = 1, max = 10) int hours,
+            @ForAll @IntRange(min = 1, max = 100) int score
     ) {
-        Assume.that(!csvLines.isEmpty());
+        List<String> csvLines = List.of(
+            String.format("%s,%s,g1,Game1,%d,%d", playerId, playerName, hours, score)
+        );
         
-        // This is a simplified test; in full implementation would generate valid CSV lines
+        // Pipeline result
+        Result<RankedResult, PipelineError> pipelineResult = pipeline.run(csvLines);
+        
+        // Manual chaining
+        Result<List<ScoreRecord>, ParseError> parseResult = csvParser.parseLines(csvLines);
+        assertThat(parseResult).isInstanceOf(Result.Ok.class);
+        if (parseResult instanceof Result.Ok<List<ScoreRecord>, ParseError> ok1) {
+            Result<List<PlayerAggregate>, AggregationError> aggResult = scoreAggregator.aggregate(ok1.value());
+            assertThat(aggResult).isInstanceOf(Result.Ok.class);
+            if (aggResult instanceof Result.Ok<List<PlayerAggregate>, AggregationError> ok2) {
+                RankedResult expectedRanked = leaderboardRanker.rank(ok2.value());
+                
+                assertThat(pipelineResult).isInstanceOf(Result.Ok.class);
+                if (pipelineResult instanceof Result.Ok<RankedResult, PipelineError> ok3) {
+                    assertThat(ok3.value().definiteWinners()).hasSize(expectedRanked.definiteWinners().size());
+                    assertThat(ok3.value().tiedCandidates()).hasSize(expectedRanked.tiedCandidates().size());
+                }
+            }
+        }
+    }
+
+    /**
+     * Feature: top-three-high-scores, Property 13: Pipeline propagates CSV parse errors
+     * Validates: Requirements 4.2
+     */
+    @Property(tries = 100)
+    void property13_pipelinePropagateCsvErrors(
+            @ForAll @AlphaChars @StringLength(min = 1, max = 3) String playerId
+    ) {
+        // Create an invalid CSV line with wrong field count
+        List<String> csvLines = List.of(
+            "valid,line,g1,Game1,10,75",
+            String.format("%s,incomplete,fields", playerId),
+            "another,valid,g2,Game2,5,50"
+        );
+        
         Result<RankedResult, PipelineError> result = pipeline.run(csvLines);
         
-        // Should either succeed or fail gracefully, never crash
-        assertThat(result).isNotNull();
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Feature: top-three-high-scores, Property 14: Pipeline rejects duplicate player-id/game-id pairs
+     * Validates: Requirements 4.3
+     */
+    @Property(tries = 100)
+    void property14_pipelineRejectsDuplicatePairs(
+            @ForAll @AlphaChars @StringLength(min = 1, max = 3) String playerId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 5) String playerName,
+            @ForAll @AlphaChars @StringLength(min = 1, max = 3) String gameId
+    ) {
+        List<String> csvLines = List.of(
+            String.format("%s,%s,%s,Game1,10,75", playerId, playerName, gameId),
+            String.format("%s,%s,%s,Game2,5,50", playerId, playerName, gameId)
+        );
+        
+        Result<RankedResult, PipelineError> result = pipeline.run(csvLines);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+        if (result instanceof Result.Err<RankedResult, PipelineError> err) {
+            assertThat(err.error().message()).contains("Duplicate");
+        }
     }
 }

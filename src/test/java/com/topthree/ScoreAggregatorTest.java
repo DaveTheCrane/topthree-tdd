@@ -99,14 +99,18 @@ class ScoreAggregatorTest {
     // PROPERTY-BASED TESTS
     // ─────────────────────────────────────────────────────
 
+    // ─────────────────────────────────────────────────────
+    // PROPERTY TESTS (jqwik @ 100 tries each)
+    // ─────────────────────────────────────────────────────
+
     /**
-     * Feature: top-three-high-scores, Property 8: Aggregation correctness
+     * Feature: top-three-high-scores, Property 8: Aggregation correctness — count, total score, and name preservation
      * Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.8
      */
-    @Property(tries = 20)
+    @Property(tries = 100)
     void property8_aggregationCorrectness(
-            @ForAll @AlphaChars @StringLength(min = 1, max = 3) String playerId1,
-            @ForAll @StringLength(min = 1, max = 5) String playerName1,
+            @ForAll @AlphaChars @StringLength(min = 1, max = 3) String playerId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 5) String playerName,
             @ForAll @IntRange(min = 1, max = 10) int hours1,
             @ForAll @IntRange(min = 1, max = 100) int score1,
             @ForAll @IntRange(min = 1, max = 10) int hours2,
@@ -114,11 +118,11 @@ class ScoreAggregatorTest {
     ) {
         List<ScoreRecord> records = List.of(
             new ScoreRecord(
-                new Player(playerId1, playerName1),
+                new Player(playerId, playerName),
                 new GameEntry("g1", "Game1", hours1, score1)
             ),
             new ScoreRecord(
-                new Player(playerId1, playerName1),
+                new Player(playerId, playerName),
                 new GameEntry("g2", "Game2", hours2, score2)
             )
         );
@@ -130,6 +134,39 @@ class ScoreAggregatorTest {
             assertThat(ok.value()).hasSize(1);
             int expectedTotal = hours1 * score1 + hours2 * score2;
             assertThat(ok.value().get(0).totalScore()).isEqualTo(expectedTotal);
+            assertThat(ok.value().get(0).player().playerName()).isEqualTo(playerName);
+        }
+    }
+
+    /**
+     * Feature: top-three-high-scores, Property 9: Last-seen display name wins on name conflict
+     * Validates: Requirements 2.6, 2.8
+     */
+    @Property(tries = 100)
+    void property9_lastSeenNameWins(
+            @ForAll @AlphaChars @StringLength(min = 1, max = 3) String playerId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 5) String firstName,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 5) String secondName
+    ) {
+        Assume.that(!firstName.equals(secondName));
+        
+        List<ScoreRecord> records = List.of(
+            new ScoreRecord(
+                new Player(playerId, firstName),
+                new GameEntry("g1", "Game1", 2, 50)
+            ),
+            new ScoreRecord(
+                new Player(playerId, secondName),
+                new GameEntry("g2", "Game2", 3, 30)
+            )
+        );
+        
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(records);
+        
+        assertThat(result).isInstanceOf(Result.Ok.class);
+        if (result instanceof Result.Ok<List<PlayerAggregate>, AggregationError> ok) {
+            assertThat(ok.value()).hasSize(1);
+            assertThat(ok.value().get(0).player().playerName()).isEqualTo(secondName);
         }
     }
 }

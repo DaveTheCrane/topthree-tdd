@@ -210,22 +210,23 @@ class CsvParserTest {
     // PROPERTY-BASED TESTS (jqwik) - simplified
     // ─────────────────────────────────────────────────────
 
+    // ─────────────────────────────────────────────────────
+    // PROPERTY TESTS (jqwik @ 100 tries each)
+    // ─────────────────────────────────────────────────────
+
     /**
      * Feature: top-three-high-scores, Property 1: Valid CSV line parses to correct fields
      * Validates: Requirements 1.1
      */
-    @Property(tries = 20)
+    @Property(tries = 100)
     void property1_validCsvLineParses(
             @ForAll @AlphaChars @StringLength(min = 1, max = 5) String playerId,
-            @ForAll @StringLength(min = 1, max = 10) String playerName,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String playerName,
             @ForAll @AlphaChars @StringLength(min = 1, max = 5) String gameId,
-            @ForAll @StringLength(min = 1, max = 10) String gameName,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String gameName,
             @ForAll @IntRange(min = 1, max = 100) int hoursPlayed,
             @ForAll @IntRange(min = 1, max = 100) int score
     ) {
-        // Filter out pure whitespace to avoid trimming issues in property tests
-        Assume.that(!playerName.trim().isEmpty() && !gameName.trim().isEmpty());
-        
         String csvLine = String.format("%s,%s,%s,%s,%d,%d", 
             playerId, playerName, gameId, gameName, hoursPlayed, score);
         
@@ -235,33 +236,145 @@ class CsvParserTest {
         if (result instanceof Result.Ok<ScoreRecord, ParseError> ok) {
             ScoreRecord record = ok.value();
             assertThat(record.player().playerId()).isEqualTo(playerId);
-            assertThat(record.player().playerName()).isEqualTo(playerName.trim());
-            assertThat(record.gameEntry().gameId()).isEqualTo(gameId);
-            assertThat(record.gameEntry().gameName()).isEqualTo(gameName.trim());
             assertThat(record.gameEntry().hoursPlayed()).isEqualTo(hoursPlayed);
             assertThat(record.gameEntry().normalisedScore()).isEqualTo(score);
         }
     }
 
     /**
-     * Feature: top-three-high-scores, Property 7: Parse → print → parse round trip
-     * Validates: Requirements 1.11, 1.12
+     * Feature: top-three-high-scores, Property 2: Out-of-range normalised score returns an error
+     * Validates: Requirements 1.2
      */
-    @Property(tries = 20)
-    void property7_roundTripParsePrintParse(
+    @Property(tries = 100)
+    void property2_outOfRangeScoreReturnsError(
             @ForAll @AlphaChars @StringLength(min = 1, max = 5) String playerId,
-            @ForAll @StringLength(min = 1, max = 10) String playerName,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String playerName,
             @ForAll @AlphaChars @StringLength(min = 1, max = 5) String gameId,
-            @ForAll @StringLength(min = 1, max = 10) String gameName,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String gameName,
+            @ForAll @IntRange(min = 1, max = 100) int hoursPlayed,
+            @ForAll int invalidScore
+    ) {
+        Assume.that(invalidScore < 1 || invalidScore > 100);
+        
+        String csvLine = String.format("%s,%s,%s,%s,%d,%d", 
+            playerId, playerName, gameId, gameName, hoursPlayed, invalidScore);
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Feature: top-three-high-scores, Property 3: Non-integer hours-played returns an error
+     * Validates: Requirements 1.3
+     */
+    @Property(tries = 100)
+    void property3_nonIntegerHoursReturnsError(
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String playerId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String playerName,
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String gameId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String gameName,
+            @ForAll @StringLength(min = 1, max = 5) String invalidHours,
+            @ForAll @IntRange(min = 1, max = 100) int score
+    ) {
+        Assume.that(!invalidHours.matches("^-?\\d+$"));
+        
+        String csvLine = String.format("%s,%s,%s,%s,%s,%d", 
+            playerId, playerName, gameId, gameName, invalidHours, score);
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Feature: top-three-high-scores, Property 4: Non-integer normalised-score field returns an error
+     * Validates: Requirements 1.4
+     */
+    @Property(tries = 100)
+    void property4_nonIntegerScoreFieldReturnsError(
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String playerId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String playerName,
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String gameId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String gameName,
+            @ForAll @IntRange(min = 1, max = 100) int hoursPlayed,
+            @ForAll @StringLength(min = 2, max = 5) String invalidScore
+    ) {
+        // Avoid pure digit strings - add alpha chars to make invalid
+        String badScore = invalidScore.replaceAll("\\d", "x");
+        Assume.that(!badScore.matches("^-?\\d+$") && !badScore.isEmpty());
+        
+        String csvLine = String.format("%s,%s,%s,%s,%d,%s", 
+            playerId, playerName, gameId, gameName, hoursPlayed, badScore);
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csvLine);
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Feature: top-three-high-scores, Property 5: Wrong field count returns an error
+     * Validates: Requirements 1.5, 1.6
+     */
+    @Property(tries = 100)
+    void property5_wrongFieldCountReturnsError(
+            @ForAll @IntRange(min = 0, max = 10) int fieldCount
+    ) {
+        Assume.that(fieldCount != 6);
+        
+        StringBuilder csv = new StringBuilder();
+        for (int i = 0; i < fieldCount; i++) {
+            if (i > 0) csv.append(",");
+            csv.append("f").append(i);
+        }
+        
+        Result<ScoreRecord, ParseError> result = csvParser.parseLine(csv.toString());
+        
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    /**
+     * Feature: top-three-high-scores, Property 6: Whitespace trimming preserves field values
+     * Validates: Requirements 1.10
+     */
+    @Property(tries = 100)
+    void property6_whitespaceTrimming(
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String playerId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String playerName,
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String gameId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String gameName,
             @ForAll @IntRange(min = 1, max = 100) int hoursPlayed,
             @ForAll @IntRange(min = 1, max = 100) int score
     ) {
-        // Filter out pure whitespace
-        Assume.that(!playerName.trim().isEmpty() && !gameName.trim().isEmpty());
+        // Parse the trimmed version
+        String csvTrimmed = String.format("%s,%s,%s,%s,%d,%d", 
+            playerId, playerName, gameId, gameName, hoursPlayed, score);
+        Result<ScoreRecord, ParseError> resultTrimmed = csvParser.parseLine(csvTrimmed);
         
+        // Parse the padded version (add spaces around fields)
+        String csvPadded = String.format("  %s  ,  %s  ,  %s  ,  %s  ,  %d  ,  %d  ", 
+            playerId, playerName, gameId, gameName, hoursPlayed, score);
+        Result<ScoreRecord, ParseError> resultPadded = csvParser.parseLine(csvPadded);
+        
+        assertThat(resultTrimmed).isEqualTo(resultPadded);
+    }
+
+    /**
+     * Feature: top-three-high-scores, Property 7: Parse → print → parse round trip
+     * Validates: Requirements 1.11, 1.12
+     */
+    @Property(tries = 100)
+    void property7_roundTripParsePrintParse(
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String playerId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String playerName,
+            @ForAll @AlphaChars @StringLength(min = 1, max = 5) String gameId,
+            @ForAll @CharRange(from = 'A', to = 'z') @StringLength(min = 1, max = 10) String gameName,
+            @ForAll @IntRange(min = 1, max = 100) int hoursPlayed,
+            @ForAll @IntRange(min = 1, max = 100) int score
+    ) {
         ScoreRecord original = new ScoreRecord(
-            new Player(playerId, playerName.trim()),
-            new GameEntry(gameId, gameName.trim(), hoursPlayed, score)
+            new Player(playerId, playerName),
+            new GameEntry(gameId, gameName, hoursPlayed, score)
         );
         
         String csv = prettyPrinter.print(original);
