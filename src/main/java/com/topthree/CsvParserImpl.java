@@ -44,6 +44,11 @@ public class CsvParserImpl implements CsvParser {
             return Result.err(new ParseError("Normalised score is not an integer: " + normalisedScoreStr, csvLine));
         }
         
+        // Validate normalised score range [1, 100]
+        if (normalisedScore < 1 || normalisedScore > 100) {
+            return Result.err(new ParseError("Normalised score must be between 1 and 100, got: " + normalisedScore, csvLine));
+        }
+        
         Player player = new Player(playerId, playerName);
         GameEntry gameEntry = new GameEntry(gameId, gameName, hoursPlayed, normalisedScore);
         ScoreRecord scoreRecord = new ScoreRecord(player, gameEntry);
