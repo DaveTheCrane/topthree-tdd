@@ -94,4 +94,44 @@ class LeaderboardRankerTest {
         assertEquals(List.of(a1, a2), result.definiteWinners());
         assertEquals(List.of(), result.tiedCandidates());
     }
+
+    // Feature: top-three-high-scores, Property 10: No-tie ranking places top players in definiteWinners
+    @Test
+    void rank_noTie_rankingCorrect() {
+        Player p1 = new Player("p1", "Alice");
+        Player p2 = new Player("p2", "Bob");
+        Player p3 = new Player("p3", "Charlie");
+        Player p4 = new Player("p4", "David");
+        Player p5 = new Player("p5", "Eve");
+        PlayerAggregate a1 = new PlayerAggregate(p1, 500);
+        PlayerAggregate a2 = new PlayerAggregate(p2, 400);
+        PlayerAggregate a3 = new PlayerAggregate(p3, 300);
+        PlayerAggregate a4 = new PlayerAggregate(p4, 200);
+        PlayerAggregate a5 = new PlayerAggregate(p5, 100);
+        
+        RankedResult result = ranker.rank(List.of(a1, a2, a3, a4, a5));
+        
+        assertEquals(List.of(a1, a2, a3), result.definiteWinners());
+        assertEquals(List.of(), result.tiedCandidates());
+    }
+
+    // Feature: top-three-high-scores, Property 11: Tie-at-boundary produces correct partition
+    @Test
+    void rank_tieAtBoundary_correctPartition() {
+        Player p1 = new Player("p1", "Alice");
+        Player p2 = new Player("p2", "Bob");
+        Player p3 = new Player("p3", "Charlie");
+        Player p4 = new Player("p4", "David");
+        Player p5 = new Player("p5", "Eve");
+        PlayerAggregate a1 = new PlayerAggregate(p1, 500);
+        PlayerAggregate a2 = new PlayerAggregate(p2, 400);
+        PlayerAggregate a3 = new PlayerAggregate(p3, 300);
+        PlayerAggregate a4 = new PlayerAggregate(p4, 300);
+        PlayerAggregate a5 = new PlayerAggregate(p5, 300);
+        
+        RankedResult result = ranker.rank(List.of(a1, a2, a3, a4, a5));
+        
+        assertEquals(List.of(a1, a2), result.definiteWinners());
+        assertEquals(List.of(a3, a4, a5), result.tiedCandidates());
+    }
 }
