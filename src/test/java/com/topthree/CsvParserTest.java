@@ -12,6 +12,15 @@ class CsvParserTest {
     private final CsvParser parser = new DefaultCsvParser();
 
     @Test
+    void rejectsNonIntegerHoursPlayed() {
+        var result = parser.parseLine("p1,Alice,g1,Chess,abc,85");
+
+        assertInstanceOf(Result.Err.class, result);
+        var error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("hours-played"));
+    }
+
+    @Test
     void rejectsLineWithFiveFields() {
         var result = parser.parseLine("p1,Alice,g1,Chess,10");
 
