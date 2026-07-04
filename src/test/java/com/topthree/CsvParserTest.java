@@ -10,6 +10,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class CsvParserTest {
 
     private final CsvParser parser = new DefaultCsvParser();
+    private final PrettyPrinter printer = new DefaultPrettyPrinter();
+
+    @Test
+    void prettyPrinterFormatsScoreRecordAsCsv() {
+        var player = new Player("p1", "Alice");
+        var gameEntry = new GameEntry("g1", "Chess", 10, 85);
+        var record = new ScoreRecord(player, gameEntry);
+
+        var csv = printer.print(record);
+
+        assertEquals("p1,Alice,g1,Chess,10,85", csv);
+    }
 
     @Test
     void parseLinesReturnsTwoRecordsForTwoValidLines() {
