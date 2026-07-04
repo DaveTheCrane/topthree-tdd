@@ -12,6 +12,18 @@ class LeaderboardRankerTest {
     private final LeaderboardRanker ranker = new DefaultLeaderboardRanker();
 
     @Test
+    void allPlayersTiedDefiniteWinnersEmptyAllInTiedCandidates() {
+        var agg1 = new PlayerAggregate(new Player("p1", "Alice"), 100);
+        var agg2 = new PlayerAggregate(new Player("p2", "Bob"), 100);
+        var agg3 = new PlayerAggregate(new Player("p3", "Carol"), 100);
+        var result = ranker.rank(List.of(agg1, agg2, agg3));
+
+        assertTrue(result.definiteWinners().isEmpty());
+        assertEquals(3, result.tiedCandidates().size());
+        assertTrue(result.tiedCandidates().stream().allMatch(a -> a.totalScore() == 100));
+    }
+
+    @Test
     void tieAtBoundarySplitsWinnersAndCandidates() {
         var agg1 = new PlayerAggregate(new Player("p1", "Alice"), 400);
         var agg2 = new PlayerAggregate(new Player("p2", "Bob"), 300);
