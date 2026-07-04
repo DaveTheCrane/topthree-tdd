@@ -1,5 +1,5 @@
 // TDD Red-Green-Refactor Test
-// Task 3.3 Red: Non-integer hours-played and normalised-score return ParseError
+// Task 3.4 Red: Normalised-score outside range [1,100] returns ParseError
 
 import org.junit.jupiter.api.Test;
 import topthree.impl.CsvParserImpl;
@@ -11,30 +11,30 @@ import topthree.models.ScoreRecord;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class CsvParserIntegerValidationTest {
+class CsvParserRangeValidationTest {
 
     @Test
-    void rejectsNonIntegerHoursPlayed() {
+    void rejectsNormalisedScoreOfZero() {
         CsvParser parser = new CsvParserImpl();
-        String line = "p1,Alice,g1,Chess,abc,85";
+        String line = "p1,Alice,g1,Chess,10,0";
 
         Result<ScoreRecord, ParseError> result = parser.parseLine(line);
 
         assertFalse(result.isOk());
         Result.Err<ScoreRecord, ParseError> err = (Result.Err<ScoreRecord, ParseError>) result;
-        assertEquals("For input string: \"abc\"", err.error().message());
+        assertEquals("normalised-score out of range [1,100]", err.error().message());
     }
 
     @Test
-    void rejectsNonIntegerNormalisedScore() {
+    void rejectsNormalisedScoreOfOneHundredOne() {
         CsvParser parser = new CsvParserImpl();
-        String line = "p1,Alice,g1,Chess,10,1.5";
+        String line = "p1,Alice,g1,Chess,10,101";
 
         Result<ScoreRecord, ParseError> result = parser.parseLine(line);
 
         assertFalse(result.isOk());
         Result.Err<ScoreRecord, ParseError> err = (Result.Err<ScoreRecord, ParseError>) result;
-        assertEquals("For input string: \"1.5\"", err.error().message());
+        assertEquals("normalised-score out of range [1,100]", err.error().message());
     }
 }
 

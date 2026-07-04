@@ -26,6 +26,13 @@ public class CsvParserImpl implements CsvParser {
         String hoursPlayedStr = fields[4].trim();
         String normalisedScoreStr = fields[5].trim();
 
+        if (playerId.isBlank()) {
+            return new Err<>(new ParseError("player-id is blank"));
+        }
+        if (gameId.isBlank()) {
+            return new Err<>(new ParseError("game-id is blank"));
+        }
+
         int hoursPlayed;
         try {
             hoursPlayed = Integer.parseInt(hoursPlayedStr);
@@ -38,6 +45,10 @@ public class CsvParserImpl implements CsvParser {
             normalisedScore = Integer.parseInt(normalisedScoreStr);
         } catch (NumberFormatException e) {
             return new Err<>(new ParseError("For input string: \"" + normalisedScoreStr + "\""));
+        }
+
+        if (normalisedScore < 1 || normalisedScore > 100) {
+            return new Err<>(new ParseError("normalised-score out of range [1,100]"));
         }
 
         ScoreRecord record = new ScoreRecord(playerId, playerName, gameId, gameName, hoursPlayed, normalisedScore);
