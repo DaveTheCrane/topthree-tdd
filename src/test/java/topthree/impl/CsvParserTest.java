@@ -66,4 +66,44 @@ class CsvParserTest {
         ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
         assertTrue(error.message().contains("Invalid number format"));
     }
+    
+    @Test
+    void parseLine_normalizedScoreZero_returnsParseError() {
+        String csvLine = "p1,Alice,g1,Chess,10,0";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Err);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("normalized score must be between 1 and 100"));
+    }
+    
+    @Test
+    void parseLine_normalizedScore101_returnsParseError() {
+        String csvLine = "p1,Alice,g1,Chess,10,101";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Err);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("normalized score must be between 1 and 100"));
+    }
+    
+    @Test
+    void parseLine_normalizedScoreAtBoundary1_returnsOk() {
+        String csvLine = "p1,Alice,g1,Chess,10,1";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Ok);
+        ScoreRecord record = ((Result.Ok<ScoreRecord, ParseError>) result).value();
+        assertEquals(1, record.normalizedScore());
+    }
+    
+    @Test
+    void parseLine_normalizedScoreAtBoundary100_returnsOk() {
+        String csvLine = "p1,Alice,g1,Chess,10,100";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Ok);
+        ScoreRecord record = ((Result.Ok<ScoreRecord, ParseError>) result).value();
+        assertEquals(100, record.normalizedScore());
+    }
 }

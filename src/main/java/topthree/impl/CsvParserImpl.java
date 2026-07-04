@@ -20,6 +20,12 @@ public class CsvParserImpl implements CsvParser {
             int hoursPlayed = Integer.parseInt(fields[4].trim());
             int normalizedScore = Integer.parseInt(fields[5].trim());
             
+            if (normalizedScore < 1 || normalizedScore > 100) {
+                return new Result.Err<>(new ParseError(
+                    "normalized score must be between 1 and 100, got " + normalizedScore
+                ));
+            }
+            
             return new Result.Ok<>(new ScoreRecord(
                 fields[0].trim(),
                 fields[1].trim(),
