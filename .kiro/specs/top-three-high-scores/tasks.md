@@ -91,36 +91,36 @@ Each task below represents one TDD cycle: write a failing test, then write the m
     - Commit: `"test: CsvParser property tests (Properties 1-7)"`
     - _Validates: Requirements 1.1–1.12_
 
-- [ ] 4. ScoreAggregator — TDD cycles
-  - [ ] 4.1 Empty input returns empty list
+- [x] 4. ScoreAggregator — TDD cycles
+  - [x] 4.1 Empty input returns empty list
     - Write a test: `aggregate([])` returns `Ok([])`
     - Make it pass: return an empty list when input is empty
     - Commit: `"feat: ScoreAggregator handles empty input"`
     - _Requirements: 2.7_
-  - [ ] 4.2 Single record produces correct PlayerAggregate
+  - [x] 4.2 Single record produces correct PlayerAggregate
     - Write a test: one record with hours=2, score=50 produces a `PlayerAggregate` with totalScore=100 and the correct player name
     - Make it pass: compute `hours × score`, wrap in a `PlayerAggregate`
     - Commit: `"feat: ScoreAggregator computes weighted score for single record"`
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
-  - [ ] 4.3 Multiple records for same player sum their weighted scores
+  - [x] 4.3 Multiple records for same player sum their weighted scores
     - Write a test: two records for player "p1" (hours=2,score=50 and hours=3,score=40) produce totalScore = 100+120 = 220
     - Make it pass: group records by player-id and sum weighted scores
     - Commit: `"feat: ScoreAggregator sums weighted scores per player"`
     - _Requirements: 2.5_
-  - [ ] 4.4 Different players produce separate aggregates
+  - [x] 4.4 Different players produce separate aggregates
     - Write a test: records for "p1" and "p2" produce two separate `PlayerAggregate` objects
     - Make it pass: this likely already works from the grouping logic — confirm with the test
     - Commit: `"feat: ScoreAggregator groups by player-id"`
     - _Requirements: 2.1_
-  - [ ] 4.5 Last-seen display name wins on name conflict
+  - [x] 4.5 Last-seen display name wins on name conflict
     - Write a test: two records for "p1" with names "Alice" then "Alicia" produce a `PlayerAggregate` with playerName = "Alicia"
     - Make it pass: overwrite the stored player name each time a record for that player-id is encountered
     - Commit: `"feat: ScoreAggregator uses last-seen display name"`
     - _Requirements: 2.6, 2.8_
-  - [ ] 4.6 Refactor ScoreAggregator (if needed)
+  - [x] 4.6 Refactor ScoreAggregator (if needed)
     - Review for duplication. All tests must stay green.
     - Commit (only if changes made): `"refactor: ScoreAggregator deduplication"`
-  - [ ]* 4.7 Property tests for ScoreAggregator (Properties 8–9)
+  - [x]* 4.7 Property tests for ScoreAggregator (Properties 8–9)
     - Write property tests using jqwik:
       - Property 8: aggregation correctness — one aggregate per player-id, correct totalScore, name preserved
       - Property 9: last-seen display name wins on name conflict
