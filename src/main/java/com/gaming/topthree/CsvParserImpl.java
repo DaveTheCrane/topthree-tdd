@@ -29,23 +29,17 @@ public class CsvParserImpl implements CsvParser {
             return Result.err(new ParseError("game-id is empty", csvLine));
         }
 
-        String hoursField = fields[4].trim();
-        int hoursPlayed;
-        try {
-            hoursPlayed = Integer.parseInt(hoursField);
-        } catch (NumberFormatException e) {
-            return Result.err(new ParseError(
-                    "hours-played is not an integer: " + hoursField, csvLine));
+        Result<Integer, ParseError> hours = parseIntField(fields[4].trim(), "hours-played", csvLine);
+        if (hours instanceof Result.Err<Integer, ParseError> err) {
+            return Result.err(err.error());
         }
+        int hoursPlayed = ((Result.Ok<Integer, ParseError>) hours).value();
 
-        String scoreField = fields[5].trim();
-        int normalisedScore;
-        try {
-            normalisedScore = Integer.parseInt(scoreField);
-        } catch (NumberFormatException e) {
-            return Result.err(new ParseError(
-                    "normalised-score is not an integer: " + scoreField, csvLine));
+        Result<Integer, ParseError> score = parseIntField(fields[5].trim(), "normalised-score", csvLine);
+        if (score instanceof Result.Err<Integer, ParseError> err) {
+            return Result.err(err.error());
         }
+        int normalisedScore = ((Result.Ok<Integer, ParseError>) score).value();
 
         if (normalisedScore < 1 || normalisedScore > 100) {
             return Result.err(new ParseError(
@@ -57,6 +51,15 @@ public class CsvParserImpl implements CsvParser {
                 new GameEntry(gameId, gameName, hoursPlayed, normalisedScore)
         );
         return Result.ok(record);
+    }
+
+    private static Result<Integer, ParseError> parseIntField(String value, String fieldName, String csvLine) {
+        try {
+            return Result.ok(Integer.parseInt(value));
+        } catch (NumberFormatException e) {
+            return Result.err(new ParseError(
+                    fieldName + " is not an integer: " + value, csvLine));
+        }
     }
 
     @Override
