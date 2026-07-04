@@ -54,4 +54,16 @@ class PipelineTest {
         assertEquals("p3", rankedResult.definiteWinners().get(2).playerId());
         assertEquals(80, rankedResult.definiteWinners().get(2).totalScore());
     }
+    
+    @Test
+    void run_invalidCsvLine_returnsPipelineError() {
+        String validLine = "p1,Alice,g1,Chess,2,50";
+        String invalidLine = "p2,Bob,g1,Chess,invalid,40"; // invalid hours
+        
+        Result<RankedResult, PipelineError> result = pipeline.run(List.of(validLine, invalidLine));
+        
+        assertTrue(result instanceof Result.Err);
+        PipelineError error = ((Result.Err<RankedResult, PipelineError>) result).error();
+        assertTrue(error.message().contains("CSV parse error"));
+    }
 }
