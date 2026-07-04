@@ -32,6 +32,10 @@ public class DefaultCsvParser implements CsvParser {
             return Result.err(new ParseError("Invalid normalised-score: " + fields[5], csvLine));
         }
 
+        if (normalisedScore < 1 || normalisedScore > 100) {
+            return Result.err(new ParseError("Normalised-score out of range [1,100]: " + normalisedScore, csvLine));
+        }
+
         var player = new Player(playerId, playerName);
         var gameEntry = new GameEntry(gameId, gameName, hoursPlayed, normalisedScore);
         return Result.ok(new ScoreRecord(player, gameEntry));
