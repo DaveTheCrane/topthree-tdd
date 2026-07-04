@@ -1,5 +1,5 @@
 // TDD Red-Green-Refactor Test
-// Task 3.2 Red: Lines with wrong field count return ParseError
+// Task 3.3 Red: Non-integer hours-played and normalised-score return ParseError
 
 import org.junit.jupiter.api.Test;
 import topthree.impl.CsvParserImpl;
@@ -11,30 +11,30 @@ import topthree.models.ScoreRecord;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class CsvParserFieldCountTest {
+class CsvParserIntegerValidationTest {
 
     @Test
-    void rejectsLinesWithFiveFields() {
+    void rejectsNonIntegerHoursPlayed() {
         CsvParser parser = new CsvParserImpl();
-        String line = "p1,Alice,g1,Chess,10";
+        String line = "p1,Alice,g1,Chess,abc,85";
 
         Result<ScoreRecord, ParseError> result = parser.parseLine(line);
 
         assertFalse(result.isOk());
         Result.Err<ScoreRecord, ParseError> err = (Result.Err<ScoreRecord, ParseError>) result;
-        assertEquals("Expected 6 fields", err.error().message());
+        assertEquals("For input string: \"abc\"", err.error().message());
     }
 
     @Test
-    void rejectsLinesWithSevenFields() {
+    void rejectsNonIntegerNormalisedScore() {
         CsvParser parser = new CsvParserImpl();
-        String line = "p1,Alice,g1,Chess,10,85,extra";
+        String line = "p1,Alice,g1,Chess,10,1.5";
 
         Result<ScoreRecord, ParseError> result = parser.parseLine(line);
 
         assertFalse(result.isOk());
         Result.Err<ScoreRecord, ParseError> err = (Result.Err<ScoreRecord, ParseError>) result;
-        assertEquals("Expected 6 fields", err.error().message());
+        assertEquals("For input string: \"1.5\"", err.error().message());
     }
 }
 

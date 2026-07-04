@@ -18,14 +18,29 @@ public class CsvParserImpl implements CsvParser {
         if (fields.length != 6) {
             return new Err<>(new ParseError("Expected 6 fields"));
         }
-        ScoreRecord record = new ScoreRecord(
-                fields[0].trim(),
-                fields[1].trim(),
-                fields[2].trim(),
-                fields[3].trim(),
-                Integer.parseInt(fields[4].trim()),
-                Integer.parseInt(fields[5].trim())
-        );
+
+        String playerId = fields[0].trim();
+        String playerName = fields[1].trim();
+        String gameId = fields[2].trim();
+        String gameName = fields[3].trim();
+        String hoursPlayedStr = fields[4].trim();
+        String normalisedScoreStr = fields[5].trim();
+
+        int hoursPlayed;
+        try {
+            hoursPlayed = Integer.parseInt(hoursPlayedStr);
+        } catch (NumberFormatException e) {
+            return new Err<>(new ParseError("For input string: \"" + hoursPlayedStr + "\""));
+        }
+
+        int normalisedScore;
+        try {
+            normalisedScore = Integer.parseInt(normalisedScoreStr);
+        } catch (NumberFormatException e) {
+            return new Err<>(new ParseError("For input string: \"" + normalisedScoreStr + "\""));
+        }
+
+        ScoreRecord record = new ScoreRecord(playerId, playerName, gameId, gameName, hoursPlayed, normalisedScore);
         return new Ok<>(record);
     }
 
