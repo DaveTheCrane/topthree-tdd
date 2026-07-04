@@ -12,6 +12,28 @@ class CsvParserTest {
     private final CsvParser parser = new DefaultCsvParser();
 
     @Test
+    void parseLinesReturnsTwoRecordsForTwoValidLines() {
+        var lines = List.of("p1,Alice,g1,Chess,10,85", "p2,Bob,g2,Go,5,60");
+        var result = parser.parseLines(lines);
+
+        assertInstanceOf(Result.Ok.class, result);
+        var records = ((Result.Ok<List<ScoreRecord>, ParseError>) result).value();
+        assertEquals(2, records.size());
+        assertEquals("p1", records.get(0).player().playerId());
+        assertEquals("p2", records.get(1).player().playerId());
+    }
+
+    @Test
+    void parseLinesShortCircuitsOnError() {
+        var lines = List.of("p1,Alice,g1,Chess,10,85", "bad line", "p2,Bob,g2,Go,5,60");
+        var result = parser.parseLines(lines);
+
+        assertInstanceOf(Result.Err.class, result);
+        var error = ((Result.Err<List<ScoreRecord>, ParseError>) result).error();
+        assertEquals("bad line", error.offendingLine());
+    }
+
+    @Test
     void trimsWhitespaceFromFields() {
         var result = parser.parseLine(" p1 , Alice , g1 , Chess , 2 , 50 ");
 

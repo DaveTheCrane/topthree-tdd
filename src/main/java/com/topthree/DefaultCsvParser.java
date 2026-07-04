@@ -50,6 +50,15 @@ public class DefaultCsvParser implements CsvParser {
 
     @Override
     public Result<List<ScoreRecord>, ParseError> parseLines(List<String> csvLines) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        var records = new java.util.ArrayList<ScoreRecord>();
+        for (String line : csvLines) {
+            var result = parseLine(line);
+            if (result instanceof Result.Ok<ScoreRecord, ParseError> ok) {
+                records.add(ok.value());
+            } else if (result instanceof Result.Err<ScoreRecord, ParseError> err) {
+                return Result.err(err.error());
+            }
+        }
+        return Result.ok(records);
     }
 }
