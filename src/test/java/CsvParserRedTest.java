@@ -1,5 +1,5 @@
 // TDD Red-Green-Refactor Test
-// Task 3.1 Red: Valid six-field CSV line parses to correct ScoreRecord
+// Task 3.2 Red: Lines with wrong field count return ParseError
 
 import org.junit.jupiter.api.Test;
 import topthree.impl.CsvParserImpl;
@@ -8,28 +8,31 @@ import topthree.models.ParseError;
 import topthree.models.Result;
 import topthree.models.ScoreRecord;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class CsvParserRedTest {
+class CsvParserFieldCountTest {
 
     @Test
-    void validSixFieldLineParsesToCorrectScoreRecord() {
+    void rejectsLinesWithFiveFields() {
         CsvParser parser = new CsvParserImpl();
-        String line = "p1,Alice,g1,Chess,10,85";
+        String line = "p1,Alice,g1,Chess,10";
 
         Result<ScoreRecord, ParseError> result = parser.parseLine(line);
 
-        assertTrue(result.isOk());
-        Result.Ok<ScoreRecord, ParseError> ok = (Result.Ok<ScoreRecord, ParseError>) result;
-        ScoreRecord record = ok.value();
-        assertEquals("p1", record.playerId());
-        assertEquals("Alice", record.playerName());
-        assertEquals("g1", record.gameId());
-        assertEquals("Chess", record.gameName());
-        assertEquals(10, record.hoursPlayed());
-        assertEquals(85, record.normalisedScore());
+        assertFalse(result.isOk());
+        assertEquals("Expected 6 fields", result.error().message());
+    }
+
+    @Test
+    void rejectsLinesWithSevenFields() {
+        CsvParser parser = new CsvParserImpl();
+        String line = "p1,Alice,g1,Chess,10,85,extra";
+
+        Result<ScoreRecord, ParseError> result = parser.parseLine(line);
+
+        assertFalse(result.isOk());
+        assertEquals("Expected 6 fields", result.error().message());
     }
 }
+
