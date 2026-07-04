@@ -22,7 +22,8 @@ public class LeaderboardRankerImpl implements LeaderboardRanker {
             return new RankedResult(sorted, List.of());
         }
         
-        // For now, handle the simple case
-        return new RankedResult(List.of(), List.of());
+        // Take top 3 for definiteWinners (no tie handling yet)
+        List<PlayerAggregate> definiteWinners = sorted.subList(0, 3);
+        return new RankedResult(definiteWinners, List.of());
     }
 }
