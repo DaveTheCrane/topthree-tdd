@@ -20,7 +20,15 @@ public class CsvParserImpl implements CsvParser {
         String playerName = fields[1];
         String gameId = fields[2];
         String gameName = fields[3];
-        int hoursPlayed = Integer.parseInt(fields[4]);
+
+        int hoursPlayed;
+        try {
+            hoursPlayed = Integer.parseInt(fields[4]);
+        } catch (NumberFormatException e) {
+            return Result.err(new ParseError(
+                    "hours-played is not an integer: " + fields[4], csvLine));
+        }
+
         int normalisedScore = Integer.parseInt(fields[5]);
 
         ScoreRecord record = new ScoreRecord(

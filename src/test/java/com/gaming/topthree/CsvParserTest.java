@@ -35,4 +35,11 @@ class CsvParserTest {
 
         assertThat(result).isInstanceOf(Result.Err.class);
     }
+
+    @Test
+    void rejectsNonIntegerHoursPlayed() {
+        Result<ScoreRecord, ParseError> result = parser.parseLine("p1,Alice,g1,Chess,abc,85");
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
 }
