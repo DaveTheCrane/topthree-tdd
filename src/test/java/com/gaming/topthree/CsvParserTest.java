@@ -2,6 +2,8 @@ package com.gaming.topthree;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CsvParserTest {
@@ -90,5 +92,31 @@ class CsvParserTest {
         assertThat(record.gameEntry().gameName()).isEqualTo("Chess");
         assertThat(record.gameEntry().hoursPlayed()).isEqualTo(2);
         assertThat(record.gameEntry().normalisedScore()).isEqualTo(50);
+    }
+
+    @Test
+    void parseLinesReturnsRecordsInOrder() {
+        Result<List<ScoreRecord>, ParseError> result = parser.parseLines(List.of(
+                "p1,Alice,g1,Chess,10,85",
+                "p2,Bob,g2,Go,5,70"
+        ));
+
+        assertThat(result).isInstanceOf(Result.Ok.class);
+        List<ScoreRecord> records = ((Result.Ok<List<ScoreRecord>, ParseError>) result).value();
+        assertThat(records).hasSize(2);
+        assertThat(records.get(0).player().playerId()).isEqualTo("p1");
+        assertThat(records.get(1).player().playerId()).isEqualTo("p2");
+    }
+
+    @Test
+    void parseLinesShortCircuitsOnFirstError() {
+        Result<List<ScoreRecord>, ParseError> result = parser.parseLines(List.of(
+                "p1,Alice,g1,Chess,10,85",
+                "p2,Bob,g2,Go,5,999"
+        ));
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+        ParseError error = ((Result.Err<List<ScoreRecord>, ParseError>) result).error();
+        assertThat(error.offendingLine()).isEqualTo("p2,Bob,g2,Go,5,999");
     }
 }

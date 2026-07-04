@@ -1,5 +1,6 @@
 package com.gaming.topthree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +61,14 @@ public class CsvParserImpl implements CsvParser {
 
     @Override
     public Result<List<ScoreRecord>, ParseError> parseLines(List<String> csvLines) {
-        throw new UnsupportedOperationException("not yet implemented");
+        List<ScoreRecord> records = new ArrayList<>();
+        for (String line : csvLines) {
+            Result<ScoreRecord, ParseError> result = parseLine(line);
+            if (result instanceof Result.Err<ScoreRecord, ParseError> err) {
+                return Result.err(err.error());
+            }
+            records.add(((Result.Ok<ScoreRecord, ParseError>) result).value());
+        }
+        return Result.ok(records);
     }
 }
