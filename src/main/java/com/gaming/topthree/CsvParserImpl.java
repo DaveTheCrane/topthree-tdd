@@ -16,10 +16,10 @@ public class CsvParserImpl implements CsvParser {
                     "Expected 6 fields but found " + fields.length, csvLine));
         }
 
-        String playerId = fields[0];
-        String playerName = fields[1];
-        String gameId = fields[2];
-        String gameName = fields[3];
+        String playerId = fields[0].trim();
+        String playerName = fields[1].trim();
+        String gameId = fields[2].trim();
+        String gameName = fields[3].trim();
 
         if (playerId.isBlank()) {
             return Result.err(new ParseError("player-id is empty", csvLine));
@@ -28,20 +28,22 @@ public class CsvParserImpl implements CsvParser {
             return Result.err(new ParseError("game-id is empty", csvLine));
         }
 
+        String hoursField = fields[4].trim();
         int hoursPlayed;
         try {
-            hoursPlayed = Integer.parseInt(fields[4]);
+            hoursPlayed = Integer.parseInt(hoursField);
         } catch (NumberFormatException e) {
             return Result.err(new ParseError(
-                    "hours-played is not an integer: " + fields[4], csvLine));
+                    "hours-played is not an integer: " + hoursField, csvLine));
         }
 
+        String scoreField = fields[5].trim();
         int normalisedScore;
         try {
-            normalisedScore = Integer.parseInt(fields[5]);
+            normalisedScore = Integer.parseInt(scoreField);
         } catch (NumberFormatException e) {
             return Result.err(new ParseError(
-                    "normalised-score is not an integer: " + fields[5], csvLine));
+                    "normalised-score is not an integer: " + scoreField, csvLine));
         }
 
         if (normalisedScore < 1 || normalisedScore > 100) {
