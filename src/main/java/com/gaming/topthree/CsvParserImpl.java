@@ -29,7 +29,13 @@ public class CsvParserImpl implements CsvParser {
                     "hours-played is not an integer: " + fields[4], csvLine));
         }
 
-        int normalisedScore = Integer.parseInt(fields[5]);
+        int normalisedScore;
+        try {
+            normalisedScore = Integer.parseInt(fields[5]);
+        } catch (NumberFormatException e) {
+            return Result.err(new ParseError(
+                    "normalised-score is not an integer: " + fields[5], csvLine));
+        }
 
         ScoreRecord record = new ScoreRecord(
                 new Player(playerId, playerName),
