@@ -21,7 +21,8 @@ class CsvParserFieldCountTest {
         Result<ScoreRecord, ParseError> result = parser.parseLine(line);
 
         assertFalse(result.isOk());
-        assertEquals("Expected 6 fields", result.error().message());
+        Result.Err<ScoreRecord, ParseError> err = (Result.Err<ScoreRecord, ParseError>) result;
+        assertEquals("Expected 6 fields", err.error().message());
     }
 
     @Test
@@ -32,7 +33,8 @@ class CsvParserFieldCountTest {
         Result<ScoreRecord, ParseError> result = parser.parseLine(line);
 
         assertFalse(result.isOk());
-        assertEquals("Expected 6 fields", result.error().message());
+        Result.Err<ScoreRecord, ParseError> err = (Result.Err<ScoreRecord, ParseError>) result;
+        assertEquals("Expected 6 fields", err.error().message());
     }
 }
 
