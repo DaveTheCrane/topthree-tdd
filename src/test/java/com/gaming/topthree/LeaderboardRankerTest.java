@@ -21,4 +21,22 @@ class LeaderboardRankerTest {
         assertThat(result.definiteWinners()).isEmpty();
         assertThat(result.tiedCandidates()).isEmpty();
     }
+
+    @Test
+    void singlePlayerGoesInDefiniteWinners() {
+        RankedResult result = ranker.rank(List.of(player("p1", 100)));
+
+        assertThat(result.definiteWinners()).extracting(PlayerAggregate::totalScore)
+                .containsExactly(100);
+        assertThat(result.tiedCandidates()).isEmpty();
+    }
+
+    @Test
+    void twoPlayersGoInDefiniteWinnersDescending() {
+        RankedResult result = ranker.rank(List.of(player("p1", 100), player("p2", 200)));
+
+        assertThat(result.definiteWinners()).extracting(PlayerAggregate::totalScore)
+                .containsExactly(200, 100);
+        assertThat(result.tiedCandidates()).isEmpty();
+    }
 }
