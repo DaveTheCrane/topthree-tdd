@@ -17,8 +17,20 @@ public class CsvParserImpl implements CsvParser {
         }
         
         try {
+            String playerId = fields[0].trim();
+            String playerName = fields[1].trim();
+            String gameId = fields[2].trim();
+            String gameName = fields[3].trim();
             int hoursPlayed = Integer.parseInt(fields[4].trim());
             int normalizedScore = Integer.parseInt(fields[5].trim());
+            
+            if (playerId.isEmpty()) {
+                return new Result.Err<>(new ParseError("player id cannot be empty"));
+            }
+            
+            if (gameId.isEmpty()) {
+                return new Result.Err<>(new ParseError("game id cannot be empty"));
+            }
             
             if (normalizedScore < 1 || normalizedScore > 100) {
                 return new Result.Err<>(new ParseError(
@@ -27,10 +39,10 @@ public class CsvParserImpl implements CsvParser {
             }
             
             return new Result.Ok<>(new ScoreRecord(
-                fields[0].trim(),
-                fields[1].trim(),
-                fields[2].trim(),
-                fields[3].trim(),
+                playerId,
+                playerName,
+                gameId,
+                gameName,
                 hoursPlayed,
                 normalizedScore
             ));

@@ -106,4 +106,44 @@ class CsvParserTest {
         ScoreRecord record = ((Result.Ok<ScoreRecord, ParseError>) result).value();
         assertEquals(100, record.normalizedScore());
     }
+    
+    @Test
+    void parseLine_emptyPlayerId_returnsParseError() {
+        String csvLine = ",Alice,g1,Chess,10,85";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Err);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("player id cannot be empty"));
+    }
+    
+    @Test
+    void parseLine_blankPlayerId_returnsParseError() {
+        String csvLine = "   ,Alice,g1,Chess,10,85";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Err);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("player id cannot be empty"));
+    }
+    
+    @Test
+    void parseLine_emptyGameId_returnsParseError() {
+        String csvLine = "p1,Alice,,Chess,10,85";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Err);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("game id cannot be empty"));
+    }
+    
+    @Test
+    void parseLine_blankGameId_returnsParseError() {
+        String csvLine = "p1,Alice,   ,Chess,10,85";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Err);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("game id cannot be empty"));
+    }
 }
