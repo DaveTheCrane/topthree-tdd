@@ -40,4 +40,15 @@ class ScoreAggregatorTest {
         assertThat(aggregates.get(0).player().playerName()).isEqualTo("Alice");
         assertThat(aggregates.get(0).totalScore()).isEqualTo(100);
     }
+
+    @Test
+    void multipleRecordsForSamePlayerSumWeightedScores() {
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(List.of(
+                record("p1", "Alice", "g1", 2, 50),
+                record("p1", "Alice", "g2", 3, 40)));
+
+        List<PlayerAggregate> aggregates = unwrap(result);
+        assertThat(aggregates).hasSize(1);
+        assertThat(aggregates.get(0).totalScore()).isEqualTo(220);
+    }
 }
