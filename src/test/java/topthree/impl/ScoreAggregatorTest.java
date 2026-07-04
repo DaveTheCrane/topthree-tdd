@@ -54,4 +54,34 @@ class ScoreAggregatorTest {
         assertEquals("Alice", aggregate.playerName());
         assertEquals(220, aggregate.totalScore()); // 100 + 120 = 220
     }
+    
+    @Test
+    void aggregate_differentPlayers_produceSeparateAggregates() {
+        ScoreRecord record1 = new ScoreRecord("p1", "Alice", "g1", "Chess", 2, 50); // 100
+        ScoreRecord record2 = new ScoreRecord("p2", "Bob", "g1", "Chess", 3, 40); // 120
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(List.of(record1, record2));
+        
+        assertTrue(result instanceof Result.Ok);
+        List<PlayerAggregate> aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+        
+        assertEquals(2, aggregates.size());
+        
+        // Check that both players are present
+        boolean foundP1 = false;
+        boolean foundP2 = false;
+        for (PlayerAggregate agg : aggregates) {
+            if (agg.playerId().equals("p1")) {
+                assertEquals("Alice", agg.playerName());
+                assertEquals(100, agg.totalScore());
+                foundP1 = true;
+            } else if (agg.playerId().equals("p2")) {
+                assertEquals("Bob", agg.playerName());
+                assertEquals(120, agg.totalScore());
+                foundP2 = true;
+            }
+        }
+        
+        assertTrue(foundP1, "Should have found player p1");
+        assertTrue(foundP2, "Should have found player p2");
+    }
 }
