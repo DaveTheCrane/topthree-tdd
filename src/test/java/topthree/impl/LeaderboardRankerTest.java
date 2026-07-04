@@ -106,4 +106,20 @@ class LeaderboardRankerTest {
         assertEquals(200, result.tiedCandidates().get(0).totalScore());
         assertEquals(200, result.tiedCandidates().get(1).totalScore());
     }
+    
+    @Test
+    void rank_allPlayersTied_definiteWinnersEmptyAllInTiedCandidates() {
+        PlayerAggregate player1 = new PlayerAggregate("p1", "Alice", 100);
+        PlayerAggregate player2 = new PlayerAggregate("p2", "Bob", 100);
+        PlayerAggregate player3 = new PlayerAggregate("p3", "Charlie", 100);
+        RankedResult result = ranker.rank(List.of(player1, player2, player3));
+        
+        assertTrue(result.definiteWinners().isEmpty());
+        assertEquals(3, result.tiedCandidates().size());
+        
+        // All should have score 100
+        for (PlayerAggregate agg : result.tiedCandidates()) {
+            assertEquals(100, agg.totalScore());
+        }
+    }
 }

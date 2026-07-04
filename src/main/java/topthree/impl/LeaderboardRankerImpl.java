@@ -17,7 +17,25 @@ public class LeaderboardRankerImpl implements LeaderboardRanker {
         List<PlayerAggregate> sorted = new java.util.ArrayList<>(aggregates);
         sorted.sort((a, b) -> Integer.compare(b.totalScore(), a.totalScore()));
         
-        // For ≤3 players, all go in definiteWinners
+        // Check if all scores are equal (degenerate case)
+        // Only applies when there are at least 2 players
+        if (sorted.size() >= 2) {
+            int firstScore = sorted.get(0).totalScore();
+            boolean allEqual = true;
+            for (PlayerAggregate player : sorted) {
+                if (player.totalScore() != firstScore) {
+                    allEqual = false;
+                    break;
+                }
+            }
+            
+            if (allEqual) {
+                // All players tied - all go to tiedCandidates
+                return new RankedResult(List.of(), sorted);
+            }
+        }
+        
+        // For ≤3 players with distinct scores, all go in definiteWinners
         if (sorted.size() <= 3) {
             return new RankedResult(sorted, List.of());
         }
