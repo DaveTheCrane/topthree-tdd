@@ -170,31 +170,31 @@ Each task below represents one TDD cycle: write a failing test, then write the m
     - Commit: `"test: LeaderboardRanker property tests (Properties 10-11)"`
     - _Validates: Requirements 3.2–3.6_
 
-- [ ] 6. Pipeline — TDD cycles
-  - [ ] 6.1 Empty input returns empty RankedResult
+- [x] 6. Pipeline — TDD cycles
+  - [x] 6.1 Empty input returns empty RankedResult
     - Write a test: `run([])` returns `Ok(RankedResult([], []))`
     - Make it pass: wire CsvParser → ScoreAggregator → LeaderboardRanker; for empty input, `parseLines` returns an empty list which flows through to an empty `RankedResult`
     - Commit: `"feat: Pipeline handles empty input"`
     - _Requirements: 4.4_
-  - [ ] 6.2 Valid CSV list produces correct RankedResult end-to-end
+  - [x] 6.2 Valid CSV list produces correct RankedResult end-to-end
     - Write a test: provide 2–3 valid CSV lines with different players; assert the pipeline returns the expected `RankedResult` with correct winners
     - Make it pass: ensure the full pipeline wiring works for the happy path
     - Commit: `"feat: Pipeline happy path end-to-end"`
     - _Requirements: 4.1_
-  - [ ] 6.3 Invalid CSV line returns PipelineError
+  - [x] 6.3 Invalid CSV line returns PipelineError
     - Write a test: include one malformed line (e.g. wrong field count) in the input list; assert a `PipelineError` is returned
     - Make it pass: wrap the `ParseError` from `CsvParser` into a `PipelineError`
     - Commit: `"feat: Pipeline propagates ParseError as PipelineError"`
     - _Requirements: 4.2_
-  - [ ] 6.4 Duplicate player-id/game-id pair returns PipelineError
+  - [x] 6.4 Duplicate player-id/game-id pair returns PipelineError
     - Write a test: two CSV lines with the same `(playerId, gameId)` combination; assert a `PipelineError` is returned
     - Make it pass: after parsing, check for duplicate `(playerId, gameId)` pairs before aggregation; return `PipelineError` if found
     - Commit: `"feat: Pipeline rejects duplicate playerId/gameId pairs"`
     - _Requirements: 4.3_
-  - [ ] 6.5 Refactor Pipeline (if needed)
+  - [x] 6.5 Refactor Pipeline (if needed)
     - Review for duplication. All tests must stay green.
     - Commit (only if changes made): `"refactor: Pipeline deduplication"`
-  - [ ]* 6.6 Property tests for Pipeline (Properties 12–14)
+  - [x]* 6.6 Property tests for Pipeline (Properties 12–14)
     - Write property tests using jqwik:
       - Property 12: pipeline composition correctness — result matches manual chaining of the three components
       - Property 13: pipeline propagates CSV parse errors
@@ -202,7 +202,7 @@ Each task below represents one TDD cycle: write a failing test, then write the m
     - Each test must carry the comment tag `// Feature: top-three-high-scores, Property N: <text>`
     - Commit: `"test: Pipeline property tests (Properties 12-14)"`
     - _Validates: Requirements 4.1–4.3_
-  - [ ] 6.7 Final checkpoint
+  - [x] 6.7 Final checkpoint
     - Run the full test suite; all unit tests and property tests must be green
     - Commit: `"feat: all tests green — implementation complete"`
 
