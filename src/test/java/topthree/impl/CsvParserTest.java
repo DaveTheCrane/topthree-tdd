@@ -56,4 +56,14 @@ class CsvParserTest {
         ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
         assertTrue(error.message().contains("Invalid number format"));
     }
+    
+    @Test
+    void parseLine_nonIntegerNormalizedScore_returnsParseError() {
+        String csvLine = "p1,Alice,g1,Chess,10,abc";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Err);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("Invalid number format"));
+    }
 }
