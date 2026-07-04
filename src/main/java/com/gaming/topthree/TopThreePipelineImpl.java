@@ -1,6 +1,8 @@
 package com.gaming.topthree;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Default {@link TopThreePipeline} implementation. Wires the CSV parser, score
@@ -29,6 +31,11 @@ public class TopThreePipelineImpl implements TopThreePipeline {
         }
         List<ScoreRecord> records = ((Result.Ok<List<ScoreRecord>, ParseError>) parsed).value();
 
+        Result<Void, PipelineError> duplicateCheck = rejectDuplicatePlayerGamePairs(records);
+        if (duplicateCheck instanceof Result.Err<Void, PipelineError> err) {
+            return Result.err(err.error());
+        }
+
         Result<List<PlayerAggregate>, AggregationError> aggregated = scoreAggregator.aggregate(records);
         if (aggregated instanceof Result.Err<List<PlayerAggregate>, AggregationError> err) {
             AggregationError error = err.error();
@@ -38,5 +45,18 @@ public class TopThreePipelineImpl implements TopThreePipeline {
 
         RankedResult ranked = leaderboardRanker.rank(aggregates);
         return Result.ok(ranked);
+    }
+
+    private static Result<Void, PipelineError> rejectDuplicatePlayerGamePairs(List<ScoreRecord> records) {
+        Set<String> seen = new HashSet<>();
+        for (ScoreRecord record : records) {
+            String key = record.player().playerId() + "\u0000" + record.gameEntry().gameId();
+            if (!seen.add(key)) {
+                return Result.err(new PipelineError(
+                        "duplicate player-id/game-id pair",
+                        record.player().playerId() + "/" + record.gameEntry().gameId()));
+            }
+        }
+        return Result.ok(null);
     }
 }

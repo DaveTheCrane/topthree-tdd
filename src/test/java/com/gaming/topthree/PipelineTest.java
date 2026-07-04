@@ -49,4 +49,13 @@ class PipelineTest {
 
         assertThat(result).isInstanceOf(Result.Err.class);
     }
+
+    @Test
+    void duplicatePlayerGamePairReturnsPipelineError() {
+        Result<RankedResult, PipelineError> result = pipeline.run(List.of(
+                "p1,Alice,g1,Chess,2,50",
+                "p1,Alice,g1,Chess,3,40"));   // same (playerId, gameId)
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
 }
