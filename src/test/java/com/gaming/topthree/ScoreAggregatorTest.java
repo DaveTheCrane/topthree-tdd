@@ -51,4 +51,16 @@ class ScoreAggregatorTest {
         assertThat(aggregates).hasSize(1);
         assertThat(aggregates.get(0).totalScore()).isEqualTo(220);
     }
+
+    @Test
+    void differentPlayersProduceSeparateAggregates() {
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(List.of(
+                record("p1", "Alice", "g1", 2, 50),
+                record("p2", "Bob", "g1", 1, 30)));
+
+        List<PlayerAggregate> aggregates = unwrap(result);
+        assertThat(aggregates).hasSize(2);
+        assertThat(aggregates).extracting(a -> a.player().playerId())
+                .containsExactlyInAnyOrder("p1", "p2");
+    }
 }
