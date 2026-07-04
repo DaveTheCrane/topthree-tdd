@@ -12,6 +12,20 @@ class LeaderboardRankerTest {
     private final LeaderboardRanker ranker = new DefaultLeaderboardRanker();
 
     @Test
+    void threeDistinctScoresAllInDefiniteWinners() {
+        var agg1 = new PlayerAggregate(new Player("p1", "Alice"), 300);
+        var agg2 = new PlayerAggregate(new Player("p2", "Bob"), 200);
+        var agg3 = new PlayerAggregate(new Player("p3", "Carol"), 100);
+        var result = ranker.rank(List.of(agg3, agg1, agg2));
+
+        assertEquals(3, result.definiteWinners().size());
+        assertEquals(300, result.definiteWinners().get(0).totalScore());
+        assertEquals(200, result.definiteWinners().get(1).totalScore());
+        assertEquals(100, result.definiteWinners().get(2).totalScore());
+        assertTrue(result.tiedCandidates().isEmpty());
+    }
+
+    @Test
     void singlePlayerGoesInDefiniteWinners() {
         var agg = new PlayerAggregate(new Player("p1", "Alice"), 100);
         var result = ranker.rank(List.of(agg));
