@@ -18,6 +18,13 @@ public class DefaultCsvParser implements CsvParser {
         String gameId = fields[2];
         String gameName = fields[3];
 
+        if (playerId.isBlank()) {
+            return Result.err(new ParseError("Empty player-id", csvLine));
+        }
+        if (gameId.isBlank()) {
+            return Result.err(new ParseError("Empty game-id", csvLine));
+        }
+
         int hoursPlayed;
         try {
             hoursPlayed = Integer.parseInt(fields[4]);

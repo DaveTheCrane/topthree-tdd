@@ -12,6 +12,24 @@ class CsvParserTest {
     private final CsvParser parser = new DefaultCsvParser();
 
     @Test
+    void rejectsEmptyPlayerId() {
+        var result = parser.parseLine(",Alice,g1,Chess,10,85");
+
+        assertInstanceOf(Result.Err.class, result);
+        var error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("player"));
+    }
+
+    @Test
+    void rejectsEmptyGameId() {
+        var result = parser.parseLine("p1,Alice,,Chess,10,85");
+
+        assertInstanceOf(Result.Err.class, result);
+        var error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("game"));
+    }
+
+    @Test
     void rejectsNormalisedScoreZero() {
         var result = parser.parseLine("p1,Alice,g1,Chess,10,0");
 
