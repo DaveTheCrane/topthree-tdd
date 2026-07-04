@@ -26,4 +26,24 @@ class CsvParserTest {
         assertEquals(10, record.hoursPlayed());
         assertEquals(85, record.normalizedScore());
     }
+    
+    @Test
+    void parseLine_fiveFields_returnsParseError() {
+        String csvLine = "p1,Alice,g1,Chess,10";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Err);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("Expected 6 fields"));
+    }
+    
+    @Test
+    void parseLine_sevenFields_returnsParseError() {
+        String csvLine = "p1,Alice,g1,Chess,10,85,extra";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Err);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("Expected 6 fields"));
+    }
 }
