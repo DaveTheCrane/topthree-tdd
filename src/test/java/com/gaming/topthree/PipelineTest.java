@@ -40,4 +40,13 @@ class PipelineTest {
                 .containsExactly(120, 100, 30);
         assertThat(ranked.tiedCandidates()).isEmpty();
     }
+
+    @Test
+    void invalidCsvLineReturnsPipelineError() {
+        Result<RankedResult, PipelineError> result = pipeline.run(List.of(
+                "p1,Alice,g1,Chess,2,50",
+                "p2,Bob,g2,Go,3"));   // wrong field count
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
 }
