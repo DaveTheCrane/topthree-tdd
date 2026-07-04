@@ -21,6 +21,13 @@ public class CsvParserImpl implements CsvParser {
         String gameId = fields[2];
         String gameName = fields[3];
 
+        if (playerId.isBlank()) {
+            return Result.err(new ParseError("player-id is empty", csvLine));
+        }
+        if (gameId.isBlank()) {
+            return Result.err(new ParseError("game-id is empty", csvLine));
+        }
+
         int hoursPlayed;
         try {
             hoursPlayed = Integer.parseInt(fields[4]);

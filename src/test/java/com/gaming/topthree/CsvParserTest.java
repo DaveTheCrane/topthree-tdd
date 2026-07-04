@@ -63,4 +63,18 @@ class CsvParserTest {
 
         assertThat(result).isInstanceOf(Result.Err.class);
     }
+
+    @Test
+    void rejectsEmptyPlayerId() {
+        Result<ScoreRecord, ParseError> result = parser.parseLine(",Alice,g1,Chess,10,85");
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    @Test
+    void rejectsEmptyGameId() {
+        Result<ScoreRecord, ParseError> result = parser.parseLine("p1,Alice,,Chess,10,85");
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
 }
