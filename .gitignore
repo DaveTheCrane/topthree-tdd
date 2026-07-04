@@ -9,5 +9,6 @@ target/
 .project
 .classpath
 .DS_Store
+.jqwik-database
 ~
 
