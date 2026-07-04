@@ -22,8 +22,37 @@ public class LeaderboardRankerImpl implements LeaderboardRanker {
             return new RankedResult(sorted, List.of());
         }
         
-        // Take top 3 for definiteWinners (no tie handling yet)
-        List<PlayerAggregate> definiteWinners = sorted.subList(0, 3);
-        return new RankedResult(definiteWinners, List.of());
+        // Check for tie at position 3 (index 2)
+        int boundaryScore = sorted.get(2).totalScore();
+        
+        // Check if there's a tie at the boundary
+        // Count how many players have score == boundaryScore
+        int tieCount = 0;
+        for (PlayerAggregate player : sorted) {
+            if (player.totalScore() == boundaryScore) {
+                tieCount++;
+            }
+        }
+        
+        List<PlayerAggregate> definiteWinners = new java.util.ArrayList<>();
+        List<PlayerAggregate> tiedCandidates = new java.util.ArrayList<>();
+        
+        if (tieCount == 1) {
+            // No tie at boundary - take top 3 as definite winners
+            definiteWinners = sorted.subList(0, 3);
+        } else {
+            // Tie at boundary - split between definiteWinners and tiedCandidates
+            for (PlayerAggregate player : sorted) {
+                if (player.totalScore() > boundaryScore) {
+                    definiteWinners.add(player);
+                } else if (player.totalScore() == boundaryScore) {
+                    tiedCandidates.add(player);
+                } else {
+                    break; // Scores are sorted, so we can stop
+                }
+            }
+        }
+        
+        return new RankedResult(definiteWinners, tiedCandidates);
     }
 }

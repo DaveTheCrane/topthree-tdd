@@ -84,4 +84,26 @@ class LeaderboardRankerTest {
         assertEquals("p3", result.definiteWinners().get(2).playerId());
         assertEquals(200, result.definiteWinners().get(2).totalScore());
     }
+    
+    @Test
+    void rank_tieAtPosition3_splitsDefiniteWinnersAndTiedCandidates() {
+        PlayerAggregate player1 = new PlayerAggregate("p1", "Alice", 400);
+        PlayerAggregate player2 = new PlayerAggregate("p2", "Bob", 300);
+        PlayerAggregate player3 = new PlayerAggregate("p3", "Charlie", 200);
+        PlayerAggregate player4 = new PlayerAggregate("p4", "David", 200);
+        RankedResult result = ranker.rank(List.of(player1, player2, player3, player4));
+        
+        // p1 and p2 should be in definiteWinners
+        assertEquals(2, result.definiteWinners().size());
+        assertEquals("p1", result.definiteWinners().get(0).playerId());
+        assertEquals(400, result.definiteWinners().get(0).totalScore());
+        assertEquals("p2", result.definiteWinners().get(1).playerId());
+        assertEquals(300, result.definiteWinners().get(1).totalScore());
+        
+        // p3 and p4 should be in tiedCandidates
+        assertEquals(2, result.tiedCandidates().size());
+        // Both should have score 200
+        assertEquals(200, result.tiedCandidates().get(0).totalScore());
+        assertEquals(200, result.tiedCandidates().get(1).totalScore());
+    }
 }
