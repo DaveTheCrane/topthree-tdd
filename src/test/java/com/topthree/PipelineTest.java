@@ -12,6 +12,19 @@ class PipelineTest {
     private final TopThreePipeline pipeline = new DefaultPipeline();
 
     @Test
+    void invalidCsvLineReturnsPipelineError() {
+        var lines = List.of(
+                "p1,Alice,g1,Chess,10,80",
+                "bad line with wrong fields"
+        );
+        var result = pipeline.run(lines);
+
+        assertInstanceOf(Result.Err.class, result);
+        var error = ((Result.Err<RankedResult, PipelineError>) result).error();
+        assertEquals("bad line with wrong fields", error.context());
+    }
+
+    @Test
     void validCsvProducesCorrectRankedResult() {
         var lines = List.of(
                 "p1,Alice,g1,Chess,10,80",   // 800
