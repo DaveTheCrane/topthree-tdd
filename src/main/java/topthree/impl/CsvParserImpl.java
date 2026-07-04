@@ -1,6 +1,7 @@
 package topthree.impl;
 
 import topthree.interfaces.CsvParser;
+import topthree.interfaces.PrettyPrinter;
 import topthree.models.ParseError;
 import topthree.models.Result;
 import topthree.models.ScoreRecord;
@@ -11,7 +12,7 @@ import java.util.List;
 import static topthree.models.Result.Err;
 import static topthree.models.Result.Ok;
 
-public class CsvParserImpl implements CsvParser {
+public class CsvParserImpl implements CsvParser, PrettyPrinter {
 
     @Override
     public Result<ScoreRecord, ParseError> parseLine(String line) {
@@ -67,5 +68,16 @@ public class CsvParserImpl implements CsvParser {
             results.add(result.get());
         }
         return new Ok<>(results);
+    }
+
+    @Override
+    public String print(ScoreRecord record) {
+        return String.format("%s,%s,%s,%s,%d,%d",
+                record.playerId(),
+                record.playerName(),
+                record.gameId(),
+                record.gameName(),
+                record.hoursPlayed(),
+                record.normalisedScore());
     }
 }

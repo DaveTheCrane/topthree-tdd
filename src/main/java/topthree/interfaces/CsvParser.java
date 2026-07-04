@@ -11,4 +11,6 @@ public interface CsvParser {
     Result<ScoreRecord, ParseError> parseLine(String line);
 
     Result<List<ScoreRecord>, ParseError> parseLines(List<String> lines);
+
+    String print(ScoreRecord record);
 }
