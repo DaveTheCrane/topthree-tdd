@@ -162,4 +162,29 @@ class CsvParserTest {
         assertEquals(10, record.hoursPlayed());
         assertEquals(85, record.normalizedScore());
     }
+    
+    @Test
+    void parseLines_twoValidLines_returnsTwoRecordsInOrder() {
+        String line1 = "p1,Alice,g1,Chess,10,85";
+        String line2 = "p2,Bob,g2,Checkers,5,90";
+        Result<java.util.List<ScoreRecord>, ParseError> result = parser.parseLines(java.util.List.of(line1, line2));
+        
+        assertTrue(result instanceof Result.Ok);
+        java.util.List<ScoreRecord> records = ((Result.Ok<java.util.List<ScoreRecord>, ParseError>) result).value();
+        
+        assertEquals(2, records.size());
+        assertEquals("p1", records.get(0).playerId());
+        assertEquals("p2", records.get(1).playerId());
+    }
+    
+    @Test
+    void parseLines_secondLineInvalid_returnsParseErrorForSecondLine() {
+        String line1 = "p1,Alice,g1,Chess,10,85";
+        String line2 = "p2,Bob,g2,Checkers,invalid,90"; // invalid hours
+        Result<java.util.List<ScoreRecord>, ParseError> result = parser.parseLines(java.util.List.of(line1, line2));
+        
+        assertTrue(result instanceof Result.Err);
+        ParseError error = ((Result.Err<java.util.List<ScoreRecord>, ParseError>) result).error();
+        assertTrue(error.message().contains("Invalid number format"));
+    }
 }

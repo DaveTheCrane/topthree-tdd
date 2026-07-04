@@ -53,7 +53,16 @@ public class CsvParserImpl implements CsvParser {
     
     @Override
     public Result<List<ScoreRecord>, ParseError> parseLines(List<String> csvLines) {
-        // Will be implemented in a later task
-        return new Result.Err<>(new ParseError("Not implemented yet"));
+        List<ScoreRecord> records = new java.util.ArrayList<>();
+        
+        for (String line : csvLines) {
+            Result<ScoreRecord, ParseError> result = parseLine(line);
+            if (result instanceof Result.Err) {
+                return new Result.Err<>(((Result.Err<ScoreRecord, ParseError>) result).error());
+            }
+            records.add(((Result.Ok<ScoreRecord, ParseError>) result).value());
+        }
+        
+        return new Result.Ok<>(records);
     }
 }
