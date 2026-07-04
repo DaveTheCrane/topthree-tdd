@@ -21,4 +21,18 @@ class CsvParserTest {
         assertThat(record.gameEntry().hoursPlayed()).isEqualTo(10);
         assertThat(record.gameEntry().normalisedScore()).isEqualTo(85);
     }
+
+    @Test
+    void rejectsLineWithTooFewFields() {
+        Result<ScoreRecord, ParseError> result = parser.parseLine("p1,Alice,g1,Chess,10");
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    @Test
+    void rejectsLineWithTooManyFields() {
+        Result<ScoreRecord, ParseError> result = parser.parseLine("p1,Alice,g1,Chess,10,85,extra");
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
 }
