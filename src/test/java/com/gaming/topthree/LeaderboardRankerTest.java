@@ -39,4 +39,14 @@ class LeaderboardRankerTest {
                 .containsExactly(200, 100);
         assertThat(result.tiedCandidates()).isEmpty();
     }
+
+    @Test
+    void threeDistinctScoresAllInDefiniteWinners() {
+        RankedResult result = ranker.rank(List.of(
+                player("p1", 100), player("p2", 300), player("p3", 200)));
+
+        assertThat(result.definiteWinners()).extracting(PlayerAggregate::totalScore)
+                .containsExactly(300, 200, 100);
+        assertThat(result.tiedCandidates()).isEmpty();
+    }
 }
