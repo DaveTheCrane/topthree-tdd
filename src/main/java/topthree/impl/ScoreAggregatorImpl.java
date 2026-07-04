@@ -11,6 +11,19 @@ public class ScoreAggregatorImpl implements ScoreAggregator {
     
     @Override
     public Result<List<PlayerAggregate>, AggregationError> aggregate(List<ScoreRecord> records) {
-        return new Result.Ok<>(List.of());
+        if (records.isEmpty()) {
+            return new Result.Ok<>(List.of());
+        }
+        
+        // For now, handle single record
+        ScoreRecord record = records.get(0);
+        int totalScore = record.hoursPlayed() * record.normalizedScore();
+        PlayerAggregate aggregate = new PlayerAggregate(
+            record.playerId(),
+            record.playerName(),
+            totalScore
+        );
+        
+        return new Result.Ok<>(List.of(aggregate));
     }
 }
