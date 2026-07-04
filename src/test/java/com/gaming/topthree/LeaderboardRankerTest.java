@@ -70,4 +70,14 @@ class LeaderboardRankerTest {
         assertThat(result.tiedCandidates()).extracting(PlayerAggregate::totalScore)
                 .containsExactly(200, 200);
     }
+
+    @Test
+    void allPlayersTiedGoInTiedCandidates() {
+        RankedResult result = ranker.rank(List.of(
+                player("p1", 100), player("p2", 100), player("p3", 100)));
+
+        assertThat(result.definiteWinners()).isEmpty();
+        assertThat(result.tiedCandidates()).extracting(PlayerAggregate::totalScore)
+                .containsExactly(100, 100, 100);
+    }
 }

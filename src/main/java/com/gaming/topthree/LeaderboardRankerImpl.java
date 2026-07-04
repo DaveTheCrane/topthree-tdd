@@ -16,6 +16,13 @@ public class LeaderboardRankerImpl implements LeaderboardRanker {
         List<PlayerAggregate> sorted = new ArrayList<>(aggregates);
         sorted.sort(Comparator.comparingInt(PlayerAggregate::totalScore).reversed());
 
+        // Degenerate case: two or more players all share the same score, so none is
+        // unambiguously ahead of another. All are tied candidates. (A single player is
+        // always an unambiguous winner, so it is excluded here.)
+        if (sorted.size() >= 2 && allShareSameScore(sorted)) {
+            return new RankedResult(List.of(), sorted);
+        }
+
         if (sorted.size() <= TOP_N) {
             return new RankedResult(sorted, List.of());
         }
@@ -38,5 +45,10 @@ public class LeaderboardRankerImpl implements LeaderboardRanker {
             }
         }
         return new RankedResult(definiteWinners, tiedCandidates);
+    }
+
+    private static boolean allShareSameScore(List<PlayerAggregate> sorted) {
+        int first = sorted.get(0).totalScore();
+        return sorted.stream().allMatch(a -> a.totalScore() == first);
     }
 }
