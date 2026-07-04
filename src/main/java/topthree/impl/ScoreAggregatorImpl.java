@@ -15,15 +15,30 @@ public class ScoreAggregatorImpl implements ScoreAggregator {
             return new Result.Ok<>(List.of());
         }
         
-        // For now, handle single record
-        ScoreRecord record = records.get(0);
-        int totalScore = record.hoursPlayed() * record.normalizedScore();
-        PlayerAggregate aggregate = new PlayerAggregate(
-            record.playerId(),
-            record.playerName(),
-            totalScore
-        );
+        java.util.Map<String, PlayerAggregate> aggregatesByPlayerId = new java.util.HashMap<>();
         
-        return new Result.Ok<>(List.of(aggregate));
+        for (ScoreRecord record : records) {
+            int weightedScore = record.hoursPlayed() * record.normalizedScore();
+            
+            if (aggregatesByPlayerId.containsKey(record.playerId())) {
+                PlayerAggregate existing = aggregatesByPlayerId.get(record.playerId());
+                int newTotalScore = existing.totalScore() + weightedScore;
+                PlayerAggregate updated = new PlayerAggregate(
+                    existing.playerId(),
+                    record.playerName(), // Use the latest player name
+                    newTotalScore
+                );
+                aggregatesByPlayerId.put(record.playerId(), updated);
+            } else {
+                PlayerAggregate aggregate = new PlayerAggregate(
+                    record.playerId(),
+                    record.playerName(),
+                    weightedScore
+                );
+                aggregatesByPlayerId.put(record.playerId(), aggregate);
+            }
+        }
+        
+        return new Result.Ok<>(new java.util.ArrayList<>(aggregatesByPlayerId.values()));
     }
 }

@@ -37,4 +37,21 @@ class ScoreAggregatorTest {
         assertEquals("Alice", aggregate.playerName());
         assertEquals(100, aggregate.totalScore()); // 2 * 50 = 100
     }
+    
+    @Test
+    void aggregate_multipleRecordsSamePlayer_sumsWeightedScores() {
+        ScoreRecord record1 = new ScoreRecord("p1", "Alice", "g1", "Chess", 2, 50); // 100
+        ScoreRecord record2 = new ScoreRecord("p1", "Alice", "g2", "Checkers", 3, 40); // 120
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(List.of(record1, record2));
+        
+        assertTrue(result instanceof Result.Ok);
+        List<PlayerAggregate> aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+        
+        assertEquals(1, aggregates.size());
+        PlayerAggregate aggregate = aggregates.get(0);
+        
+        assertEquals("p1", aggregate.playerId());
+        assertEquals("Alice", aggregate.playerName());
+        assertEquals(220, aggregate.totalScore()); // 100 + 120 = 220
+    }
 }
