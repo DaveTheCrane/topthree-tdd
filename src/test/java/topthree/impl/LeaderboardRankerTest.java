@@ -45,4 +45,23 @@ class LeaderboardRankerTest {
         assertEquals("p2", result.definiteWinners().get(1).playerId());
         assertEquals(100, result.definiteWinners().get(1).totalScore());
     }
+    
+    @Test
+    void rank_threeDistinctScores_allInDefiniteWinnersDescending() {
+        PlayerAggregate player1 = new PlayerAggregate("p1", "Alice", 300);
+        PlayerAggregate player2 = new PlayerAggregate("p2", "Bob", 200);
+        PlayerAggregate player3 = new PlayerAggregate("p3", "Charlie", 100);
+        RankedResult result = ranker.rank(List.of(player1, player2, player3));
+        
+        assertEquals(3, result.definiteWinners().size());
+        assertTrue(result.tiedCandidates().isEmpty());
+        
+        // Should be in descending order
+        assertEquals("p1", result.definiteWinners().get(0).playerId());
+        assertEquals(300, result.definiteWinners().get(0).totalScore());
+        assertEquals("p2", result.definiteWinners().get(1).playerId());
+        assertEquals(200, result.definiteWinners().get(1).totalScore());
+        assertEquals("p3", result.definiteWinners().get(2).playerId());
+        assertEquals(100, result.definiteWinners().get(2).totalScore());
+    }
 }
