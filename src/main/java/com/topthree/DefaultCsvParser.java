@@ -25,19 +25,17 @@ public class DefaultCsvParser implements CsvParser {
             return Result.err(new ParseError("Empty game-id", csvLine));
         }
 
-        int hoursPlayed;
-        try {
-            hoursPlayed = Integer.parseInt(fields[4].trim());
-        } catch (NumberFormatException e) {
-            return Result.err(new ParseError("Invalid hours-played: " + fields[4].trim(), csvLine));
+        var hoursResult = parseIntField(fields[4].trim(), "hours-played", csvLine);
+        if (hoursResult instanceof Result.Err<Integer, ParseError> err) {
+            return Result.err(err.error());
         }
+        int hoursPlayed = ((Result.Ok<Integer, ParseError>) hoursResult).value();
 
-        int normalisedScore;
-        try {
-            normalisedScore = Integer.parseInt(fields[5].trim());
-        } catch (NumberFormatException e) {
-            return Result.err(new ParseError("Invalid normalised-score: " + fields[5].trim(), csvLine));
+        var scoreResult = parseIntField(fields[5].trim(), "normalised-score", csvLine);
+        if (scoreResult instanceof Result.Err<Integer, ParseError> err) {
+            return Result.err(err.error());
         }
+        int normalisedScore = ((Result.Ok<Integer, ParseError>) scoreResult).value();
 
         if (normalisedScore < 1 || normalisedScore > 100) {
             return Result.err(new ParseError("Normalised-score out of range [1,100]: " + normalisedScore, csvLine));
@@ -60,5 +58,13 @@ public class DefaultCsvParser implements CsvParser {
             }
         }
         return Result.ok(records);
+    }
+
+    private Result<Integer, ParseError> parseIntField(String value, String fieldName, String csvLine) {
+        try {
+            return Result.ok(Integer.parseInt(value));
+        } catch (NumberFormatException e) {
+            return Result.err(new ParseError("Invalid " + fieldName + ": " + value, csvLine));
+        }
     }
 }
