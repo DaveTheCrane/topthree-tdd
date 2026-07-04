@@ -8,77 +8,77 @@ Each task below represents one TDD cycle: write a failing test, then write the m
 
 ## Tasks
 
-- [ ] 1. Project setup
+- [x] 1. Project setup
   - Initialise a Maven or Gradle project with JUnit 5 and jqwik dependencies
   - Create the standard `src/main/java` and `src/test/java` directory structure
   - Run an empty test to confirm the build toolchain works end-to-end
   - Initialise a local git repository and commit: `"chore: project setup"`
   - _Requirements: all_
 
-- [ ] 2. Core data models and interfaces
-  - [ ] 2.1 Create data model records and Result type
+- [x] 2. Core data models and interfaces
+  - [x] 2.1 Create data model records and Result type
     - Implement `Player`, `GameEntry`, `ScoreRecord`, `PlayerAggregate`, `RankedResult` as Java records
     - Implement the `sealed interface Result<V, E>` with `Ok` and `Err` permit classes
     - Implement `ParseError`, `AggregationError`, and `PipelineError` records
     - No logic or validation — pure data containers only
     - Commit: `"feat: core data model records and Result type"`
     - _Requirements: 1.1, 2.1, 3.1, 4.1_
-  - [ ] 2.2 Define component interfaces
+  - [x] 2.2 Define component interfaces
     - Declare `CsvParser`, `PrettyPrinter`, `ScoreAggregator`, `LeaderboardRanker`, and `TopThreePipeline` interfaces exactly as specified in the design
     - No implementations yet
     - Commit: `"feat: component interfaces"`
     - _Requirements: 1.1, 2.1, 3.1, 4.1_
 
-- [ ] 3. CsvParser — TDD cycles
-  - [ ] 3.1 Parse a valid six-field CSV line
+- [x] 3. CsvParser — TDD cycles
+  - [x] 3.1 Parse a valid six-field CSV line
     - Write a test: given a well-formed CSV line like `"p1,Alice,g1,Chess,10,85"`, calling `parseLine` returns a `ScoreRecord` with matching field values
     - Make it pass: implement `parseLine` to split on comma, construct the record from the six fields
     - Commit: `"feat: CsvParser parses valid CSV line"`
     - _Requirements: 1.1_
-  - [ ] 3.2 Reject lines with wrong field count
+  - [x] 3.2 Reject lines with wrong field count
     - Write two tests: a line with five fields and a line with seven fields both return `ParseError`
     - Make them pass: add a guard that checks `fields.length != 6` before processing
     - Commit: `"feat: CsvParser rejects wrong field count"`
     - _Requirements: 1.5, 1.6_
-  - [ ] 3.3 Reject non-integer hours-played
+  - [x] 3.3 Reject non-integer hours-played
     - Write a test: a line with `"abc"` in the hours-played position returns `ParseError`
     - Make it pass: wrap `Integer.parseInt` for hours-played in a try-catch that returns `ParseError`
     - Commit: `"feat: CsvParser rejects non-integer hours-played"`
     - _Requirements: 1.3_
-  - [ ] 3.4 Reject non-integer normalised-score
+  - [x] 3.4 Reject non-integer normalised-score
     - Write a test: a line with `"1.5"` in the normalised-score position returns `ParseError`
     - Make it pass: wrap `Integer.parseInt` for normalised-score similarly
     - Commit: `"feat: CsvParser rejects non-integer normalised-score"`
     - _Requirements: 1.4_
-  - [ ] 3.5 Reject normalised-score outside range [1, 100]
+  - [x] 3.5 Reject normalised-score outside range [1, 100]
     - Write two tests: score = 0 returns `ParseError`, score = 101 returns `ParseError`
     - Make them pass: add a range check `if (score < 1 || score > 100) return error`
     - Commit: `"feat: CsvParser enforces normalised-score range [1,100]"`
     - _Requirements: 1.2_
-  - [ ] 3.6 Reject empty player-id and game-id
+  - [x] 3.6 Reject empty player-id and game-id
     - Write two tests: a line with blank player-id returns `ParseError`, a line with blank game-id returns `ParseError`
     - Make them pass: add `if (field.isBlank()) return error` checks for both id fields
     - Commit: `"feat: CsvParser rejects empty player-id and game-id"`
     - _Requirements: 1.7, 1.8_
-  - [ ] 3.7 Trim whitespace from fields
+  - [x] 3.7 Trim whitespace from fields
     - Write a test: a line like `" p1 , Alice , g1 , Chess , 2 , 50 "` produces a `ScoreRecord` with trimmed values
     - Make it pass: add `.trim()` to each field before validation and construction
     - Commit: `"feat: CsvParser trims whitespace from fields"`
     - _Requirements: 1.10_
-  - [ ] 3.8 parseLines — happy path and short-circuit on error
+  - [x] 3.8 parseLines — happy path and short-circuit on error
     - Write two tests: (1) two valid lines return a list of two `ScoreRecord`s in order; (2) a list where the second line is invalid returns the `ParseError` for that line
     - Make them pass: implement `parseLines` to iterate over lines, call `parseLine`, collect results, and return early on the first error
     - Commit: `"feat: CsvParser parseLines with short-circuit on error"`
     - _Requirements: 1.9_
-  - [ ] 3.9 PrettyPrinter formats ScoreRecord as CSV
+  - [x] 3.9 PrettyPrinter formats ScoreRecord as CSV
     - Write a test: given a `ScoreRecord`, `print(record)` returns a comma-separated string with the six field values in order
     - Make it pass: implement `print` to concatenate fields with commas
     - Commit: `"feat: PrettyPrinter formats ScoreRecord as CSV"`
     - _Requirements: 1.11_
-  - [ ] 3.10 Refactor CsvParser (if needed)
+  - [x] 3.10 Refactor CsvParser (if needed)
     - Review the CsvParser for repeated patterns (e.g. multiple try-catch blocks for parseInt). If duplication exists, extract a helper method. All tests must stay green.
     - Commit (only if changes made): `"refactor: CsvParser field-guard deduplication"`
-  - [ ]* 3.11 Property tests for CsvParser (Properties 1–7)
+  - [x]* 3.11 Property tests for CsvParser (Properties 1–7)
     - Write property tests using jqwik (minimum 100 tries each):
       - Property 1: valid CSV line parses to correct fields
       - Property 2: out-of-range normalised score returns error
