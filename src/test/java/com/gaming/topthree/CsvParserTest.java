@@ -49,4 +49,18 @@ class CsvParserTest {
 
         assertThat(result).isInstanceOf(Result.Err.class);
     }
+
+    @Test
+    void rejectsNormalisedScoreBelowRange() {
+        Result<ScoreRecord, ParseError> result = parser.parseLine("p1,Alice,g1,Chess,10,0");
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
+
+    @Test
+    void rejectsNormalisedScoreAboveRange() {
+        Result<ScoreRecord, ParseError> result = parser.parseLine("p1,Alice,g1,Chess,10,101");
+
+        assertThat(result).isInstanceOf(Result.Err.class);
+    }
 }
