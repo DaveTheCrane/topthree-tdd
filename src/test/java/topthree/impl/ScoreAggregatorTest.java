@@ -84,4 +84,21 @@ class ScoreAggregatorTest {
         assertTrue(foundP1, "Should have found player p1");
         assertTrue(foundP2, "Should have found player p2");
     }
+    
+    @Test
+    void aggregate_nameConflict_lastSeenDisplayNameWins() {
+        ScoreRecord record1 = new ScoreRecord("p1", "Alice", "g1", "Chess", 2, 50);
+        ScoreRecord record2 = new ScoreRecord("p1", "Alicia", "g2", "Checkers", 3, 40);
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(List.of(record1, record2));
+        
+        assertTrue(result instanceof Result.Ok);
+        List<PlayerAggregate> aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+        
+        assertEquals(1, aggregates.size());
+        PlayerAggregate aggregate = aggregates.get(0);
+        
+        assertEquals("p1", aggregate.playerId());
+        assertEquals("Alicia", aggregate.playerName()); // Last seen name should win
+        assertEquals(220, aggregate.totalScore()); // 100 + 120 = 220
+    }
 }
