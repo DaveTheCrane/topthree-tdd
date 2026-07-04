@@ -25,4 +25,19 @@ class PipelineTest {
         assertThat(ranked.definiteWinners()).isEmpty();
         assertThat(ranked.tiedCandidates()).isEmpty();
     }
+
+    @Test
+    void validCsvProducesCorrectRankedResult() {
+        Result<RankedResult, PipelineError> result = pipeline.run(List.of(
+                "p1,Alice,g1,Chess,2,50",   // 100
+                "p2,Bob,g2,Go,3,40",        // 120
+                "p3,Carol,g3,Pool,1,30"));  // 30
+
+        RankedResult ranked = unwrap(result);
+        assertThat(ranked.definiteWinners()).extracting(a -> a.player().playerId())
+                .containsExactly("p2", "p1", "p3");
+        assertThat(ranked.definiteWinners()).extracting(PlayerAggregate::totalScore)
+                .containsExactly(120, 100, 30);
+        assertThat(ranked.tiedCandidates()).isEmpty();
+    }
 }
