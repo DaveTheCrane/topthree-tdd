@@ -28,4 +28,16 @@ class ScoreAggregatorTest {
 
         assertThat(unwrap(result)).isEmpty();
     }
+
+    @Test
+    void singleRecordProducesCorrectAggregate() {
+        Result<List<PlayerAggregate>, AggregationError> result =
+                aggregator.aggregate(List.of(record("p1", "Alice", "g1", 2, 50)));
+
+        List<PlayerAggregate> aggregates = unwrap(result);
+        assertThat(aggregates).hasSize(1);
+        assertThat(aggregates.get(0).player().playerId()).isEqualTo("p1");
+        assertThat(aggregates.get(0).player().playerName()).isEqualTo("Alice");
+        assertThat(aggregates.get(0).totalScore()).isEqualTo(100);
+    }
 }
