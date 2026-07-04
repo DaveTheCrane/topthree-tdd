@@ -20,6 +20,18 @@ public class DefaultPipeline implements TopThreePipeline {
         }
         var records = ((Result.Ok<List<ScoreRecord>, ParseError>) parseResult).value();
 
+        // Check for duplicate (playerId, gameId) pairs
+        Set<String> seen = new HashSet<>();
+        for (ScoreRecord record : records) {
+            String key = record.player().playerId() + "|" + record.gameEntry().gameId();
+            if (!seen.add(key)) {
+                return Result.err(new PipelineError(
+                        "Duplicate playerId/gameId pair: (" + record.player().playerId() + ", " + record.gameEntry().gameId() + ")",
+                        record.player().playerId() + "," + record.gameEntry().gameId()
+                ));
+            }
+        }
+
         // Aggregate
         var aggResult = scoreAggregator.aggregate(records);
         if (aggResult instanceof Result.Err<List<PlayerAggregate>, AggregationError> err) {

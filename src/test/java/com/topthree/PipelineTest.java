@@ -12,6 +12,19 @@ class PipelineTest {
     private final TopThreePipeline pipeline = new DefaultPipeline();
 
     @Test
+    void duplicatePlayerGamePairReturnsPipelineError() {
+        var lines = List.of(
+                "p1,Alice,g1,Chess,10,80",
+                "p1,Alice,g1,Chess,5,60"  // duplicate (p1, g1)
+        );
+        var result = pipeline.run(lines);
+
+        assertInstanceOf(Result.Err.class, result);
+        var error = ((Result.Err<RankedResult, PipelineError>) result).error();
+        assertTrue(error.message().contains("duplicate") || error.message().contains("Duplicate"));
+    }
+
+    @Test
     void invalidCsvLineReturnsPipelineError() {
         var lines = List.of(
                 "p1,Alice,g1,Chess,10,80",
