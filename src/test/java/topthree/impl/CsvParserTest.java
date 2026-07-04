@@ -46,4 +46,14 @@ class CsvParserTest {
         ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
         assertTrue(error.message().contains("Expected 6 fields"));
     }
+    
+    @Test
+    void parseLine_nonIntegerHoursPlayed_returnsParseError() {
+        String csvLine = "p1,Alice,g1,Chess,abc,85";
+        Result<ScoreRecord, ParseError> result = parser.parseLine(csvLine);
+        
+        assertTrue(result instanceof Result.Err);
+        ParseError error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("Invalid number format"));
+    }
 }
