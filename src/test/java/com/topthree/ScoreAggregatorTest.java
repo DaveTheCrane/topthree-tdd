@@ -12,6 +12,20 @@ class ScoreAggregatorTest {
     private final ScoreAggregator aggregator = new DefaultScoreAggregator();
 
     @Test
+    void multipleRecordsSamePlayerSumsWeightedScores() {
+        var records = List.of(
+                new ScoreRecord(new Player("p1", "Alice"), new GameEntry("g1", "Chess", 2, 50)),
+                new ScoreRecord(new Player("p1", "Alice"), new GameEntry("g2", "Go", 3, 40))
+        );
+        var result = aggregator.aggregate(records);
+
+        assertInstanceOf(Result.Ok.class, result);
+        var aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+        assertEquals(1, aggregates.size());
+        assertEquals(220, aggregates.get(0).totalScore()); // (2*50) + (3*40) = 100 + 120 = 220
+    }
+
+    @Test
     void singleRecordProducesCorrectAggregate() {
         var record = new ScoreRecord(
                 new Player("p1", "Alice"),
