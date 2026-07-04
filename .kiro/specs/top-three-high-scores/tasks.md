@@ -128,41 +128,41 @@ Each task below represents one TDD cycle: write a failing test, then write the m
     - Commit: `"test: ScoreAggregator property tests (Properties 8-9)"`
     - _Validates: Requirements 2.1–2.8_
 
-- [ ] 5. LeaderboardRanker — TDD cycles
-  - [ ] 5.1 Empty input returns empty RankedResult
+- [x] 5. LeaderboardRanker — TDD cycles
+  - [x] 5.1 Empty input returns empty RankedResult
     - Write a test: `rank([])` returns `RankedResult([], [])`
     - Make it pass: return an empty `RankedResult` when input is empty
     - Commit: `"feat: LeaderboardRanker handles empty input"`
     - _Requirements: 3.5_
-  - [ ] 5.2 Single player and two players — all go in definiteWinners
+  - [x] 5.2 Single player and two players — all go in definiteWinners
     - Write two tests: (1) one player at score 100 → `definiteWinners=[that player]`, `tiedCandidates=[]`; (2) two players at scores 200, 100 → both in `definiteWinners` in descending order
     - Make them pass: sort descending, place all in `definiteWinners` when count ≤ 3
     - Commit: `"feat: LeaderboardRanker places ≤3 players in definiteWinners"`
     - _Requirements: 3.4_
-  - [ ] 5.3 Three distinct scores — all in definiteWinners, descending
+  - [x] 5.3 Three distinct scores — all in definiteWinners, descending
     - Write a test: three players at scores 300, 200, 100 → all three in `definiteWinners` descending, `tiedCandidates=[]`
     - Make it pass: existing sort-and-take logic should handle this — confirm
     - Commit: `"feat: LeaderboardRanker handles three distinct-score players"`
     - _Requirements: 3.2_
-  - [ ] 5.4 Four players with no tie — top three in definiteWinners
+  - [x] 5.4 Four players with no tie — top three in definiteWinners
     - Write a test: scores 400, 300, 200, 100 → `definiteWinners=[400,300,200]`, `tiedCandidates=[]`
     - Make it pass: limit `definiteWinners` to the top 3 when no tie at boundary
     - Commit: `"feat: LeaderboardRanker takes top 3 when no tie"`
     - _Requirements: 3.2_
-  - [ ] 5.5 Tie at position 3 — split definiteWinners and tiedCandidates
+  - [x] 5.5 Tie at position 3 — split definiteWinners and tiedCandidates
     - Write a test: scores 400, 300, 200, 200 → `definiteWinners=[400,300]`, `tiedCandidates=[200,200]`
     - Make it pass: detect when score at position 3 equals score at position 2 (the boundary); place all players above boundary score in `definiteWinners`, all at boundary score in `tiedCandidates`
     - Commit: `"feat: LeaderboardRanker handles tie at boundary"`
     - _Requirements: 3.3_
-  - [ ] 5.6 All players tied — definiteWinners empty, all in tiedCandidates
+  - [x] 5.6 All players tied — definiteWinners empty, all in tiedCandidates
     - Write a test: three players all at score 100 → `definiteWinners=[]`, `tiedCandidates=[all three]`
     - Make it pass: handle the degenerate case where boundary score equals the highest score
     - Commit: `"feat: LeaderboardRanker handles all-tied case"`
     - _Requirements: 3.6_
-  - [ ] 5.7 Refactor LeaderboardRanker (if needed)
+  - [x] 5.7 Refactor LeaderboardRanker (if needed)
     - Review for duplication. All tests must stay green.
     - Commit (only if changes made): `"refactor: LeaderboardRanker deduplication"`
-  - [ ]* 5.8 Property tests for LeaderboardRanker (Properties 10–11)
+  - [x]* 5.8 Property tests for LeaderboardRanker (Properties 10–11)
     - Write property tests using jqwik:
       - Property 10: no-tie ranking places top players in definiteWinners
       - Property 11: tie-at-boundary produces correct partition
