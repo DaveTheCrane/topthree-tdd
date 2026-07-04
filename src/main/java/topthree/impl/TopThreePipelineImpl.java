@@ -26,7 +26,28 @@ public class TopThreePipelineImpl implements TopThreePipeline {
         if (csvLines.isEmpty()) {
             return new Result.Ok<>(new RankedResult(List.of(), List.of()));
         }
-        // Will be implemented through TDD
-        return new Result.Err<>(new PipelineError("Not implemented yet"));
+        
+        // Parse CSV lines
+        var parseResult = csvParser.parseLines(csvLines);
+        if (parseResult instanceof topthree.models.Result.Err) {
+            var parseError = ((topthree.models.Result.Err<java.util.List<topthree.models.ScoreRecord>, topthree.models.ParseError>) parseResult).error();
+            return new Result.Err<>(new PipelineError("CSV parse error: " + parseError.message()));
+        }
+        
+        var records = ((topthree.models.Result.Ok<java.util.List<topthree.models.ScoreRecord>, topthree.models.ParseError>) parseResult).value();
+        
+        // Aggregate scores
+        var aggregateResult = scoreAggregator.aggregate(records);
+        if (aggregateResult instanceof topthree.models.Result.Err) {
+            var aggregationError = ((topthree.models.Result.Err<java.util.List<topthree.models.PlayerAggregate>, topthree.models.AggregationError>) aggregateResult).error();
+            return new Result.Err<>(new PipelineError("Aggregation error: " + aggregationError.message()));
+        }
+        
+        var aggregates = ((topthree.models.Result.Ok<java.util.List<topthree.models.PlayerAggregate>, topthree.models.AggregationError>) aggregateResult).value();
+        
+        // Rank players
+        var rankedResult = leaderboardRanker.rank(aggregates);
+        
+        return new Result.Ok<>(rankedResult);
     }
 }
