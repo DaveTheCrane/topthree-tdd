@@ -12,6 +12,22 @@ class ScoreAggregatorTest {
     private final ScoreAggregator aggregator = new DefaultScoreAggregator();
 
     @Test
+    void singleRecordProducesCorrectAggregate() {
+        var record = new ScoreRecord(
+                new Player("p1", "Alice"),
+                new GameEntry("g1", "Chess", 2, 50)
+        );
+        var result = aggregator.aggregate(List.of(record));
+
+        assertInstanceOf(Result.Ok.class, result);
+        var aggregates = ((Result.Ok<List<PlayerAggregate>, AggregationError>) result).value();
+        assertEquals(1, aggregates.size());
+        assertEquals("p1", aggregates.get(0).player().playerId());
+        assertEquals("Alice", aggregates.get(0).player().playerName());
+        assertEquals(100, aggregates.get(0).totalScore()); // 2 * 50 = 100
+    }
+
+    @Test
     void emptyInputReturnsEmptyList() {
         var result = aggregator.aggregate(List.of());
 
