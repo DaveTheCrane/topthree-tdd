@@ -8,7 +8,7 @@ Each task below represents one TDD cycle: write a failing test, then write the m
 
 ## Tasks
 
-- [ ] 1. Project setup
+- [x] 1. Project setup
   - Initialise a Maven or Gradle project with JUnit 5 and jqwik dependencies
   - Create the standard `src/main/java` and `src/test/java` directory structure
   - Run an empty test to confirm the build toolchain works end-to-end
