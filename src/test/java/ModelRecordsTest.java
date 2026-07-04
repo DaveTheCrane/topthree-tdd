@@ -3,6 +3,18 @@
 
 import org.junit.jupiter.api.Test;
 
+import topthree.models.AggregationError;
+import topthree.models.GameEntry;
+import topthree.models.ParseError;
+import topthree.models.PipelineError;
+import topthree.models.Player;
+import topthree.models.PlayerAggregate;
+import topthree.models.RankedResult;
+import topthree.models.Result;
+import topthree.models.ScoreRecord;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ModelRecordsTest {
