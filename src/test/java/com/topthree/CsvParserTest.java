@@ -12,6 +12,24 @@ class CsvParserTest {
     private final CsvParser parser = new DefaultCsvParser();
 
     @Test
+    void rejectsLineWithFiveFields() {
+        var result = parser.parseLine("p1,Alice,g1,Chess,10");
+
+        assertInstanceOf(Result.Err.class, result);
+        var error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("6"));
+    }
+
+    @Test
+    void rejectsLineWithSevenFields() {
+        var result = parser.parseLine("p1,Alice,g1,Chess,10,85,extra");
+
+        assertInstanceOf(Result.Err.class, result);
+        var error = ((Result.Err<ScoreRecord, ParseError>) result).error();
+        assertTrue(error.message().contains("6"));
+    }
+
+    @Test
     void parsesValidSixFieldCsvLine() {
         var result = parser.parseLine("p1,Alice,g1,Chess,10,85");
 
