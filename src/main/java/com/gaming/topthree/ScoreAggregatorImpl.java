@@ -22,18 +22,22 @@ public class ScoreAggregatorImpl implements ScoreAggregator {
 
         List<PlayerAggregate> aggregates = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : totalsByPlayerId.entrySet()) {
-            Player player = firstPlayerWithId(records, entry.getKey());
+            Player player = lastPlayerWithId(records, entry.getKey());
             aggregates.add(new PlayerAggregate(player, entry.getValue()));
         }
         return Result.ok(aggregates);
     }
 
-    private static Player firstPlayerWithId(List<ScoreRecord> records, String playerId) {
+    private static Player lastPlayerWithId(List<ScoreRecord> records, String playerId) {
+        Player found = null;
         for (ScoreRecord record : records) {
             if (record.player().playerId().equals(playerId)) {
-                return record.player();
+                found = record.player();
             }
         }
-        throw new IllegalStateException("player id not found: " + playerId);
+        if (found == null) {
+            throw new IllegalStateException("player id not found: " + playerId);
+        }
+        return found;
     }
 }

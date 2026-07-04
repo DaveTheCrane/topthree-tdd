@@ -63,4 +63,15 @@ class ScoreAggregatorTest {
         assertThat(aggregates).extracting(a -> a.player().playerId())
                 .containsExactlyInAnyOrder("p1", "p2");
     }
+
+    @Test
+    void lastSeenDisplayNameWinsOnConflict() {
+        Result<List<PlayerAggregate>, AggregationError> result = aggregator.aggregate(List.of(
+                record("p1", "Alice", "g1", 2, 50),
+                record("p1", "Alicia", "g2", 1, 10)));
+
+        List<PlayerAggregate> aggregates = unwrap(result);
+        assertThat(aggregates).hasSize(1);
+        assertThat(aggregates.get(0).player().playerName()).isEqualTo("Alicia");
+    }
 }
