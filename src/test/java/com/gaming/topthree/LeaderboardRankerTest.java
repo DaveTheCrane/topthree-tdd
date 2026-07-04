@@ -59,4 +59,15 @@ class LeaderboardRankerTest {
                 .containsExactly(400, 300, 200);
         assertThat(result.tiedCandidates()).isEmpty();
     }
+
+    @Test
+    void tieAtBoundarySplitsWinnersAndCandidates() {
+        RankedResult result = ranker.rank(List.of(
+                player("p1", 400), player("p2", 300), player("p3", 200), player("p4", 200)));
+
+        assertThat(result.definiteWinners()).extracting(PlayerAggregate::totalScore)
+                .containsExactly(400, 300);
+        assertThat(result.tiedCandidates()).extracting(PlayerAggregate::totalScore)
+                .containsExactly(200, 200);
+    }
 }
