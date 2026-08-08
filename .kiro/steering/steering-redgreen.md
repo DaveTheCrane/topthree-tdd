@@ -17,6 +17,13 @@ This project follows strict Test-Driven Development (TDD). All code must be writ
 - After each green phase, consider if refactoring is needed
 - All behavior must be described in plain English before generating a test
 
+## Scope of Testing
+The TDD cycle applies to hand-written production code in `src/main` — the code that is committed to git. Generated code is out of scope.
+
+- Do NOT write in-depth unit tests for generated code under `target/generated-sources` (e.g. Lombok output, openapi-generator models and APIs). It is produced by trusted tools, is not committed to git, and is not driven by our tests.
+- Do not treat generated code as a coverage gap or as a TDD violation for lacking a failing test.
+- When code in `src/main` uses generated types (generated API models, Lombok builders/accessors), test our own logic and behavior — not the generated boilerplate itself.
+
 ## What "Minimum" Means
 **CRITICAL**: "Minimum" means the simplest possible code that makes ONLY the current test pass.
 
@@ -45,11 +52,17 @@ When asked to implement a feature, always:
 3. Then generate the minimal implementation (see "What Minimum Means" above)
 4. Confirm all tests pass
 5. Suggest refactoring opportunities (only if duplication exists)
-6. Review request and existing tests to find if additional tests are needed
+6. Commit the completed cycle to the current branch (see the Git Workflow steering)
+7. Review request and existing tests to find if additional tests are needed
    - If at least one more test is needed, start another cycle by writing a failing test
    - If not, declare that requirement was met
 
-Break each feature into individual tasks for each step in the TDD lifecycle
+## Task List Generation
+When generating a spec task list (`tasks.md`), make each Red-Green-Refactor cycle a **single subtask** for one behavior — not three separate tasks for red, green, and refactor.
+
+- One subtask represents the full Red-Green-Refactor cycle for a single behavior: write the failing test, make it pass with minimal code, then refactor if duplication exists.
+- Do not split a cycle into separate red / green / refactor subtasks.
+- See the Git Workflow steering for how branch creation and per-cycle commits appear in the task list.
 
 ## Self-Check Before Implementing
 Before writing production code, ask yourself:
